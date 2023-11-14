@@ -1,3 +1,32 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["airbnb-base", "prettier", "next","next/babel","next/core-web-vitals"],
+  "parser": "@babel/eslint-parser",
+  "rules": {
+    "indent": ["error", 2],
+    "max-len": [
+      "error",
+      256,
+      {
+        "ignoreComments": true,
+        "ignoreUrls": true,
+        "ignoreRegExpLiterals": true
+      }
+    ],
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": [
+            "_id",
+            "_source",
+            "_url",
+            "_matchedRoute",
+            "_matchedRouteName"
+        ]
+      }
+    ],
+    "no-continue": "off",
+    "no-nested-ternary": "off",
+    "no-restricted-globals": 1,
+    "no-console": "off"
+  }
 }
