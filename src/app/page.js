@@ -9,6 +9,7 @@ export default function Home() {
         <Link href="/login">Go to Login Page </Link>
         <Link href="/driver">Go to Driver Page </Link>
         <Link href="/passenger">Go to Passenger Page </Link>
+        <Link href="/driver/editRoute">Hello</Link>
       </div>
     </>
   );
