@@ -10,14 +10,25 @@ export default function RouteRequest( ) {
     const searchParams = useSearchParams()
     const props = JSON.parse(searchParams.get('info'))
 
-    var date = new Date(props.date)
+    var date = new Date(props.on.datetime.slice(0,10))
     const weekMap = ['一','二','三','四','五','六','日']
 
     const [workStatus,setWorkStatus] = useState(true)
 
+    const [showStations,setShowStations] = useState(false)
+
     var crossDay = false
     if(props.on.datetime.slice(8,10) != props.off.datetime.slice(8,10))
         crossDay = true
+
+    var onDate = props.stations[0].datetime.slice(8,10)
+    var change_idx = -1 
+    for(var i = 1;i < props.stations.length;i++){
+        if(props.stations[i].datetime.slice(8,10) != onDate){
+            change_idx = i;
+            break;
+        }
+    }
 
     return (
         <div className="relative bg-passenger w-mobile h-mobile flex flex-wrap justify-center space-y-0 border border-red-500"> 
@@ -30,6 +41,23 @@ export default function RouteRequest( ) {
                     <button className={(workStatus?'bg-white':'bg-dark_o text-white')+" w-12 rounded-xl ml-2 mr-4 hover:bg-dark_o hover:text-white"} onClick={()=>{setWorkStatus(false)}}>下班</button>
                 </div>
                 <div className="h-auto">
+                    <div className={(showStations?'':'hidden ') + ' z-10 fixed h-2/6 w-mobile'}>
+                        <div className='mx-10 h-full bg-white border border-black'>
+                            <div className="flex flex-wrap  mt-6 h-4/6 overflow-y-auto">
+                                {props.stations.map((e,idx)=>{return (
+                                <>
+                                {(idx == 0)?<p className='flex w-full items-center justify-center text-dark_o font-bold'>____{e.datetime.slice(0,10)}____</p>:null}
+                                {(idx == change_idx)?<p className='flex w-full items-center justify-center text-dark_o font-bold'>____{e.datetime.slice(0,10)}____</p>:null}
+                                <div className='flex w-full h-2/6 items-center'>
+                                    <p className={((e.id == props.on.id)?"bg-lime-400":(e.id == props.off.id)?"bg-red-400":"invisible") + " text-black w-9 ml-4"}>{(e.id == props.on.id)?"上車":"下車"}</p>
+                                    <p className='ml-2'>{e.datetime.slice(-5)}</p>
+                                    <p className='ml-2'>{e.name}</p>
+                                </div>
+                                </>)})}
+                            </div>
+                            <button className="mt-4 bg-dark_o text-white rounded-xl w-16" onClick={()=>{setShowStations(false)}}>關閉</button>
+                        </div>
+                    </div>
                     <p className="flex text-dark_o font-bold ml-3.5">路線資訊</p>
                     <div className="h-32 bg-white mx-3.5 mt-2 rounded-xl">
                         <div className='invisible'> invisible block </div>
@@ -43,10 +71,10 @@ export default function RouteRequest( ) {
                             <p className='w-24 ml-1'> {props.off.datetime.slice(-5)} {crossDay?'(跨日)':''}</p> 
                             <p className='w-auto ml-4'> {props.off.name}</p>
                         </div>
-                        <p className="text-dark_o flex mt-4 mb-1 ml-4 text-sm font-bold hover:cursor-pointer" onClick={()=>{console.log('hey')}}>展開所有停靠站</p>
+                        <p className="text-dark_o flex mt-4 mb-1 ml-4 text-sm font-bold hover:cursor-pointer" onClick={()=>{setShowStations(true)}}>展開所有停靠站</p>
                     </div>
                 </div>
-                <div className='h-auto'>
+                <div className='h-auto relative'>
                     <p className="flex text-dark_o font-bold ml-3.5 mt-4">司機和車輛資訊</p>
                     <div className="h-32 bg-white mx-3.5 mt-2 rounded-xl">
                         <div className="h-4 invisible">invisible block</div>

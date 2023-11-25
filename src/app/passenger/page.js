@@ -24,8 +24,9 @@ export default function Passenger() {
 
   const [routes, setRoutes] = useState([])
 
-  const example_route = {'id':0,'workStatus':true,'status':'available','date':'2023-11-20','stations':[{'id':0,'name':'車站0','datetime':'2023-10-22T22:30','on':[],'off':[]},{'id':1,'name':'車站1','datetime':'2023-10-22T23:40','on':[],'off':[]},{'id':2,'name':'車站2','datetime':'2023-10-23T01:40','on':[],'off':[]},{'id':3,'name':'車站3','datetime':'2023-10-23T02:15','on':[],'off':[]},{'id':4,'name':'車站4','datetime':'2023-10-23T03:40','on':[],'off':[]}],'passengers':[],'driver':{"id":10,"name":"John James","avatar":"https://i.ibb.co/r49x9Kb/kirbohappy.png","phone":912123456},'carInfo':{"color":"紅色","capacity":3,"licensePlateNumber":"ABC-0123"}}
-  const stations = ["車站0","車站1","車站2","車站3","車站4"]
+  const example_route = {'id':0,'workStatus':true,'status':'available','date':'2023-10-20','stations':[{'id':0,'name':'台北車站','datetime':'2023-10-22T22:30','on':[],'off':[]},{'id':1,'name':'台北地下鐵','datetime':'2023-10-22T23:40','on':[],'off':[]},{'id':2,'name':'捷運公館站','datetime':'2023-10-23T01:40','on':[],'off':[]},{'id':3,'name':'龜山','datetime':'2023-10-23T02:15','on':[],'off':[]},{'id':4,'name':'台積電本部','datetime':'2023-10-23T03:40','on':[],'off':[]}],'passengers':[],'driver':{"id":10,"name":"John James","avatar":"https://i.ibb.co/r49x9Kb/kirbohappy.png","phone":912123456},'carInfo':{"color":"紅色","capacity":3,"licensePlateNumber":"ABC-0123"}}
+  const example_route2 = {'id':1,'workStatus':true,'status':'available','date':'2023-10-20','stations':[{'id':0,'name':'台北車站','datetime':'2023-10-22T11:30','on':[],'off':[]},{'id':1,'name':'台北地下鐵','datetime':'2023-10-22T12:40','on':[],'off':[]},{'id':2,'name':'捷運公館站','datetime':'2023-10-22T13:40','on':[],'off':[]},{'id':3,'name':'龜山','datetime':'2023-10-22T14:15','on':[],'off':[]},{'id':4,'name':'台積電本部','datetime':'2023-10-22T15:40','on':[],'off':[]}],'passengers':[],'driver':{"id":10,"name":"提達斯","avatar":"https://i.ibb.co/94Qs1WR/FCVWD5-XMAYa46b.jpg","phone":912123456},'carInfo':{"color":"白色","capacity":2,"licensePlateNumber":"ABC-0123"}}
+  const stations = ["台北車站","台北地下鐵","捷運公館站","龜山","台積電本部"]
 
   const [date,setDate] = useState(null)
   const [startStation,setStartStation] = useState(null)
@@ -106,6 +107,7 @@ export default function Passenger() {
           })}
         </div>
         <button className="bg-black text-white hover:bg-blue-200 hover:text-black mr-4" onClick={()=>{setRoutes((ele)=>{let a=[];a.push(...ele);a.push(example_route);return a;})}}> Add Route </button>
+        <button className="bg-black text-white hover:bg-blue-200 hover:text-black mr-4" onClick={()=>{setRoutes((ele)=>{let a=[];a.push(...ele);a.push(example_route2);return a;})}}> Add Route2 </button>
         <button className="bg-black text-white hover:bg-blue-200 hover:text-black" onClick={()=>{setRoutes((ele)=>{let a=[];a.push(...ele);a.pop();return a;})}}> Delete Route </button> 
       </div>
     </div>
