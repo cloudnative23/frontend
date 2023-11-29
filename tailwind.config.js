@@ -18,6 +18,15 @@ module.exports = {
       height: {
         mobile: "620px", // 手機版高度
       },
+      colors: {
+        passenger:'#f8f3ed',
+        dark_o:'#d9854e',
+        driver:'#eef6f9',
+        driver_dark: "#5284CF",
+      },
+      maxHeight: {
+        route_board: '400px',
+      },
     },
   },
   plugins: [],
