@@ -19,10 +19,16 @@ module.exports = {
         mobile: "620px", // 手機版高度
       },
       colors: {
-        passenger:'#f8f3ed',
-        dark_o:'#d9854e',
-        driver:'#eef6f9',
+        passenger:'#f8f3ed',  // orange
+        passenger_dark:'#d9854e',
+        driver:'#eef6f9',  // blue
         driver_dark: "#5284CF",
+        go2work:'#57A368',  // green
+        go2work_light:'#E4F8CC',
+        go2home:'#DC7272',  // red
+        go2home_light:'#FFE2E2',
+        gray_light:'#F4F4F4', // gray
+        gray_dark:'#757575',
       },
       maxHeight: {
         route_board: '400px',
