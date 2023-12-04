@@ -71,7 +71,7 @@ export default function App(props) {
       <div className="flex flex-row justify-between items-center px-2">
         <div className="h-fit">
           <label htmlFor="date">日期：</label>
-          <input type="date" id="date" defaultValue={route.date} ref={dateRef}/>
+          <input type="date" id="date" className="rounded-lg" defaultValue={route.date} ref={dateRef}/>
         </div>
         <div className='flex flex-row w-max'>
           <RadioComponent 
@@ -83,12 +83,12 @@ export default function App(props) {
             ref={workStatusRef} />
         </div>
       </div>
-      
-      <hr className="m-2"></hr>
-      
+            
       <div className="flex justify-center">
         <button className="bg-[#5284CF] text-white rounded-lg m-2 px-2 py-1">匯入歷史紀錄</button>
       </div>
+
+      <hr className="m-2"></hr>
 
       <StationsComponent 
         initialStations={route.stations}
@@ -100,29 +100,29 @@ export default function App(props) {
       
       <div className="flex flex-row justify-between m-1 p-1">
         <div className="flex flex-row ">
-          <label htmlFor="model">車款：</label>
-          <input id="model" size={14} ref={brandRef} /> {/* defaultValue? */}
+          <label htmlFor="model" className="text-gray-500">車款：</label>
+          <input id="model" className="rounded-lg" size={14} ref={brandRef} defaultValue={route.carInfo.model}/>
         </div>
         <div className="flex flex-row">
-          <label htmlFor="license-plate-number" className="w-fit">車牌：</label>
-          <input id="license-plate-number" size={10} ref={licNumRef} defaultValue={route.carInfo.licensePlateNumber}/>
+          <label htmlFor="license-plate-number" className="w-fit text-gray-500">車牌：</label>
+          <input id="license-plate-number" className="rounded-lg" size={10} ref={licNumRef} defaultValue={route.carInfo.licensePlateNumber}/>
         </div>
       </div>
 
       <div className="flex flex-row justify-between m-1 p-1">
         <div>
-          <label htmlFor="color">外觀顏色：</label>
-          <input id="color" size={10} ref={colorRef} defaultValue={route.carInfo.color}/>
+          <label htmlFor="color" className="text-gray-500">外觀顏色：</label>
+          <input id="color" className="rounded-lg" size={10} ref={colorRef} defaultValue={route.carInfo.color}/>
         </div>
         <div>
-          <label htmlFor="max-passengers" className="w-fit">共乘人數上限：</label>
-          <input id="max-passengers" size={3} ref={capRef} defaultValue={route.carInfo.capacity}/>
+          <label htmlFor="max-passengers" className="w-fit text-gray-500">共乘人數上限：</label>
+          <input id="max-passengers" className="rounded-lg" size={3} ref={capRef} defaultValue={route.carInfo.capacity}/>
         </div>
       </div>
       
       <div className="flex flex-row justify-begin m-1 p-1">
-        <input type="checkbox" id="enable-search" defaultChecked ref={isPublicRef} /> {/* defaultValue? */}
-        <label htmlFor="enable-search">允許乘客搜尋</label>
+        <input type="checkbox" className="rounded-lg" id="enable-search" defaultChecked ref={isPublicRef} /> {/* defaultValue? */}
+        <label htmlFor="enable-search" className="text-gray-500">允許乘客搜尋</label>
       </div>
 
       <div className="flex justify-center">

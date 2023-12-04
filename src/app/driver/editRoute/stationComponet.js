@@ -3,11 +3,9 @@
 import { useRef, useState, forwardRef, useImperativeHandle, memo} from "react"
 import { AiFillDelete } from "react-icons/ai";
 
-function cmp(lhs, rhs) {
-    return lhs.time > rhs.time ? 1 : -1
-}
-
 function Station({ station, onUpdate, onDelete, stataionList }) {
+
+    stataionList = [ {'id': "-1", name: "--- 請選擇 ---"}, ...stataionList ]
 
     return (<>
       {/* <p>{JSON.stringify(station)}</p> */}
@@ -17,12 +15,13 @@ function Station({ station, onUpdate, onDelete, stataionList }) {
           id="time"
           defaultValue={station.time}
           disabled={station.hasPassenger}
-          onChange={(event) => (onUpdate({ ...station, time: event.target.value }))} />
+          onChange={(event) => (onUpdate({ ...station, time: event.target.value }))} 
+          className="w-32"/>
   
         <select 
           id="station_selector"
           defaultValue={station.id}
-          disabled={station.hasPassenger} 
+          disabled={station.hasPassenger}
           onChange={(event) => (onUpdate({ ...station, id: event.target.value }))} >
           {stataionList.map((station) => (
             <option value={station.id} key={station.id}>
@@ -48,26 +47,38 @@ const StationsComponent = forwardRef(({ initialStations, stataionList }, ref) =>
         id: station.id,
         key: key,
         time: station.datetime.substring(station.datetime.length - 5),
-        hasPassenger: station.on.length + station.off.length > 0,
+        hasPassenger: station["on-passengers"].length + station["off-passengers"].length > 0,
       }
     })
  
     const [stations, setStations] = useState(initialStations)
     const keyCount = useRef(initialStations.length)
   
-    // stationRefCallback(stations)
-  
+    function cmpStations(lhs, rhs) {
+      if (lhs.hasOwnProperty('time')) {
+        if (rhs.hasOwnProperty('time')) {
+          return lhs.time > rhs.time ? 1 : -1
+        } else {
+          return -1
+        }
+      } else if (rhs.hasOwnProperty('time')) {
+        return 1
+      } else {
+        return lhs.key > rhs.key ? 1 : -1
+      }
+    }
+
     function handleCreate() {
-      setStations((prevStations) => [...prevStations, {id: 0, key: keyCount.current, time: "12:00", hasPassenger: false}].sort(cmp))
+      setStations((prevStations) => [...prevStations, {key: keyCount.current} ].sort(cmpStations))
       keyCount.current++
     }
   
     function handleUpdate(updatedStation) {
-      setStations((prevStations) => prevStations.map((station) => (station.key === updatedStation.key ? updatedStation : station)).sort(cmp))
+      setStations((prevStations) => prevStations.map((station) => (station.key === updatedStation.key ? updatedStation : station)).sort(cmpStations))
     }
   
     function handleDelete(deletedStation) {
-      setStations((prevStations) => prevStations.filter((station) => (station.key === deletedStation.key ? false : true)).sort(cmp))
+      setStations((prevStations) => prevStations.filter((station) => (station.key === deletedStation.key ? false : true)).sort(cmpStations))
     }
 
     useImperativeHandle(ref, () => ({
@@ -76,6 +87,11 @@ const StationsComponent = forwardRef(({ initialStations, stataionList }, ref) =>
 
     return (
       <>
+        <div className="flex flex-row justify-between m-2">
+          <div className="w-32 text-center text-gray-500">時間</div>
+          <div className="text-gray-500">停靠地點</div>
+          <div className="w-6"></div>
+        </div>
         {stations.map((station) => (
           <div key={station.key} className="rounded-lg bg-white m-2">
             <Station 

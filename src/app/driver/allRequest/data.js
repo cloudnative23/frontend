@@ -47,7 +47,7 @@ export default [
         "driver": {
           "id": 3,
           "name": "John James",
-          "avatar": "https://example.com/avatar.png",
+          "avatar": "https://i.imgur.com/yXOvdOSs.jpg",
           "phone": "0928123456"
         }
       },
@@ -102,7 +102,7 @@ export default [
         "driver": {
           "id": 3,
           "name": "John James",
-          "avatar": "https://example.com/avatar.png",
+          "avatar": "https://i.imgur.com/yXOvdOSs.jpg",
           "phone": "0928123456"
         }
       },
