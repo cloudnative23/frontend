@@ -20,7 +20,11 @@ import SettingsIcon from '@mui/icons-material/Settings';
 
 const settings = ['個人資料', '切換為乘客', '登出'];
 
-function Navbar() {
+function Navbar({mode}) {
+  let showDriver = false;
+  if (mode === "driver") {
+    showDriver = true;
+  }
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -30,67 +34,73 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static" elevation={0} className="bg-driver">
-      <Container>
-        <Toolbar disableGutters>
-          <Typography
-            // variant="h6"
-            noWrap
-            component="a"
-            href="/driver"
-            sx={{
-              mr: 2,
-              display: 'flex',
-              // fontFamily: 'monospace',
-              fontWeight: 'regular',
-              // letterSpacing: '.1rem',
-              textDecoration: 'none',
-            }}
-            className='text-sm text-driver_dark'
-          >
-            TSMC COMMUTING DRIVER
-          </Typography>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display : 'flex' }}>
-            <Tooltip title="Open mails">
-              <IconButton size="large">
-                <Badge badgeContent={4} color="error">
-                  <MailIcon alt="Test" className='text-driver_dark' />
-                </Badge>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} size="large">
-                <SettingsIcon alt="Test" className='text-driver_dark' edge="end" />
-              </IconButton>
-            </Tooltip>
-
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+    <>
+      {showDriver &&
+      <AppBar position="static" elevation={0} className="bg-driver">
+        <Container>
+          <Toolbar disableGutters>
+            <Typography
+              // variant="h6"
+              noWrap
+              component="a"
+              href={`/driver`}
+              sx={{
+                mr: 2,
+                display: 'flex',
+                // fontFamily: 'monospace',
+                fontWeight: 'regular',
+                // letterSpacing: '.1rem',
+                textDecoration: 'none',
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+              className='text-sm text-driver_dark'
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+              TSMC COMMUTING DRIVER
+            </Typography>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ display : 'flex' }}>
+
+              <div className='rounded-full bg-white'>
+                <IconButton size="small">
+                  <Badge badgeContent={4} color="error">
+                    <MailIcon alt="Test" className='text-driver_dark' />
+                  </Badge>
+                </IconButton>
+              </div>
+
+              <div className='rounded-full bg-white ml-2'>
+                <IconButton onClick={handleOpenUserMenu} size="small">
+                  <SettingsIcon alt="Test" className='text-driver_dark' edge="end" />
+                </IconButton>
+              </div>
+
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      }
+    </>
   );
 }
 export default Navbar;

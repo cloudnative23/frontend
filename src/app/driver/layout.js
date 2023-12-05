@@ -5,7 +5,7 @@ function DriverLayout({children}) {
     // overflow-hidden for parent to hide scrollbar
     <main className="flex flex-col container mx-auto w-mobile h-mobile overflow-hidden">
       {/* <nav className="flex h-16 w-full pb-10"> */}
-      <Navbar />
+      <Navbar mode="driver" />
       {/* </nav> */}
       <div className="h-full w-full bg-driver">{children}</div>
     </main>
