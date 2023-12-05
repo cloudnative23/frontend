@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState, forwardRef, useImperativeHandle, memo} from "react"
-import { AiFillDelete } from "react-icons/ai";
+import Outlined from '@mui/icons-material/Inventory';
 
 function Station({ station, onUpdate, onDelete, stataionList }) {
 
@@ -32,7 +32,7 @@ function Station({ station, onUpdate, onDelete, stataionList }) {
 
         <div className="w-6">
           {
-            station.hasPassenger ? <></> : <button onClick={() => onDelete(station)}><AiFillDelete /></button>
+            station.hasPassenger ? <></> : <button onClick={() => onDelete(station)}><Outlined /></button>
           }
         </div>
   
@@ -42,14 +42,7 @@ function Station({ station, onUpdate, onDelete, stataionList }) {
 
 const StationsComponent = forwardRef(({ initialStations, stataionList }, ref) => {
 
-    initialStations = initialStations.map((station, key) => {
-      return {
-        id: station.id,
-        key: key,
-        time: station.datetime.substring(station.datetime.length - 5),
-        hasPassenger: station["on-passengers"].length + station["off-passengers"].length > 0,
-      }
-    })
+    initialStations = initialStations.map((station, key) => {{key: key, station}})
  
     const [stations, setStations] = useState(initialStations)
     const keyCount = useRef(initialStations.length)
@@ -88,8 +81,8 @@ const StationsComponent = forwardRef(({ initialStations, stataionList }, ref) =>
     return (
       <>
         <div className="flex flex-row justify-between m-2">
-          <div className="w-32 text-center text-gray-500">時間</div>
-          <div className="text-gray-500">停靠地點</div>
+          <div className="w-32 text-center text-gray_dark">時間</div>
+          <div className="text-gray_dark">停靠地點</div>
           <div className="w-6"></div>
         </div>
         {stations.map((station) => (
@@ -104,7 +97,7 @@ const StationsComponent = forwardRef(({ initialStations, stataionList }, ref) =>
         ))}
   
         <div className="flex justify-center items-center">
-          <button onClick={() => (handleCreate())} className="bg-[#5284CF] text-white rounded-lg m-2 px-2 py-1">加入新路線</button>
+          <button onClick={() => (handleCreate())} className="bg-driver_dark text-white rounded-lg m-2 px-2 py-1">加入新路線</button>
         </div>
       </>
     )
