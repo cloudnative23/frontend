@@ -44,18 +44,20 @@ export default [
         {
           "id": 2,
           "name": "Bill Gates",
-          "phone": "0982104928"
+          "phone": "0982104928",
+          "avatar": "https://i.imgur.com/yXOvdOSs.jpg"
         },
         {
           "id": 4,
           "name": "Paul",
-          "phone": "0954201859"
+          "phone": "0954201859",
+          "avatar": "https://i.imgur.com/yXOvdOSs.jpg"
         }
       ],
       "driver": {
         "id": 3,
         "name": "John James",
-        "avatar": "https://example.com/avatar.png",
+        "avatar": "https://i.imgur.com/yXOvdOSs.jpg",
         "phone": "0928123456"
       }
     }

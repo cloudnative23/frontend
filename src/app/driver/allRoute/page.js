@@ -4,6 +4,7 @@ import { useState } from "react";
 import allRoute from "./data";
 import RadioComponent from "../_components/radioComponents"
 import { getTime, getDate } from "../_components/date"
+import HeaderBar from "../_components/headerComponnet";
 
 function Route({ route }) {
 
@@ -57,7 +58,7 @@ export default function App() {
     }
 
     return (<>
-
+        <HeaderBar text={"所 有 行 程"} />
         <div className='flex flex-row space-x-1 m-2'>
             <RadioComponent
                 list={[

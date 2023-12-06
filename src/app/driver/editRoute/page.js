@@ -5,6 +5,7 @@ import { useRef } from "react";
 import routes from './data'
 import StationsComponent from "../_components/stationComponet";
 import RadioComponent from "../_components/radioComponents";
+import HeaderBar from "../_components/headerComponnet";
 
 const stataionList = [
   {
@@ -108,11 +109,11 @@ export default function App(props) {
 
   return (<div className="text-sm">
 
-    <div className="text-center bg-white rounded-lg m-2 py-1 text-sm text-driver_dark">新 增 行 程</div>
+    <HeaderBar text="新 增 行 程"></HeaderBar>
 
     <div className="flex flex-row justify-between px-2 mx-2 my-4 text-gray_dark text-sm">
         <label htmlFor="date">日期：</label>
-        <input type="date" id="date" className="rounded-lg w-44" defaultValue={route.date} ref={dateRef} />
+        <input type="date" id="date" className="rounded-lg w-44 text-center" defaultValue={route.date} ref={dateRef} />
         <RadioComponent
           list={[
             { id: 'on', text: "上班" },
@@ -132,8 +133,10 @@ export default function App(props) {
 
     <StationsComponent
       initialStations={initialStations}
+      passengers={route.passengers}
       ref={stationRef}
       stataionList={stataionList}
+      showPassenger={false}
     />
 
     <hr className="m-2"></hr>

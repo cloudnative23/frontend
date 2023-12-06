@@ -3,7 +3,7 @@
 import { useRef, useState, forwardRef, useImperativeHandle, memo } from "react"
 import Outlined from '@mui/icons-material/Delete';
 
-function Station({ station, onUpdate, onDelete, stataionList, showPassenger }) {
+function Station({ station, passengers, onUpdate, onDelete, stataionList, showPassenger }) {
 
   stataionList = [{ 'id': "-1", name: "--- 請選擇 ---" }, ...stataionList]
 
@@ -18,11 +18,11 @@ function Station({ station, onUpdate, onDelete, stataionList, showPassenger }) {
         defaultValue={station.time}
         disabled={hasPassenger}
         onChange={(event) => (onUpdate({ ...station, time: event.target.value }))}
-        className="w-28" />
+        className="w-[6.5rem] text-center" />
 
       <select
         id="station_selector"
-        className="w-44"
+        className="w-40"
         defaultValue={station.id}
         disabled={hasPassenger}
         onChange={(event) => (onUpdate({ ...station, id: event.target.value }))} >
@@ -33,11 +33,14 @@ function Station({ station, onUpdate, onDelete, stataionList, showPassenger }) {
         ))}
       </select>
 
-      {/* <div className={showPassenger ? "w-2" : "w-0"}>
+      <div className={"flex flex-row justify-between items-center " + (showPassenger ? "w-9" : "w-0")}>
         {
-          hasPassenger ? <img src={station.passengers[0].avatar}></img> : <></>
+          station.passengers.length > 0 && <img src={passengers[passengers.findIndex(pass => pass.id == station.passengers[0])].avatar} className="w-4 h-4 rounded-full"></img>
         }
-        </div> */}
+        {
+          station.passengers.length > 1 && <p className="w-4">+{passengers.length-1}</p>
+        }
+      </div>
 
       <div className="w-6">
         {
@@ -49,14 +52,14 @@ function Station({ station, onUpdate, onDelete, stataionList, showPassenger }) {
   </>);
 }
 
-const StationsComponent = forwardRef(({ initialStations, stataionList }, ref) => {
+const StationsComponent = forwardRef(({ initialStations, stataionList, passengers }, ref) => {
+
+  let showPassenger = passengers.length > 0
 
   initialStations = initialStations.map((station, key) => ({ key: key, ...station }))
 
   const [stations, setStations] = useState(initialStations)
   const keyCount = useRef(initialStations.length)
-
-  let hasPassenger = initialStations.map(station => station.passengers.length >= 0).reduce((a, b) => a | b)
 
   function cmpStations(lhs, rhs) {
     if (lhs.hasOwnProperty('time')) {
@@ -92,19 +95,20 @@ const StationsComponent = forwardRef(({ initialStations, stataionList }, ref) =>
   return (
     <>
       <div className="flex flex-row justify-between m-2 text-gray_dark">
-        <div className="w-28 text-center">時間</div>
-        <div className="w-44 text-center">停靠地點</div>
-        {/* <div className={hasPassenger ? "w-2" : "w-0"}></div> */}
+        <div className="w-[6.5rem] text-center">時間</div>
+        <div className="w-40 text-center">停靠地點</div>
+        {showPassenger ? <div className="w-9 text-center">乘客</div> : <></>}
         <div className="w-6"></div>
       </div>
       {stations.map((station) => (
         <div key={station.key} className="rounded-lg bg-white m-2">
           <Station
             station={station}
+            passengers={passengers}
             onDelete={(station) => handleDelete(station)}
             onUpdate={(station) => handleUpdate(station)}
             stataionList={stataionList}
-            showPassenger={hasPassenger}
+            showPassenger={showPassenger}
           />
         </div>
       ))}

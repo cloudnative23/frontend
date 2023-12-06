@@ -3,6 +3,7 @@
 import requests from './data'
 
 import { getDate, getTime } from '../_components/date'
+import HeaderBar from '../_components/headerComponnet'
 
 function RequestComponent({ request, onAccept, onDeny }) {
 
@@ -33,15 +34,19 @@ function RequestComponent({ request, onAccept, onDeny }) {
                         <div>{request.route.stations.find(station => station.id == request.off.id).name}</div>
                     </div>
 
-                    <div className='flex flex-row justify-between'>
+                    <div className='flex flex-row'>
                         <div className='flex flex-row space-x-2 items-center'>
                             <div className='text-driver_dark'>乘客</div>
                             <img className='rounded-full' src={request.route.driver.avatar} width={20} height={20} />
                             <div>{request.route.driver.name}</div>
                         </div>
+                    </div>
+
+                    <div className='flex flex-row justify-between items-end'>
+                        <div className='text-[10px]/[10px]'>發送時間：{request.route.date}</div>
                         <div className='flex flex-row space-x-1'>
-                            <button className="bg-white text-white rounded-xl px-4 bg-gray_dark" onClick={onDeny}>婉拒</button>
-                            <button className="bg-driver_dark text-white rounded-xl px-4" onClick={onAccept}>確認</button>
+                            <button className="text-white rounded-xl px-4 bg-gray_dark" onClick={onDeny}>婉拒</button>
+                            <button className="text-white rounded-xl px-4 bg-driver_dark" onClick={onAccept}>確認</button>
                         </div>
                     </div>
 
@@ -54,6 +59,7 @@ function RequestComponent({ request, onAccept, onDeny }) {
 
 export default function App(props) {
     return (<>
+        <HeaderBar text={"乘 客 請 求 確 認"} />
         {
 
             requests.map((request, key) => (
