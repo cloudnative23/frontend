@@ -99,7 +99,7 @@ export default function SingleRide(props) {
     )
 
     return (
-      <div className="flex flex-col items-center bg-[#F9F3EF] items-stretch h-full">
+      <div className="flex flex-col items-center bg-[#F9F3EF] items-stretch text-sm">
         <nav className="flex flex-row justify-between p-2">
           <div>TSMC COMMUTING</div>
           <div>

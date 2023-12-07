@@ -15,10 +15,10 @@ export default function Choose(props) {
             <div className="bg-white text-center rounded-xl">選擇身份</div>
           </div>
     
-          <div className="pt-6 mb-0 text-center">歡迎 {props.name}, 您想當乘客還是司機呢？</div>
+          <div className="pt-20 mb-0 text-center">歡迎 {props.name}, 您想當乘客還是司機呢？</div>
 
 
-          <div className="w-6/12 flex self-center justify-between mt-12 text-white">
+          <div className="w-6/12 flex self-center justify-between mt-24 text-white">
             <Link href="/passenger" className="basis-14 bg-[#DC8352] text-center rounded-xl text-xl">
                 <div>
                     <AirlineSeatReclineNormalTwoToneIcon /> <br /> <div className="inline-block text-base">乘客</div>

@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import SettingsIcon from '@mui/icons-material/Settings';
+import { Roboto } from 'next/font/google'
+
+const inter = Roboto({ subsets: ['latin'], weight: ["400", "700"]})
 
 export default function Login() {
 
@@ -46,7 +49,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col items-center bg-[#F4F4F4] items-stretch h-full">
+    <div className="flex flex-col items-center bg-[#F4F4F4] items-stretch">
       <nav className="flex flex-row justify-between p-2">
         <div>TSMC COMMUTING</div>
         <SettingsIcon />
@@ -55,11 +58,11 @@ export default function Login() {
         <div className="bg-white text-center rounded-xl">登入</div>
       </div>
 
-      <div className="pt-6 mb-0 text-center text-[#757575]">TSMC</div>
-      <div className="pt-0.5 mt-0 text-center text-[#757575]">COMMUTING </div>
+      <div className={`pt-16 mb-0 text-center text-[#757575] font-bold tracking-widest text-xl ${inter.className}`}>TSMC</div>
+      <div className={`pt-0.5 mt-0 text-center text-[#757575] font-bold tracking-widest text-xl ${inter.className}`}>COMMUTING </div>
 
 
-      <form onSubmit={login} className="mt-4 flex flex-col">
+      <form onSubmit={login} className="mt-16 flex flex-col">
         <div className="flex justify-between items-stretch mb-2">
           <label for="email" className="px-1">Email:</label>
           <input type="text" id="email" name="email" required className="rounded-xl px-1 mx-1"/>

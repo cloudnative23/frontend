@@ -100,15 +100,8 @@ export default function SingleRide(props) {
     )
 
     return (
-      <div className="flex flex-col items-center bg-[#EFF6F9] items-stretch h-full">
-        <nav className="flex flex-row justify-between p-2">
-          <div>TSMC COMMUTING</div>
-          <div>
-            <EmailIcon />
-            <SettingsIcon />
-          </div>
-        </nav>
-        <div className="w-11/12 self-center mt-8">
+      <div className="flex flex-col items-center bg-[#EFF6F9] items-stretch ">
+        <div className="w-11/12 self-center">
           <div className="bg-white text-center rounded-xl">檢視行程</div>
         </div>
 
