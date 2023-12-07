@@ -4,7 +4,31 @@ import AirlineSeatReclineNormalTwoToneIcon from '@mui/icons-material/AirlineSeat
 import ToysTwoToneIcon from '@mui/icons-material/ToysTwoTone';
 
 
-export default function Choose(props) {
+export default function Choose() {
+
+  const [name, setName] = useState(null);
+
+  useEffect(() => {
+      fetch('your_backend_login_endpoin/me')
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json();
+      })
+      .then(data => {
+          // Handle the successful login response
+          console.log(data);
+          //setId(data.id)
+          setName(data.name)
+      })
+      .catch(error => {
+          // Handle errors
+          console.error('There was a problem with the fetch operation:', error);
+      });
+    }, []
+  )
+
     return (
         <div className="flex flex-col items-center bg-[#F4F4F4] items-stretch">
           <nav className="flex flex-row justify-between p-2">
@@ -15,7 +39,7 @@ export default function Choose(props) {
             <div className="bg-white text-center rounded-xl">選擇身份</div>
           </div>
     
-          <div className="pt-20 mb-0 text-center">歡迎 {props.name}, 您想當乘客還是司機呢？</div>
+          <div className="pt-20 mb-0 text-center">歡迎 {name}, 您想當乘客還是司機呢？</div>
 
 
           <div className="w-6/12 flex self-center justify-between mt-24 text-white">

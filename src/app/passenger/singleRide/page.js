@@ -120,7 +120,7 @@ export default function SingleRide(props) {
         <div className="w-10/12 self-center flex flex-col rounded-xl bg-white " >
             <div>
                 {fake[0].stations.map(station => (
-                    <div className='flex justify-between px-1 my-3'> 
+                    <div className='flex justify-between px-1 my-2'> 
                       <div> {station.datetime.substring(station.datetime.indexOf("T")+1, station.datetime.length)} </div>
                       <div> {station.name} </div>
                     </div>
@@ -134,31 +134,31 @@ export default function SingleRide(props) {
         <div className='text-orange-600 mt-8 mb-4 ml-3'> 司機與車輛資訊 </div>
         <div className="w-10/12 self-center flex flex-col rounded-xl bg-white " >
             <div>
-                <div className='flex justify-between px-1 my-3'> 
+                <div className='flex justify-between px-1 my-2'> 
                   <div> 司機 </div>
                   <div> {fake[0].driver.name} </div>
                 </div>
             </div>
             <div>
-                <div className='flex justify-between px-1 my-3'> 
+                <div className='flex justify-between px-1 my-2'> 
                   <div> 可共乘人數 </div>
                   <div> {fake[0].carInfo.capacity} </div>
                 </div>
             </div>
             <div>
-                <div className='flex justify-between px-1 my-3'> 
+                <div className='flex justify-between px-1 my-2'> 
                   <div> 車牌 </div>
                   <div> {fake[0].carInfo.licensePlateNumber} </div>
                 </div>
             </div>
             <div>
-                <div className='flex justify-between px-1 my-3'> 
+                <div className='flex justify-between px-1 my-2'> 
                   <div> 顏色 </div>
                   <div> {fake[0].carInfo.color} </div>
                 </div>
             </div>
             <div>
-                <div className='flex justify-between px-1 my-3'> 
+                <div className='flex justify-between px-1 my-2'> 
                   <div> 聯絡電話 </div>
                   <div> {fake[0].driver.phone} </div>
                 </div>
