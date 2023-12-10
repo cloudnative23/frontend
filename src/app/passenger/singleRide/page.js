@@ -118,15 +118,13 @@ export default function SingleRide(props) {
         
         <div className='text-orange-600 mt-8 mb-4 ml-3'> 路線資訊 </div>
         <div className="w-10/12 self-center flex flex-col rounded-xl bg-white " >
-            <div>
                 {fake[0].stations.map(station => (
-                    <div className='flex justify-between px-1 my-2'> 
-                      <div> {station.datetime.substring(station.datetime.indexOf("T")+1, station.datetime.length)} </div>
-                      <div> {station.name} </div>
+                    <div className='grid grid-cols-12 px-1 my-2'> 
+                      <div className='col-span-3 text-center'> {station.datetime.substring(station.datetime.indexOf("T")+1, station.datetime.length)} </div>
+                      <div className='col-span-9 text-center'> {station.name} </div>
                     </div>
                 )
                 )}
-            </div>
         </div>
 
 

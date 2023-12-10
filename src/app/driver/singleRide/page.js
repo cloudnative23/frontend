@@ -69,7 +69,7 @@ export default function SingleRide(props) {
     ]
 
     const [date, setDate] = useState(null);
-    const [id, setId] = useState(null);
+    const [id, setId] = useState(4);
 
     useEffect(() => {
         const now = new Date();
@@ -111,20 +111,18 @@ export default function SingleRide(props) {
         </div>
         
         <div className='text-orange-600 mt-8 mb-4 ml-3'> 路線資訊 </div>
-        <div className="w-10/12 self-center flex flex-col rounded-md bg-white " >
-            <div>
-                {fake[0].stations.map(station => (
-                    <div className='flex justify-between px-1 my-2'> 
-                      <div>
-                        {station.on.includes(id) ? <div> 上車 </div> : <div> </div>}
-                        {station.off.includes(id) ? <div> 下車 </div>: <div> </div>}
-                      </div>
-                      <div> {station.datetime.substring(station.datetime.indexOf("T")+1, station.datetime.length)} </div>
-                      <div> {station.name} </div>
-                    </div>
-                )
-                )}
-            </div>
+        <div className="w-10/12 self-center flex flex-col rounded-md bg-white " >  
+            {fake[0].stations.map(station => (
+                <div className='grid grid-cols-12 px-1 my-2'> 
+                  <div className='col-span-2'>
+                    {station.on.includes(id) ? <div className='bg-[#E4F8CC] text-sm m-auto w-9 text-center'> 上車 </div> : <div> </div>}
+                    {station.off.includes(id) ? <div className='bg-[#FFE2E3] text-sm m-auto w-9 text-center'> 下車 </div>: <div> </div>}
+                  </div>
+                  <div className='col-span-2'> {station.datetime.substring(station.datetime.indexOf("T")+1, station.datetime.length)} </div>
+                  <div className='col-span-8 text-center'> {station.name} </div>
+                </div>
+            )
+            )}
         </div>
 
 
