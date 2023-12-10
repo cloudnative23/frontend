@@ -128,37 +128,30 @@ export default function SingleRide(props) {
 
 
         <div className='text-orange-600 mt-8 mb-4 ml-3'> 司機與車輛資訊 </div>
-        <div className="w-10/12 self-center flex flex-col rounded-md bg-white " >
-            <div>
-                <div className='flex justify-between px-1 my-2'> 
-                  <div> 司機 </div>
-                  <div> {fake[0].driver.name} </div>
+        <div className="w-10/12 self-center flex flex-col " >
+            {fake[0].passengers.map( passenger => (
+              <div className='px-2 py-2 my-2 rounded-md bg-white'>
+                <div className='flex justify-between px-1'> 
+                  <div> 乘客姓名 </div>
+                  <div> {passenger.name} </div>
                 </div>
-            </div>
-            <div>
-                <div className='flex justify-between px-1 my-2'> 
-                  <div> 可共乘人數 </div>
-                  <div> {fake[0].carInfo.capacity} </div>
+                <div className='flex justify-between px-1'> 
+                  <div> 乘客電話 </div>
+                  <div> {passenger.phone} </div>
                 </div>
-            </div>
-            <div>
-                <div className='flex justify-between px-1 my-2'> 
-                  <div> 車牌 </div>
-                  <div> {fake[0].driver.name} </div>
-                </div>
-            </div>
-            <div>
-                <div className='flex justify-between px-1 my-2'> 
-                  <div> 顏色 </div>
-                  <div> {fake[0].driver.name} </div>
-                </div>
-            </div>
+              </div>  
+            )
+            )}
+
+
+            
+{/*           
             <div>
                 <div className='flex justify-between px-1 my-2'> 
                   <div> 聯絡電話 </div>
                   <div> {fake[0].driver.name} </div>
                 </div>
-            </div>
+            </div> */}
         </div>
       </div>
     );
