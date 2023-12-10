@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import IndexButton from "@/components/IndexButton";
 import ShowWaiting from "@/components/ShowWaiting";
 
@@ -7,16 +9,22 @@ export default function Driver() {
       <div className="flex justify-center">
         <div className="bg-white w-11/12 rounded-xl">
           <div className="flex justify-center space-x-2 my-2">
-            <IndexButton name="新增行程" icon="AddSchedule" />
+            <Link href={"driver/createRoute"}>
+              <IndexButton name="新增行程" icon="AddSchedule" />
+            </Link>
             <IndexButton name="尋找乘客" icon="FindPassenger" />
-            <IndexButton name="查看行程" icon="CheckSchedule" />
+            <Link href={"driver/allRoute"}>
+              <IndexButton name="查看行程" icon="CheckSchedule" />
+            </Link>
             <IndexButton name="共乘紀錄" icon="AllSchedule" />
           </div>
         </div>
       </div>
 
       <div className="flex justify-center space-x-2 my-2">
-        <ShowWaiting whoWait="driver" waitFor="driver"/>
+        <Link href={"driver/allRequest"}>
+          <ShowWaiting whoWait="driver" waitFor="driver" />
+        </Link>
         <ShowWaiting whoWait="driver" waitFor="passenger" />
       </div>
       <p>This is Driver!</p>

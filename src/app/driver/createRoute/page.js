@@ -1,13 +1,12 @@
 "use client";
 
 import { useRef } from "react";
-
-import StationsComponent from "../_components/StationComponent/StationComponent";
-import HeaderBar from "../_components/HeaderComponent/HeaderComponnet";
-import RadioComponent from "../_components/RadioComponent/RadioComponent";
 import Swal from "sweetalert2";
 
-import routes from "./data";
+import HeaderBar from "../_components/HeaderComponent/HeaderComponnet";
+import RadioComponent from "../_components/RadioComponent/RadioComponent";
+import StationsComponent from "../_components/StationComponent/StationComponent";
+
 
 const stataionList = [
   {
@@ -29,21 +28,18 @@ const stataionList = [
 ];
 
 export default function App(props) {
-  const route = routes[0];
+  const dateRef = useRef(null);
+  const workStatusRef = useRef("on");
+
+  const brandRef = useRef(null);
+  const colorRef = useRef(null);
+  const capRef = useRef(null);
+  const licNumRef = useRef(null);
 
   const stationRef = useRef(null);
 
-  let initialStations = route.stations.map((station) => ({
-    id: station.id,
-    time: station.datetime.substring(station.datetime.length - 5),
-    passengers: [...station["on-passengers"], ...station["off-passengers"]].map(
-      (passId) => route.passengers.find((pass) => pass.id == passId),
-    ),
-  }));
-
   function handleSend() {
     let stations = stationRef.current.stations();
-    let initial_stations = initialStations;
 
     for (let station of stations) {
       if (!(station.hasOwnProperty("time") && station["time"] != "")) {
@@ -84,29 +80,46 @@ export default function App(props) {
       return;
     }
 
-    let intersec = stations.filter((station) => {
-      let match_id = initial_stations.findIndex((s) => s.id == station.id);
-      let match_time = initial_stations.findIndex(
-        (s) => s.time == station.time,
-      );
-      return match_id >= 0 && match_id === match_time;
-    });
+    let value_to_name = [
+      [dateRef.current.value, "日期"],
+      [brandRef.current.value, "車款"],
+      [licNumRef.current.value, "車牌"],
+      [colorRef.current.value, "外觀顏色"],
+      [capRef.current.value, "共乘人數上限"],
+    ];
 
-    let added = stations.filter(
-      (station) => intersec.findIndex((s) => s.id == station.id) == -1,
-    );
-    let deleted = initial_stations.filter(
-      (station) => intersec.findIndex((s) => s.id == station.id) == -1,
-    );
+    for (let [value, title] of value_to_name) {
+      if (value == "") {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `${title}的欄位不可為空`,
+        });
+        return;
+      }
+    }
 
-    alert(
-      `Added: ${JSON.stringify(added)}\nDeleted: ${JSON.stringify(deleted)}\n`,
-    );
+    let data = {
+      date: dateRef.current.value,
+      workStatus: workStatusRef == "on",
+      stations: stations.map((station) => ({
+        id: station.id,
+        datetime: `${dateRef.current.value}T${station.time}`,
+      })),
+      carInfo: {
+        brand: brandRef.current.value,
+        color: colorRef.current.value,
+        capacity: capRef.current.value,
+        licensePlateNumber: licNumRef.current.value,
+      },
+    };
+
+    alert(JSON.stringify(data));
   }
 
   return (
     <div className="text-sm">
-      <HeaderBar text="編 輯 行 程"></HeaderBar>
+      <HeaderBar text="新 增 行 程"></HeaderBar>
 
       <div className="mx-2 my-4 flex flex-row justify-between px-2 text-sm text-gray_dark">
         <label htmlFor="date">日期：</label>
@@ -114,27 +127,25 @@ export default function App(props) {
           type="date"
           id="date"
           className="w-44 rounded-lg text-center"
-          defaultValue={route.date}
-          disabled={true}
+          ref={dateRef}
         />
         <RadioComponent
           list={[
             { id: "on", text: "上班" },
             { id: "off", text: "下班" },
           ]}
-          defaultValue={route.workStatus ? "on" : "off"}
+          defaultValue={workStatusRef.current}
           onChange={(id) => (workStatusRef.current = id)}
           className="flex rounded-lg bg-white px-2 text-gray_dark peer-checked:bg-driver_dark peer-checked:text-white"
-          disabled={true}
         />
       </div>
 
       <hr className="m-4"></hr>
 
       <StationsComponent
-        initialStations={initialStations}
+        initialStations={[]}
+        passengers={[]}
         stataionList={stataionList}
-        showPassengers={true}
         ref={stationRef}
       />
 
@@ -145,13 +156,7 @@ export default function App(props) {
           <label htmlFor="model" className="text-gray_dark">
             車款：
           </label>
-          <input
-            id="model"
-            className="rounded-lg"
-            size={14}
-            disabled={true}
-            defaultValue={route.carInfo.model}
-          />
+          <input id="model" className="rounded-lg" size={14} ref={brandRef} />
         </div>
         <div className="flex flex-row">
           <label
@@ -164,8 +169,7 @@ export default function App(props) {
             id="license-plate-number"
             className="rounded-lg"
             size={10}
-            disabled={true}
-            defaultValue={route.carInfo.licensePlateNumber}
+            ref={licNumRef}
           />
         </div>
       </div>
@@ -175,13 +179,7 @@ export default function App(props) {
           <label htmlFor="color" className="text-gray_dark">
             外觀顏色：
           </label>
-          <input
-            id="color"
-            className="rounded-lg"
-            size={10}
-            disabled={true}
-            defaultValue={route.carInfo.color}
-          />
+          <input id="color" className="rounded-lg" size={10} ref={colorRef} />
         </div>
         <div>
           <label htmlFor="max-passengers" className="w-fit text-gray_dark">
@@ -191,8 +189,7 @@ export default function App(props) {
             id="max-passengers"
             className="rounded-lg"
             size={3}
-            disabled={true}
-            defaultValue={route.carInfo.capacity}
+            ref={capRef}
           />
         </div>
       </div>
