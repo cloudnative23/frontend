@@ -79,7 +79,7 @@ export default function SingleRide(props) {
     )
 
     useEffect(() => {
-        fetch('your_backend_login_endpoin/me')
+        fetch('https://api-dev.cloudnative23.com/me')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');

@@ -24,22 +24,25 @@ export default function Login() {
     };
 
     // Make a POST request using the Fetch API
-    fetch('your_backend_login_endpoin/login', {
+    fetch('https://api-dev.cloudnative23.com/login', {
         method: 'POST',
         headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            alert(response.status);
+            //throw new Error('Network response was not ok');
         }
-        return response.json();
+        //alert(response.status);
+        return response.text();
     })
     .then(data => {
         // Handle the successful login response
-        console.log(data);
+        //alert(data);
         router.push("/login/choose")
     })
     .catch(error => {
@@ -64,11 +67,11 @@ export default function Login() {
 
       <form onSubmit={login} className="mt-16 flex flex-col">
         <div className="flex justify-between items-stretch mb-2">
-          <label for="email" className="px-1">Email:</label>
+          <label for="email" className="px-2">Email:</label>
           <input type="text" id="email" name="email" required className="rounded-xl px-1 mx-1"/>
         </div>
         <div className="flex justify-between items-stretch mt-2">
-          <label for="password" className="px-1">Password:</label>
+          <label for="password" className="px-2">Password:</label>
           <input type="password" id="password" name="password" required className="rounded-xl px-1 mx-1" />
         </div>
         

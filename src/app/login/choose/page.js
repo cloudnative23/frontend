@@ -1,15 +1,16 @@
+"use client"
 import Link from "next/link";
 import SettingsIcon from '@mui/icons-material/Settings';
 import AirlineSeatReclineNormalTwoToneIcon from '@mui/icons-material/AirlineSeatReclineNormalTwoTone';
 import ToysTwoToneIcon from '@mui/icons-material/ToysTwoTone';
-
+import { useState, useEffect } from "react"; 
 
 export default function Choose() {
 
   const [name, setName] = useState(null);
 
   useEffect(() => {
-      fetch('your_backend_login_endpoin/me')
+      fetch('https://api-dev.cloudnative23.com/me')
       .then(response => {
           if (!response.ok) {
               throw new Error('Network response was not ok');
