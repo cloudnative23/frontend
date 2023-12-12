@@ -22,8 +22,12 @@ const settings = ['個人資料', '切換為乘客', '登出'];
 
 function Navbar({mode}) {
   let showDriver = false;
+  let showPassenger = false;
   if (mode === "driver") {
     showDriver = true;
+  }
+  if (mode === "passenger") {
+    showPassenger = true;
   }
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const handleOpenUserMenu = (event) => {
@@ -70,6 +74,72 @@ function Navbar({mode}) {
               <div className='rounded-full bg-white ml-2'>
                 <IconButton onClick={handleOpenUserMenu} size="small">
                   <SettingsIcon alt="Test" className='text-driver_dark' edge="end" />
+                </IconButton>
+              </div>
+
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      }
+
+      {showPassenger &&
+      <AppBar position="static" elevation={0} className="bg-passenger">
+        <Container>
+          <Toolbar disableGutters>
+            <Typography
+              // variant="h6"
+              noWrap
+              component="a"
+              href={`/passenger`}
+              sx={{
+                mr: 2,
+                display: 'flex',
+                // fontFamily: 'monospace',
+                fontWeight: 'regular',
+                // letterSpacing: '.1rem',
+                textDecoration: 'none',
+              }}
+              className='text-sm text-passenger_dark'
+            >
+              TSMC COMMUTING PASSENGER
+            </Typography>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ display : 'flex' }}>
+
+              <div className='rounded-full bg-white'>
+                <IconButton size="small">
+                  <Badge badgeContent={4} color="error">
+                    <MailIcon alt="Test" className='text-passenger_dark' />
+                  </Badge>
+                </IconButton>
+              </div>
+
+              <div className='rounded-full bg-white ml-2'>
+                <IconButton onClick={handleOpenUserMenu} size="small">
+                  <SettingsIcon alt="Test" className='text-passenger_dark' edge="end" />
                 </IconButton>
               </div>
 

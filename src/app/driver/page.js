@@ -1,3 +1,5 @@
+"use client";
+
 import IndexButton from "@/components/IndexButton";
 import ShowWaiting from "@/components/ShowWaiting";
 
@@ -111,10 +113,10 @@ export default function Driver() {
       <div className="flex justify-center">
         <div className="bg-white w-10/12 rounded-xl">
           <div className="flex justify-center space-x-6 py-1 my-2">
-            <IndexButton name="新增行程" icon="AddSchedule" />
-            {/* <IndexButton name="尋找乘客" icon="FindPassenger" /> */}
-            <IndexButton name="查看行程" icon="CheckSchedule" />
-            <IndexButton name="共乘紀錄" icon="AllSchedule" />
+            <IndexButton mode="driver" name="新增行程" icon="AddSchedule" />
+            {/* <IndexButton mode="driver" name="尋找乘客" icon="FindPassenger" /> */}
+            <IndexButton mode="driver" name="查看行程" icon="CheckSchedule" />
+            <IndexButton mode="driver" name="共乘紀錄" icon="AllSchedule" />
           </div>
         </div>
       </div>
