@@ -9,6 +9,59 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 
 export default function Passenger() {
+
+  // some data
+  const hasSchedule = true;
+  const tempDate = new Date();
+  const go2work = false;
+  const stations = [
+    {
+      "id": 3,
+      "name": "台積電新竹3廠東側門",
+      "datetime": "2023-10-22T17:30",
+    },
+    {
+      "id": 1,
+      "name": "台北車站",
+      "datetime": "2023-10-22T17:50",
+    },
+    {
+      "id": 2,
+      "name": "台大校門口",
+      "datetime": "2023-10-22T18:10",
+    }
+  ];
+
+  // function
+  function getDateInChinese (date) {
+    // const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const weekdaysInChinese = ["日", "一", "二", "三", "四", "五", "六"];
+    const weekday = weekdaysInChinese[date.getDay()];
+    return `${month} 月 ${day} 日 (${weekday})`;
+  }
+
+  function singleStationInfo (station) {
+    function getTime (datetime) {
+      const date = new Date(datetime);
+      const hour = date.getHours();
+      const minute = date.getMinutes();
+      const formattedMinute = minute < 10 ? `0${minute}` : minute;
+      return `${hour} : ${formattedMinute}`;
+    }
+
+    return (
+      <>
+        <div className="flex justify-between items-center my-1">
+          <p className="ml-14">{getTime(station.datetime)}</p>
+          <p className="ml-4">{station.name}</p>
+          <Box sx={{ flexGrow: 1 }} />
+        </div>
+      </>
+    )
+  }
+
   return (
     <>
       <div className="flex justify-center">
