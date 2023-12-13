@@ -19,6 +19,22 @@ import axios from 'axios';
 //     console.error(error);
 //   }
 // }, [])
+const options2 = {
+  method: 'GET',
+  url: 'https://api-dev.cloudnative23.com/stations',
+  headers: {Accept: 'application/json'}
+};
+
+
+
+const options = {
+  method: 'POST',
+  url: 'https://api-dev.cloudnative23.com/login',
+  headers: {'Content-Type': 'application/json', Accept: 'application/json'},
+  data: {email: 'user1@example.com', password: 'pa$$word'}
+};
+
+
 
 export default function Passenger() {
 
@@ -109,6 +125,18 @@ export default function Passenger() {
         <button className="bg-black text-white hover:bg-blue-200 hover:text-black mr-4" onClick={()=>{setRoutes((ele)=>{let a=[];a.push(...ele);a.push(example_route);return a;})}}> Add Route </button>
         <button className="bg-black text-white hover:bg-blue-200 hover:text-black mr-4" onClick={()=>{setRoutes((ele)=>{let a=[];a.push(...ele);a.push(example_route2);return a;})}}> Add Route2 </button>
         <button className="bg-black text-white hover:bg-blue-200 hover:text-black" onClick={()=>{setRoutes((ele)=>{let a=[];a.push(...ele);a.pop();return a;})}}> Delete Route </button> 
+        <button className="bg-black text-white hover:bg-blue-200 hover:text-black ml-4" onClick={async()=>{try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}}}>Login</button>
+<button className="bg-black text-white hover:bg-blue-200 hover:text-black ml-4" onClick={async()=>{try {
+  const { data } = await axios.request(options2);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}}}>Stations</button>
       </div>
     </div>
   );
