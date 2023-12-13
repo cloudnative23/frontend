@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
       <body className={noto.className}>
         {/* use w-mobile to restrict width */}
         {/* use mx-auto to set the page in the middle */}
-        <div className="container mx-auto w-mobile h-mobile">{children}</div>
+        <div className="container mx-auto w-mobile h-mobile bg-gray_light">{children}</div>
       </body>
     </html>
   );
