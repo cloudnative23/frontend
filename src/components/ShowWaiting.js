@@ -27,10 +27,15 @@ function ShowWaiting({whoWait, waitFor}) {
               <p className="text-xs">則請求等候您的回覆</p>
             </div>}
             
-          {whoWait !== waitFor &&
+          {whoWait !== waitFor && whoWait === "driver" &&
             <div className="flex justify-center flex-row items-end space-x-2 items-center">
               <p className="text-xl text-driver_dark">4</p>
               <p className="text-xs">則邀請等候乘客回覆</p>
+            </div>}
+          {whoWait !== waitFor && whoWait === "passenger" &&
+            <div className="flex justify-center flex-row items-end space-x-2 items-center">
+              <p className="text-xl text-passenger_dark">3</p>
+              <p className="text-xs">則邀請等候司機回覆</p>
             </div>}
           {/* </div> */}
         </div>

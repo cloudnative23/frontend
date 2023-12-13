@@ -15,6 +15,41 @@ export default function Driver() {
   const tempDate = new Date();
   const go2work = false;
   const stations = [
+    // {
+    //   "id": 14,
+    //   "name": "測試14",
+    //   "datetime": "2023-10-22T12:30",
+    //   "onPassengers": [  ],
+    //   "offPassengers": [ ],
+    // },
+    // {
+    //   "id": 13,
+    //   "name": "測試13",
+    //   "datetime": "2023-10-22T13:30",
+    //   "onPassengers": [  ],
+    //   "offPassengers": [ ],
+    // },
+    // {
+    //   "id": 12,
+    //   "name": "測試12",
+    //   "datetime": "2023-10-22T14:30",
+    //   "onPassengers": [  ],
+    //   "offPassengers": [ ],
+    // },
+    // {
+    //   "id": 11,
+    //   "name": "測試11",
+    //   "datetime": "2023-10-22T15:30",
+    //   "onPassengers": [  ],
+    //   "offPassengers": [ ],
+    // },
+    // {
+    //   "id": 10,
+    //   "name": "測試10",
+    //   "datetime": "2023-10-22T16:30",
+    //   "onPassengers": [  ],
+    //   "offPassengers": [ ],
+    // },
     {
       "id": 3,
       "name": "台積電新竹3廠東側門",
@@ -81,7 +116,7 @@ export default function Driver() {
     return (
       <>
         <div className="flex justify-between items-center my-1">
-          <p className="ml-14">{getTime(station.datetime)}</p>
+          <p className="ml-10">{getTime(station.datetime)}</p>
           <p className="ml-4">{station.name}</p>
           <Box sx={{ flexGrow: 1 }} />
         </div>

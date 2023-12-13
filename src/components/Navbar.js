@@ -40,7 +40,7 @@ function Navbar({mode}) {
   return (
     <>
       {showDriver &&
-      <AppBar position="static" elevation={0} className="bg-driver">
+      <AppBar position="static" elevation={0} sx={{backgroundColor: 'transparent'}}>
         <Container>
           <Toolbar disableGutters>
             <Typography
@@ -106,7 +106,7 @@ function Navbar({mode}) {
       }
 
       {showPassenger &&
-      <AppBar position="static" elevation={0} className="bg-passenger">
+      <AppBar position="static" elevation={0} sx={{backgroundColor: 'transparent'}}>
         <Container>
           <Toolbar disableGutters>
             <Typography
