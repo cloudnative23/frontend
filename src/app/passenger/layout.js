@@ -1,15 +1,15 @@
 import Navbar from "@/components/Navbar";
 
-function DriverLayout({children}) {
+function PassengerLayout({children}) {
   return (
     // overflow-hidden for parent to hide scrollbar
-    <main className="flex flex-col container mx-auto w-mobile h-mobile overflow-hidden bg-driver">
+    <main className="flex flex-col container mx-auto w-mobile h-mobile overflow-hidden bg-passenger">
       {/* <nav className="flex h-16 w-full pb-10"> */}
-      <Navbar mode="driver" />
+      <Navbar mode="passenger" />
       {/* </nav> */}
       <div className="h-full w-full overflow-y-auto overflow-hidden">{children}</div>
     </main>
   );
 }
 
-export default DriverLayout;
+export default PassengerLayout;
