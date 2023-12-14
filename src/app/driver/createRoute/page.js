@@ -1,12 +1,14 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
+import axios from 'axios'
 
 import HeaderBar from "../_components/HeaderComponent/HeaderComponnet";
 import RadioComponent from "../_components/RadioComponent/RadioComponent";
 import StationsComponent from "../_components/StationComponent/StationComponent";
 
+import { getStationList } from "../_components/utils";
 
 const stataionList = [
   {
@@ -37,6 +39,21 @@ export default function App(props) {
   const licNumRef = useRef(null);
 
   const stationRef = useRef(null);
+
+  const [stationList, setStationList] = useState([])
+  // stataionList = [{ id: -1, name: "--- 請選擇 ---" }, ...stataionList];
+
+  useEffect(() => {
+    getStationList().then((sl) => {
+      setStationList([{ id: -1, name: "--- 請選擇 ---" }, ...sl])
+    }).catch(err => {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "無法取得站點名稱",
+      });
+    })
+  }, [])
 
   function handleSend() {
     let stations = stationRef.current.stations();
@@ -101,20 +118,62 @@ export default function App(props) {
 
     let data = {
       date: dateRef.current.value,
-      workStatus: workStatusRef == "on",
+      workStatus: workStatusRef.current == "on",
       stations: stations.map((station) => ({
         id: station.id,
         datetime: `${dateRef.current.value}T${station.time}`,
       })),
       carInfo: {
-        brand: brandRef.current.value,
+        model: brandRef.current.value,
         color: colorRef.current.value,
-        capacity: capRef.current.value,
+        capacity: parseInt(capRef.current.value),
         licensePlateNumber: licNumRef.current.value,
       },
     };
 
-    alert(JSON.stringify(data));
+    // data = {
+    //   "date": "2023-12-22",
+    //   "workStatus": false,
+    //   "stations": [
+    //     {
+    //       "id": 3,
+    //       "datetime": "2023-12-22T12:34"
+    //     },
+    //     {
+    //       "id": 1,
+    //       "datetime": "2023-12-22T13:04"
+    //     },
+    //     {
+    //       "id": 2,
+    //       "datetime": "2023-12-22T13:34"
+    //     }
+    //   ],
+    //   "carInfo": {
+    //     "model": brandRef.current.value,
+    //     "color": "紅色",
+    //     "capacity": 4,
+    //     "licensePlateNumber": "ABC-1234"
+    //   }
+    // }
+
+    // alert(JSON.stringify(data, null, 2));
+ 
+    axios.post(`${process.env.NEXT_PUBLIC_API_ROOT}/routes`, data, { 'content-type': 'application/json', 'withCredentials': true })
+      .then(res => {
+        Swal.fire({
+          icon: "success",
+          title: "上傳成功",
+        })
+        // redirect('driver')
+      }).catch(error => {
+        Swal.fire({
+          icon: "error",
+          title: "上傳失敗",
+          text: error.response.data.message,
+        })
+      })
+
+    // alert(JSON.stringify(data));
   }
 
   return (
@@ -145,7 +204,7 @@ export default function App(props) {
       <StationsComponent
         initialStations={[]}
         passengers={[]}
-        stataionList={stataionList}
+        stationList={stationList}
         ref={stationRef}
       />
 

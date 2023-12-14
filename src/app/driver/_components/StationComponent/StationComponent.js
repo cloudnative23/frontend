@@ -11,7 +11,7 @@ function Station({
   stataionList,
   showPassengers,
 }) {
-  stataionList = [{ id: -1, name: "--- 請選擇 ---" }, ...stataionList];
+  // stataionList = [{ id: -1, name: "--- 請選擇 ---" }, ...stataionList];
 
   let hasPassenger = station.passengers.length > 0;
 
@@ -77,7 +77,7 @@ function Station({
 }
 
 const StationsComponent = forwardRef(
-  ({ initialStations, stataionList, showPassengers = false }, ref) => {
+  ({ initialStations, stationList, showPassengers = false }, ref) => {
     // let showPassenger = passengers.length > 0
     // showPassenger = true
 
@@ -150,7 +150,7 @@ const StationsComponent = forwardRef(
               station={station}
               onDelete={(station) => handleDelete(station)}
               onUpdate={(station) => handleUpdate(station)}
-              stataionList={stataionList}
+              stataionList={stationList}
               showPassengers={showPassengers}
             />
           </div>
