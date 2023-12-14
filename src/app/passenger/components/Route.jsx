@@ -2,8 +2,6 @@ import Link from "next/link";
 
 
 export default function Route({props,startStation,endStation}) {
-    console.log('hello')
-    console.log(props)
     const weekMap = ['一','二','三','四','五','六','日']
     
     var on = null

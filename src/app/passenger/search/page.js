@@ -21,12 +21,6 @@ export default function Passenger() {
   const example_route2 = {'id':1,'workStatus':true,'status':'available','date':'2023-10-20','stations':[{'id':0,'name':'台北車站','datetime':'2023-10-22T11:30','on':[],'off':[]},{'id':1,'name':'台北地下鐵','datetime':'2023-10-22T12:40','on':[],'off':[]},{'id':2,'name':'捷運公館站','datetime':'2023-10-22T13:40','on':[],'off':[]},{'id':3,'name':'龜山','datetime':'2023-10-22T14:15','on':[],'off':[]},{'id':4,'name':'台積電本部','datetime':'2023-10-22T15:40','on':[],'off':[]}],'passengers':[],'driver':{"id":10,"name":"提達斯","avatar":"https://i.ibb.co/94Qs1WR/FCVWD5-XMAYa46b.jpg","phone":912123456},'carInfo':{"color":"白色","capacity":2,"licensePlateNumber":"ABC-0123"}}
   // const stations = ["台北車站","台北地下鐵","捷運公館站","龜山","台積電本部"]
 
-  const [date,setDate] = useState(null)
-  const [startStation,setStartStation] = useState(null)
-  const [endStation,setEndStation] = useState(null)
-  const [startTime,setStartTime] = useState(null)
-  const [endTime,setEndTime] = useState(null)
-  const [crossDay,setCrossDay] = useState(false)
   const [stations,setStations] = useState([])
   const [message,setMessage] = useState('')
 
@@ -59,19 +53,19 @@ export default function Passenger() {
   }
 
   const search = async()=>{
-    if(date && startStation && endStation && startTime && endTime){
+    // if(date && startStation && endStation && startTime && endTime){
 
+    if(DateInputRef.current.value && StartStationRef.current.value && EndStationRef.current.value && StartTimeRef.current.value && EndTimeRef.current.value){
 
-
-      const SearchDate = new Date(date);
+      const SearchDate = new Date(DateInputRef.current.value);
       const year = SearchDate.getFullYear();
       const month = (SearchDate.getMonth() + 1).toString().padStart(2, '0');
       const day = SearchDate.getDate().toString().padStart(2, '0');
       const hours = SearchDate.getHours().toString().padStart(2, '0');
       const minutes = SearchDate.getMinutes().toString().padStart(2, '0');
 
-      const startDateTime = `${year}-${month}-${day}T` + startTime;
-      const endDateTime = `${year}-${month}-${day}T` + endTime;
+      const startDateTime = `${year}-${month}-${day}T` + StartTimeRef.current.value;
+      const endDateTime = `${year}-${month}-${day}T` + EndTimeRef.current.value;
       
       const search_op = {
         method: 'GET',
@@ -79,8 +73,8 @@ export default function Passenger() {
         params: {
           mode: 'search',
           n: '20',
-          'on-station': startStation,
-          'off-station': endStation,
+          'on-station': parseInt(StartStationRef.current.value),
+          'off-station': parseInt(EndStationRef.current.value),
           'on-datetime': startDateTime,
           'off-datetime': endDateTime,
         },
@@ -95,8 +89,8 @@ export default function Passenger() {
           setMessage('查無搜尋結果')
         else
           setMessage('')
-        setOnStation(startStation)
-        setOffStation(endStation)
+        setOnStation(parseInt(StartStationRef.current.value))
+        setOffStation( parseInt(EndStationRef.current.value))
       } catch (error) {
         console.error(error);
       }
@@ -110,26 +104,10 @@ export default function Passenger() {
   }
   
 
-
   useEffect(()=>{getStations()}
   , [])
 
 
-  const handleDateChange = () => {
-    setDate(new Date(DateInputRef.current.value));
-  }
-  const handleStartStationChange = () => {
-    setStartStation(parseInt(StartStationRef.current.value))
-  }
-  const handleEndStationChange = () => {
-    setEndStation(parseInt(EndStationRef.current.value))
-  }
-  const handleStartTimeChange = () => {
-    setStartTime(StartTimeRef.current.value)
-  }
-  const handleEndTimeChange = () => {
-    setEndTime(EndTimeRef.current.value)
-  }
   
   const testing = async()=>{
 
@@ -170,26 +148,26 @@ export default function Passenger() {
       <div className='flex flex-col relative text-black text-center rounded-xl w-full h-5/6'>
         <div className='w-full h-9 flex items-center '>
           <p className=" ml-3.5 mr-2.5">日期</p>
-          <input type="date" ref={DateInputRef} className="rounded-xl w-36 mr-4 text-black text-center bg-white" onChange={handleDateChange}/>
+          <input type="date" ref={DateInputRef} className="rounded-xl w-36 mr-4 text-black text-center bg-white"/>
           {/* <button className={(crossDay?'bg-white':'bg-dark_o text-white')+" w-16 rounded-xl mr-2 hover:bg-dark_o hover:text-white"} onClick={()=>{setCrossDay(false)}}>未跨日</button>
           <button className={(crossDay?'bg-dark_o text-white':'bg-white')+" w-16 rounded-xl hover:bg-dark_o hover:text-white"} onClick={()=>{setCrossDay(true)}}>跨日</button> */}
           <button className='bg-dark_o text-white w-28 rounded-xl ml-5 hover:bg-dark_o hover:text-white' onClick={()=>{search()}}>搜尋</button>
         </div>
         <div className='w-full h-9 flex items-center mt-1.5'>
           <p className="ml-3.5 mr-2.5">出發</p>
-          <select ref={StartStationRef} className=" text-center rounded-xl w-44 mr-2" onChange={handleStartStationChange}>
+          <select ref={StartStationRef} className=" text-center rounded-xl w-44 mr-2">
             <option selected disabled hidden value={null}>請選擇起點</option>
             {stations.map((e,idx)=>{return <option value={e.id}>{e.name}</option>})}
           </select>
-          <input ref={StartTimeRef} type="time" className="rounded-xl" onChange={handleStartTimeChange}/>
+          <input ref={StartTimeRef} type="time" className="rounded-xl"/>
         </div>
         <div className='w-full h-9 flex items-center mt-1'>
           <p className="ml-3.5 mr-2.5">抵達</p>
-          <select ref={EndStationRef} className=" text-center rounded-xl w-44 mr-2" onChange={handleEndStationChange}>
+          <select ref={EndStationRef} className=" text-center rounded-xl w-44 mr-2">
             <option selected disabled hidden value={null}>請選擇終點</option>
             {stations.map((e,idx)=>{return <option value={e.id}>{e.name}</option>})}
           </select>
-          <input ref={EndTimeRef} type="time" className="rounded-xl" onChange={handleEndTimeChange}/>
+          <input ref={EndTimeRef} type="time" className="rounded-xl"/>
         </div>
         <div className='flex text-dark_o font-bold ml-4 block mt-2'>現有行程搜尋結果</div>
         <div className="flex flex-wrap max-h-route_board overflow-y-auto h-full">
