@@ -2,8 +2,8 @@ import Link from "next/link";
 
 
 export default function Route({props,startStation,endStation}) {
-  
-    
+    console.log('hello')
+    console.log(props)
     const weekMap = ['一','二','三','四','五','六','日']
     
     var on = null
@@ -14,9 +14,9 @@ export default function Route({props,startStation,endStation}) {
         if(props.stations[i].id == endStation)
             off = props.stations[i]
     }
-    var crossDay = false
-    if(on.datetime.slice(8,10) != off.datetime.slice(8,10))
-        crossDay = true
+    // var crossDay = false
+    // if(on.datetime.slice(8,10) != off.datetime.slice(8,10))
+    //     crossDay = true
     var info = props
     info.on = on
     info.off = off
@@ -29,12 +29,12 @@ export default function Route({props,startStation,endStation}) {
             <div className="ml-2.5 mt-2 flex">{date.getFullYear()} / {date.getMonth() + 1} / {date.getDate()} ({weekMap[date.getDay()]})</div>
             <div className="flex mt-2">
                 <p className="bg-lime-400 text-black w-9 ml-4">上車</p>
-                <p className='w-24 ml-1'> {on.datetime.slice(-5)} </p>
+                <p className='w-24 ml-1'> {on.datetime.slice(-8,-3)} </p>
                 <p className='w-auto ml-4'> {on.name} </p>
             </div>
             <div className="flex mt-2">
                 <p className="bg-red-400 text-black w-9 ml-4">下車</p>
-                <p className='w-24 ml-1'> {off.datetime.slice(-5)} {crossDay?'(跨日)':''}</p> 
+                <p className='w-24 ml-1'> {off.datetime.slice(-8,-3)} </p> 
                 <p className='w-auto ml-4'> {off.name}</p>
             </div>
             <div className="flex text-dark_o ml-4 mt-2.5">司機

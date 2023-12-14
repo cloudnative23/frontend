@@ -2,8 +2,7 @@
 import Route from '../components/Route'
 import {useEffect,useState,useRef} from "react";
 import axios from 'axios';
-
-
+import Swal from "sweetalert2";
 
 
 
@@ -29,6 +28,7 @@ export default function Passenger() {
   const [endTime,setEndTime] = useState(null)
   const [crossDay,setCrossDay] = useState(false)
   const [stations,setStations] = useState([])
+  const [message,setMessage] = useState('')
 
   const DateInputRef = useRef(null)
   const StartStationRef = useRef(null)
@@ -36,6 +36,10 @@ export default function Passenger() {
   const StartTimeRef = useRef(null)
   const EndTimeRef = useRef(null)
 
+  const [onStation,setOnStation] = useState(null)
+  const [offStation,setOffStation] = useState(null)
+  
+  
   const getStations = async() =>{
     const stations_op = {
       method: 'GET',
@@ -53,6 +57,59 @@ export default function Passenger() {
       console.error(error);
     }
   }
+
+  const search = async()=>{
+    if(date && startStation && endStation && startTime && endTime){
+
+
+
+      const SearchDate = new Date(date);
+      const year = SearchDate.getFullYear();
+      const month = (SearchDate.getMonth() + 1).toString().padStart(2, '0');
+      const day = SearchDate.getDate().toString().padStart(2, '0');
+      const hours = SearchDate.getHours().toString().padStart(2, '0');
+      const minutes = SearchDate.getMinutes().toString().padStart(2, '0');
+
+      const startDateTime = `${year}-${month}-${day}T` + startTime;
+      const endDateTime = `${year}-${month}-${day}T` + endTime;
+      
+      const search_op = {
+        method: 'GET',
+        url: `${process.env.NEXT_PUBLIC_API_ROOT}/routes`,
+        params: {
+          mode: 'search',
+          n: '20',
+          'on-station': startStation,
+          'off-station': endStation,
+          'on-datetime': startDateTime,
+          'off-datetime': endDateTime,
+        },
+        headers: {Accept: 'application/json'},
+        withCredentials: true,
+      };
+      try {
+        const { data } = await axios.request(search_op);
+        setRoutes(data)
+        console.log(data)
+        if (data.length == 0)
+          setMessage('查無搜尋結果')
+        else
+          setMessage('')
+        setOnStation(startStation)
+        setOffStation(endStation)
+      } catch (error) {
+        console.error(error);
+      }
+    }else{
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "搜尋條件尚未齊全",
+      });
+    }
+  }
+  
+
 
   useEffect(()=>{getStations()}
   , [])
@@ -74,28 +131,51 @@ export default function Passenger() {
     setEndTime(EndTimeRef.current.value)
   }
   
-  useEffect(() => {
-    if(date && startStation && endStation && startTime && endTime){
-      console.log(date)
-      console.log(parseInt(startStation) + 101)
-      console.log(endStation)
-      console.log(startTime)
-      console.log(endTime)
+  const testing = async()=>{
+
+    const options1 = {
+      method: 'POST',
+      url: 'https://api-dev.cloudnative23.com/routes',
+      headers: {'Content-Type': 'application/json', Accept: 'application/json'},
+      data: {
+        date: '2023-12-22',
+        stations: [
+          {id: 1, datetime: '2023-12-22T17:30'},
+          {id: 2, datetime: '2023-12-22T18:50'},
+          {id: 3, datetime: '2023-12-22T19:50'},
+          {id: 4, datetime: '2023-12-22T20:14'},
+        ],
+        workStatus: new Boolean(false),
+        carInfo: {model:"豐田",color:'藍色', capacity:3 , licensePlateNumber: 'ABC-1234'},
+      },
+      withCredentials: true,
+    };
+    try {
+      const { data } = await axios.request(options1);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
   }
-  }, [date,startStation,endStation,startTime,endTime]);
+
+
 
   return (
     <div className="relative bg-passenger h-full flex flex-wrap justify-center space-y-0"> 
+        {/* <button className="bg-black text-white hover:bg-blue-200 hover:text-black mr-4 h-5" onClick={()=>{setRoutes((ele)=>{let a=[];a.push(...ele);a.push(example_route);return a;})}}> Add Route </button>
+        <button className="bg-black text-white hover:bg-blue-200 hover:text-black mr-4 h-5" onClick={()=>{setRoutes((ele)=>{let a=[];a.push(...ele);a.push(example_route2);return a;})}}> Add Route2 </button>
+        <button className="bg-black text-white hover:bg-blue-200 hover:text-black h-5" onClick={()=>{setRoutes((ele)=>{let a=[];a.push(...ele);a.pop();return a;})}}> Delete Route </button>  */}
       <div className='bg-white text-dark_o flex items-center justify-center font-bold rounded-xl w-11/12 h-9'>尋 找 行 程</div>
-      <div className='relative text-black text-center rounded-xl w-full h-5/6'>
+      {/* <button onClick={testing}> testing</button> */}
+      <div className='flex flex-col relative text-black text-center rounded-xl w-full h-5/6'>
         <div className='w-full h-9 flex items-center '>
           <p className=" ml-3.5 mr-2.5">日期</p>
           <input type="date" ref={DateInputRef} className="rounded-xl w-36 mr-4 text-black text-center bg-white" onChange={handleDateChange}/>
           {/* <button className={(crossDay?'bg-white':'bg-dark_o text-white')+" w-16 rounded-xl mr-2 hover:bg-dark_o hover:text-white"} onClick={()=>{setCrossDay(false)}}>未跨日</button>
           <button className={(crossDay?'bg-dark_o text-white':'bg-white')+" w-16 rounded-xl hover:bg-dark_o hover:text-white"} onClick={()=>{setCrossDay(true)}}>跨日</button> */}
-          <button className='bg-dark_o text-white w-28 rounded-xl ml-5 hover:bg-dark_o hover:text-white' onClick={()=>{}}>搜尋</button>
+          <button className='bg-dark_o text-white w-28 rounded-xl ml-5 hover:bg-dark_o hover:text-white' onClick={()=>{search()}}>搜尋</button>
         </div>
-        <div className='w-full h-9 flex items-center '>
+        <div className='w-full h-9 flex items-center mt-1.5'>
           <p className="ml-3.5 mr-2.5">出發</p>
           <select ref={StartStationRef} className=" text-center rounded-xl w-44 mr-2" onChange={handleStartStationChange}>
             <option selected disabled hidden value={null}>請選擇起點</option>
@@ -103,7 +183,7 @@ export default function Passenger() {
           </select>
           <input ref={StartTimeRef} type="time" className="rounded-xl" onChange={handleStartTimeChange}/>
         </div>
-        <div className='w-full h-9 flex items-center '>
+        <div className='w-full h-9 flex items-center mt-1'>
           <p className="ml-3.5 mr-2.5">抵達</p>
           <select ref={EndStationRef} className=" text-center rounded-xl w-44 mr-2" onChange={handleEndStationChange}>
             <option selected disabled hidden value={null}>請選擇終點</option>
@@ -112,15 +192,12 @@ export default function Passenger() {
           <input ref={EndTimeRef} type="time" className="rounded-xl" onChange={handleEndTimeChange}/>
         </div>
         <div className='flex text-dark_o font-bold ml-4 block mt-2'>現有行程搜尋結果</div>
-        <div className="flex flex-wrap max-h-route_board overflow-y-auto h-full ">
-        {/* <button className="bg-black text-white hover:bg-blue-200 hover:text-black mr-4 h-5" onClick={()=>{setRoutes((ele)=>{let a=[];a.push(...ele);a.push(example_route);return a;})}}> Add Route </button>
-        <button className="bg-black text-white hover:bg-blue-200 hover:text-black mr-4 h-5" onClick={()=>{setRoutes((ele)=>{let a=[];a.push(...ele);a.push(example_route2);return a;})}}> Add Route2 </button>
-        <button className="bg-black text-white hover:bg-blue-200 hover:text-black h-5" onClick={()=>{setRoutes((ele)=>{let a=[];a.push(...ele);a.pop();return a;})}}> Delete Route </button>  */}
+        <div className="flex flex-wrap max-h-route_board overflow-y-auto h-full">
         {
-          (routes.length == 0 )?<p className='w-full text-center font-bold'>無</p>:
+          (routes.length == 0 )?<div className='h-full w-full flex items-center justify-center'><p className='w-full text-center font-bold'>{message}</p></div>:
           routes.map((e,idx)=>{
             return(
-              <Route props={e} startStation={startStation} endStation={endStation}/>
+              <Route props={e} startStation={onStation} endStation={offStation}/>
             )
           })}
         </div>
