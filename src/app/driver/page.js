@@ -16,7 +16,9 @@ export default function Driver() {
             <Link href={"driver/futureRoute"}>
               <IndexButton name="查看行程" icon="CheckSchedule" />
             </Link>
-            <IndexButton name="共乘紀錄" icon="AllSchedule" />
+            <Link href={"driver/futureRoute"}>
+              <IndexButton name="共乘紀錄" icon="AllSchedule" />
+            </Link>
           </div>
         </div>
       </div>
