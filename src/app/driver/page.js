@@ -13,7 +13,7 @@ export default function Driver() {
               <IndexButton name="新增行程" icon="AddSchedule" />
             </Link>
             <IndexButton name="尋找乘客" icon="FindPassenger" />
-            <Link href={"driver/allRoute"}>
+            <Link href={"driver/futureRoute"}>
               <IndexButton name="查看行程" icon="CheckSchedule" />
             </Link>
             <IndexButton name="共乘紀錄" icon="AllSchedule" />

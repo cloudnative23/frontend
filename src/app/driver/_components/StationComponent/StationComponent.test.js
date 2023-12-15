@@ -3,7 +3,7 @@ import { createRef } from "react";
 import StationComponent from "./StationComponent";
 import { cleanup, fireEvent, render } from "@testing-library/react";
 
-const mockStataionList = [
+const mockStationList = [
   {
     id: 1,
     name: "台北車站",
@@ -30,7 +30,7 @@ describe("StationComponent testing", () => {
       <StationComponent
         initialStations={[]}
         passengers={[]}
-        stataionList={mockStataionList}
+        stationList={mockStationList}
         ref={stationRef}
       />,
     );

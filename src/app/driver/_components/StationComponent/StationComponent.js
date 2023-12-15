@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, forwardRef, useImperativeHandle, memo } from "react";
+import { useRef, useState, forwardRef, useImperativeHandle, memo, useEffect } from "react";
 
 import Outlined from "@mui/icons-material/Delete";
 
@@ -17,6 +17,7 @@ function Station({
 
   return (
     <>
+      {/* <p>{station.key}</p> */}
       {/* <p>{JSON.stringify(station)}</p> */}
       <div className="flex flex-row justify-between">
         <input
@@ -81,13 +82,21 @@ const StationsComponent = forwardRef(
     // let showPassenger = passengers.length > 0
     // showPassenger = true
 
-    initialStations = initialStations.map((station, key) => ({
-      key: key,
-      ...station,
-    }));
+    const [stations, setStations] = useState([]);
+    const keyCount = useRef(0);
 
-    const [stations, setStations] = useState(initialStations);
-    const keyCount = useRef(initialStations.length);
+    function initialize(stations) {
+      let keyBase = keyCount.current
+      stations = stations.map((station, key) => ({
+        key: key + keyBase,
+        ...station,
+      }))
+      setStations(stations)
+      keyCount.current += stations.length
+      // alert("In initialize: "+ keyCount.current)
+    }
+
+    useEffect(() => initialize(initialStations), [])
 
     function cmpStations(lhs, rhs) {
       if (lhs.hasOwnProperty("time")) {
@@ -104,8 +113,9 @@ const StationsComponent = forwardRef(
     }
 
     function handleCreate() {
+      let key = keyCount.current
       setStations((prevStations) =>
-        [...prevStations, { key: keyCount.current, passengers: [] }].sort(
+        [...prevStations, { key: key, passengers: [] }].sort(
           cmpStations,
         ),
       );
@@ -134,6 +144,7 @@ const StationsComponent = forwardRef(
 
     useImperativeHandle(ref, () => ({
       stations: () => stations,
+      setStations: (stations) => initialize(stations)
     }));
 
     return (

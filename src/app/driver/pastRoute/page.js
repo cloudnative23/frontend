@@ -1,28 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { redirect } from "next/navigation";
+import Link from "next/link";
 
-import { getTime, getDate } from "../_components/date";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+
+import { getTime, getDate } from "../_components/utils";
 import HeaderBar from "../_components/HeaderComponent/HeaderComponnet";
 import RadioComponent from "../_components/RadioComponent/RadioComponent";
 
-import allRoute from "./data";
-
 function Route({ route }) {
+
+  let workStatus = route.workStatus
+
   return (
     <>
       <div
         className={
-          "m-2 rounded-lg p-3 text-xs " +
-          (route.workStatus ? "bg-[#FAFFFB]" : "bg-[#FFFBFB]")
+          "m-2 rounded-lg p-3 text-xs h-fit " +
+          (workStatus ? "bg-[#FAFFFB]" : "bg-[#FFFBFB]")
         }
       >
         <div className="flex justify-between">
           <div>{getDate(route.date)}</div>
-          <div>M</div>
         </div>
         <div className="justify-begin my-2 flex space-x-1">
-          {route.workStatus ? (
+          {workStatus ? (
             <div className="rounded-xl bg-go2work px-2 text-white">上班</div>
           ) : (
             <div className="rounded-xl bg-go2home px-2 text-white">下班</div>
@@ -31,7 +38,7 @@ function Route({ route }) {
             {route.passengers.length} / {route.carInfo.capacity}人
           </div>
         </div>
-        <div className="grid grid-cols-[40%_60%]">
+        <div className="grid grid-cols-[27%_73%]">
           {route.stations.map((station) => (
             <>
               <div>{getTime(station.datetime)}</div>
@@ -45,7 +52,24 @@ function Route({ route }) {
 }
 
 export default function App() {
+
   const [filter, setFilter] = useState("all");
+  const [allRoute, setAllRoute] = useState([]);
+
+  function fetchAllRoute() {
+    axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes?mode=driver-history`, {
+      method: 'get',
+      withCredentials: true,
+    }).then((res) => {
+      setAllRoute(res.data)
+    }).catch((error) => {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.response.data.message}`,
+      });
+    })
+  }
 
   function handleFilterChange(id) {
     switch (id) {
@@ -61,9 +85,11 @@ export default function App() {
     }
   }
 
+  useEffect(fetchAllRoute, [])
+
   return (
     <>
-      <HeaderBar text={"所 有 行 程"} />
+      <HeaderBar text={"共 乘 紀 錄"} />
       <div className="m-2 flex flex-row space-x-1">
         <RadioComponent
           list={[
@@ -78,7 +104,7 @@ export default function App() {
         />
       </div>
 
-      <div className="grid w-full grid-cols-2">
+      <div className="grid h-3/4 w-full grid-cols-2 overflow-y-scroll">
         {allRoute
           .filter((route) => {
             switch (filter) {
@@ -89,12 +115,13 @@ export default function App() {
               case "to-home":
                 return !route.workStatus;
               case "pass-avalible":
-                return route.carInfo.capacity > route.passengers.length;
+                return route.carInfo.capacity > route.passengers.length
             }
           })
           .map((route) => (
-            <Route key={route.id} route={route} />
-          ))}
+            <Route route={route} />
+          ))
+        }
       </div>
     </>
   );

@@ -8,26 +8,7 @@ import HeaderBar from "../_components/HeaderComponent/HeaderComponnet";
 import RadioComponent from "../_components/RadioComponent/RadioComponent";
 import StationsComponent from "../_components/StationComponent/StationComponent";
 
-import { getStationList } from "../_components/utils";
-
-const stataionList = [
-  {
-    id: 1,
-    name: "台北車站",
-  },
-  {
-    id: 2,
-    name: "台大校門口",
-  },
-  {
-    id: 3,
-    name: "台積電新竹3廠東側門",
-  },
-  {
-    id: 4,
-    name: "台積電台南2廠西側門",
-  },
-];
+import { getStationList, validateRouteStations, validateNotNull, validateIsNumber } from "../_components/utils";
 
 export default function App(props) {
   const dateRef = useRef(null);
@@ -58,61 +39,24 @@ export default function App(props) {
   function handleSend() {
     let stations = stationRef.current.stations();
 
-    for (let station of stations) {
-      if (!(station.hasOwnProperty("time") && station["time"] != "")) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "路線中有缺少時間的站點",
-        });
-        return;
-      }
-      if (!(station.hasOwnProperty("id") && station["id"] >= 0)) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "路線中有缺少停靠地點的站點",
-        });
-        return;
-      }
-    }
-    if (
-      new Set(stations.map((station) => station.time)).size != stations.length
-    ) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "路線中有重複的停靠時間",
-      });
-      return;
-    }
-    if (
-      new Set(stations.map((station) => station.id)).size != stations.length
-    ) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "路線中有重複的停靠站點",
-      });
-      return;
-    }
-
-    let value_to_name = [
-      [dateRef.current.value, "日期"],
-      [brandRef.current.value, "車款"],
-      [licNumRef.current.value, "車牌"],
-      [colorRef.current.value, "外觀顏色"],
-      [capRef.current.value, "共乘人數上限"],
+    let entry = [
+      [stations, "路線", validateRouteStations],
+      [dateRef.current.value, "日期", validateNotNull],
+      [brandRef.current.value, "車款", validateNotNull],
+      [licNumRef.current.value, "車牌", validateNotNull],
+      [colorRef.current.value, "外觀顏色", validateNotNull],
+      [capRef.current.value, "共乘人數上限", validateIsNumber],
     ];
 
-    for (let [value, title] of value_to_name) {
-      if (value == "") {
+    for (let [value, name, validateFn] of entry) {
+      let res = validateFn(value)
+      if (!res.validated) {
         Swal.fire({
           icon: "error",
-          title: "Oops...",
-          text: `${title}的欄位不可為空`,
-        });
-        return;
+          title: `${name}欄位有誤`,
+          text: res.message,
+        })
+        return
       }
     }
 
@@ -157,21 +101,23 @@ export default function App(props) {
     // }
 
     // alert(JSON.stringify(data, null, 2));
- 
-    axios.post(`${process.env.NEXT_PUBLIC_API_ROOT}/routes`, data, { 'content-type': 'application/json', 'withCredentials': true })
-      .then(res => {
-        Swal.fire({
-          icon: "success",
-          title: "上傳成功",
-        })
-        // redirect('driver')
-      }).catch(error => {
-        Swal.fire({
-          icon: "error",
-          title: "上傳失敗",
-          text: error.response.data.message,
-        })
+
+    axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes`, {
+      method: 'post', 'withCredentials': true, data: data,
+      'content-type': 'application/json'
+    }).then(res => {
+      Swal.fire({
+        icon: "success",
+        title: "上傳成功",
       })
+      // redirect('driver')
+    }).catch(err => {
+      Swal.fire({
+        icon: "error",
+        title: "上傳失敗",
+        text: err.response.data.message,
+      })
+    })
 
     // alert(JSON.stringify(data));
   }

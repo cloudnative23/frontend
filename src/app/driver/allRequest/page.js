@@ -1,19 +1,22 @@
 "use client";
 
-import { getDate, getTime, dateToString } from "../_components/date";
-import HeaderBar from "../_components/HeaderComponent/HeaderComponnet";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
 
-import requests from "./data";
+import HeaderBar from "../_components/HeaderComponent/HeaderComponnet";
+import { getDate, getTime, dateToString } from "../_components/utils";
 
 function RequestComponent({ request, onAccept, onDeny }) {
+
   return (
     <>
       {/* <p>{JSON.stringify(request)}</p> */}
       <div className="m-2 rounded-lg bg-white p-2">
         <div className="justify-begin flex w-full items-center space-x-2 text-gray_dark">
           <div>{getDate(request.route.date)}</div>
-          {request.route.workStatus ? (
-            <div className="m-1 w-fit rounded-3xl bg-go2work p-0.5 text-sm text-white">
+          {request.workStatus ? (
+            <div className="w-fit rounded-xl bg-go2work px-3 py-0.5 text-sm text-white">
               上班
             </div>
           ) : (
@@ -31,14 +34,14 @@ function RequestComponent({ request, onAccept, onDeny }) {
             <div>
               {getTime(
                 request.route.stations.find(
-                  (station) => station.id == request.route["on-station"].id,
+                  (station) => station.id == request["on-station"].id,
                 ).datetime,
               )}
             </div>
             <div>
               {
                 request.route.stations.find(
-                  (station) => station.id == request.route["on-station"].id,
+                  (station) => station.id == request["on-station"].id,
                 ).name
               }
             </div>
@@ -50,14 +53,14 @@ function RequestComponent({ request, onAccept, onDeny }) {
             <div>
               {getTime(
                 request.route.stations.find(
-                  (station) => station.id == request.route["off-station"].id,
+                  (station) => station.id == request["off-station"].id,
                 ).datetime,
               )}
             </div>
             <div>
               {
                 request.route.stations.find(
-                  (station) => station.id == request.route["off-station"].id,
+                  (station) => station.id == request["off-station"].id,
                 ).name
               }
             </div>
@@ -68,11 +71,11 @@ function RequestComponent({ request, onAccept, onDeny }) {
               <div className="text-driver_dark">乘客</div>
               <img
                 className="rounded-full"
-                src={request.route.driver.avatar}
+                src={request.passenger.avatar}
                 width={20}
                 height={20}
               />
-              <div>{request.route.driver.name}</div>
+              <div>{request.passenger.name}</div>
             </div>
           </div>
 
@@ -102,17 +105,75 @@ function RequestComponent({ request, onAccept, onDeny }) {
 }
 
 export default function App(props) {
+
+  const [allRequest, setAllReqeust] = useState([]);
+
+  function fetchAllRequest() {
+    axios(`${process.env.NEXT_PUBLIC_API_ROOT}/requests?mode=available`, {
+      method: 'get',
+      withCredentials: true,
+    }).then((res) => {
+      setAllReqeust(res.data);
+    }).catch((err) => {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${err.response.data.message}`,
+      });
+    })
+  }
+
+  useEffect(fetchAllRequest, []);
+
+  function handleAccept(id) {
+    axios(`${process.env.NEXT_PUBLIC_API_ROOT}/requests/${id}/accept`, {
+      method: "put",
+      withCredentials: true,
+    }).then((res) => {
+      Swal.fire({
+        icon: "success",
+        title: "已接受請求",
+      })
+    }).catch((err) => {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${err.response.data.message}`,
+      });
+    }).finally(fetchAllRequest)
+  }
+
+  function handleDeny(id) {
+    axios(`${process.env.NEXT_PUBLIC_API_ROOT}/requests/${id}/deny`, {
+      method: "put",
+      withCredentials: true,
+    }).then((res) => {
+      Swal.fire({
+        icon: "success",
+        title: "已拒絕請求",
+      })
+    }).catch((err) => {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${err.response.data.message}`,
+      });
+    }).finally(fetchAllRequest)
+  }
+
   return (
     <>
       <HeaderBar text={"乘 客 請 求 確 認"} />
-      {requests.map((request, key) => (
-        <RequestComponent
-          key={key}
-          request={request}
-          onDeny={() => null}
-          onAccept={() => null}
-        />
-      ))}
+      {allRequest
+        .filter((request) => request.status == "new")
+        .map((request) => (
+          <RequestComponent
+            key={request.id}
+            request={request}
+            onDeny={() => handleDeny(request.id)}
+            onAccept={() => handleAccept(request.id)}
+          />
+        ))}
     </>
   );
 }
