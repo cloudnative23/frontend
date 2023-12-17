@@ -98,7 +98,7 @@ export default function RouteRequest( ) {
                     <div className={"h-auto bg-white mx-3.5 mt-2 rounded-xl"}>
                         {showStations?(
                         <>
-                            <div className="flex flex-wrap mt-6 h-28 overflow-y-auto">
+                            <div className="flex flex-wrap h-28 overflow-y-auto">
                                     {props.stations.map((e,idx)=>{return (
                                     <>
                                         <div className='flex w-full h-2/6 items-center'>
@@ -139,10 +139,10 @@ export default function RouteRequest( ) {
                             <p className='flex ml-4 w-28'>可共乘人數</p>
                             <p>{props.carInfo.capacity}</p>
                         </div>
-                        <div className='flex mt-2.5'>
+                        {/* <div className='flex mt-2.5'>
                             <p className='flex ml-4 w-28'>顏色</p>
                             <p>{props.carInfo.color}</p>
-                        </div>
+                        </div> */}
                         <div className='flex mt-2.5'>
                             <p className='flex ml-4 w-28'>車牌</p>
                             <p>{props.carInfo.licensePlateNumber}</p>

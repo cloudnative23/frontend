@@ -32,6 +32,8 @@ export default function Passenger() {
 
   const [onStation,setOnStation] = useState(null)
   const [offStation,setOffStation] = useState(null)
+
+  const [myRequest,setMyRequest] = useState([])
   
   
   const getStations = async() =>{
@@ -51,6 +53,28 @@ export default function Passenger() {
       console.error(error);
     }
   }
+  const getMyRequest = async() =>{
+    const options = {
+      method: 'GET',
+      url:  `${process.env.NEXT_PUBLIC_API_ROOT}/requests`,
+      params: {mode: 'me', n: '3','order-mode': 'asc'},
+      headers: {Accept: 'application/json'},
+      withCredentials: true,
+    };
+    
+    try {
+      const { data } = await axios.request(options);
+      let req_id = []
+      console.log(data)
+      for(let i = 0;i < data.length;i++){
+        req_id.push(data[i]['route']['id'])
+      }
+      setMyRequest(req_id)
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
 
   const search = async()=>{
     // if(date && startStation && endStation && startTime && endTime){
@@ -104,7 +128,7 @@ export default function Passenger() {
   }
   
 
-  useEffect(()=>{getStations()}
+  useEffect(()=>{getStations();getMyRequest();}
   , [])
 
 
@@ -144,7 +168,9 @@ export default function Passenger() {
         <button className="bg-black text-white hover:bg-blue-200 hover:text-black mr-4 h-5" onClick={()=>{setRoutes((ele)=>{let a=[];a.push(...ele);a.push(example_route2);return a;})}}> Add Route2 </button>
         <button className="bg-black text-white hover:bg-blue-200 hover:text-black h-5" onClick={()=>{setRoutes((ele)=>{let a=[];a.push(...ele);a.pop();return a;})}}> Delete Route </button>  */}
       <div className='bg-white text-dark_o flex items-center justify-center font-bold rounded-xl w-11/12 h-9'>尋 找 行 程</div>
+
       {/* <button onClick={testing}> testing</button> */}
+      
       <div className='flex flex-col relative text-black text-center rounded-xl w-full h-5/6'>
         <div className='w-full h-9 flex items-center '>
           <p className=" ml-3.5 mr-2.5">日期</p>
@@ -175,7 +201,7 @@ export default function Passenger() {
           (routes.length == 0 )?<div className='h-full w-full flex items-center justify-center'><p className='w-full text-center font-bold'>{message}</p></div>:
           routes.map((e,idx)=>{
             return(
-              <Route props={e} startStation={onStation} endStation={offStation}/>
+              <Route props={e} startStation={onStation} endStation={offStation} myRequest={myRequest}/>
             )
           })}
         </div>

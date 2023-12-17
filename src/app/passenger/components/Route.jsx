@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 
-export default function Route({props,startStation,endStation}) {
+export default function Route({props,startStation,endStation,myRequest}) {
     const weekMap = ['一','二','三','四','五','六','日']
     
     var on = null
@@ -22,6 +22,11 @@ export default function Route({props,startStation,endStation}) {
     
     var date = new Date(on.datetime.slice(0,10))
 
+    var already_sent = false
+
+    if(myRequest.includes(props.id))
+        already_sent = true
+
     return (
         <div className="bg-white mx-5 my-1 w-full h-40">
             <div className="ml-2.5 mt-2 flex">{date.getFullYear()} / {date.getMonth() + 1} / {date.getDate()} ({weekMap[date.getDay()]})</div>
@@ -39,7 +44,8 @@ export default function Route({props,startStation,endStation}) {
                 <div className="overflow-hidden rounded-full w-6 h-6 border border-blue-500 ml-3"><img src={props.driver.avatar} className="w-full h-full"/></div> 
                 <p className="text-black ml-2">{props.driver.name}</p>
             </div>
-            <Link href="/passenger/request" as={`/passenger/request?info=${encodedInfo}`} className="bg-dark_o text-white float-right rounded-xl w-20 mb-1 mr-2">發送請求</Link>
+            {already_sent?<div className="bg-slate-400	text-white float-right rounded-xl w-20 mb-1 mr-2">已送出</div>:
+            <Link href="/passenger/request" as={`/passenger/request?info=${encodedInfo}`} className="bg-dark_o text-white float-right rounded-xl w-20 mb-1 mr-2">發送請求</Link>}
         </div>
     )
 }
