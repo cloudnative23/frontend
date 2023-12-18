@@ -3,7 +3,7 @@ import Request from '../components/Request'
 import {useEffect,useState,useRef} from "react";
 import axios from 'axios';
 import Swal from "sweetalert2";
-import RadioComponent from "../../driver/_components/RadioComponent/RadioComponent.js";
+import RadioComponent from "../components/RadioComponent/RadioComponent.js";
 
 
 export default function Passenger() {
