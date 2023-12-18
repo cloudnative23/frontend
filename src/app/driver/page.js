@@ -216,11 +216,11 @@ export default function Driver() {
   ];
 
   // use fake data
-  if (route.length === 0) {
-    setHasSchedule(true);
-    setRoute(fakeRoutes);
-    setAllReqeust(fakeRequests);
-  }
+  // if (route.length === 0) {
+  //   setHasSchedule(true);
+  //   setRoute(fakeRoutes);
+  //   setAllReqeust(fakeRequests);
+  // }
   
   // API
 
@@ -246,7 +246,7 @@ export default function Driver() {
       method: 'get',
       withCredentials: true,
     }).then((res) => {
-      setAllReqeust(res.data);
+      setAllReqeust(res.data.filter(req => req.status == 'new'));
     }).catch((err) => {
       Swal.fire({
         icon: "error",
@@ -256,8 +256,8 @@ export default function Driver() {
     })
   }
 
-  // useEffect(fetchRoute, []);
-  // useEffect(fetchAllRequest, []);
+  useEffect(fetchRoute, []);
+  useEffect(fetchAllRequest, []);
 
   // function
   function getDateInChinese (date) {
