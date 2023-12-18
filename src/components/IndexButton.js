@@ -31,11 +31,11 @@ function IndexButton({mode, name, icon, alertNum}) {
         {icon === 'CheckMail' && alertNum === 0 &&
           <MailIcon className="text-white text-4xl mt-2 mb-2" />}
         {icon === 'CheckMail' && alertNum > 0 &&
-          <IconButton size="large">
+          <div className=" mt-2 mb-2">
             <Badge badgeContent={alertNum} color="error">
               <MailIcon className="text-white text-4xl" />
             </Badge>
-          </IconButton>
+          </div>
         }
         {icon === 'CheckSchedule' &&
           <EditCalendarIcon className="text-white text-4xl mt-2 mb-2" /> }
