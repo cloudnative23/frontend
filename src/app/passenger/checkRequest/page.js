@@ -67,7 +67,7 @@ export default function RouteRequest( ) {
                                     {props['route'].stations.map((e,idx)=>{return (
                                     <>
                                         <div className='flex w-full h-2/6 items-center'>
-                                            <p className={((e.id == props['on-station'].id)?"bg-lime-400":(e.id == props['off-station'].id)?"bg-red-400":"invisible") + " text-black w-9 ml-4"}>{(e.id == props['on-station'].id)?"上車":"下車"}</p>
+                                        <p className={((e.id == props['on-station'].id)?"bg-go2work_light":(e.id == props['off-station'].id)?"bg-go2home_light":"invisible") + " text-sm text-center py-0.5 text-black w-9 ml-4"}>{(e.id == props['on-station'].id)?"上車":"下車"}</p>
                                             <p className='ml-2'>{e.datetime.slice(-8,-3)}</p>
                                             <p className='ml-2'>{e.name}</p>
                                         </div>
@@ -77,12 +77,12 @@ export default function RouteRequest( ) {
                         </>):(
                         <>
                             <div className="flex">
-                                <p className="bg-lime-400 text-black w-9 ml-4">上車</p>
+                                <p className="bg-go2work_light text-black w-9 ml-4 text-sm text-center py-0.5">上車</p>
                                 <p className='w-24 ml-1'> {props['on-station'].datetime.slice(-8,-3)} </p>
                                 <p className='w-auto ml-4'> {props['on-station'].name} </p>
                             </div>
                             <div className="flex mt-2.5">
-                                <p className="bg-red-400 text-black w-9 ml-4">下車</p>
+                                <p className="bg-go2home_light text-black w-9 ml-4 text-sm text-center py-0.5">下車</p>
                                 <p className='w-24 ml-1'> {props['off-station'].datetime.slice(-8,-3)} </p>
                                 <p className='w-auto ml-4'> {props['off-station'].name}</p>
                             </div>
