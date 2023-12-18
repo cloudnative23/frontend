@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Roboto } from 'next/font/google'
-import axios from 'axios';
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const inter = Roboto({ subsets: ['latin'], weight: ["400", "700"]})
 
@@ -25,44 +26,29 @@ export default function Login() {
     };
 
     // Make a POST request using the Fetch API
-    // fetch('https://api-dev.cloudnative23.com/login', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(data)
-    // })
-    // .then(response => {
-    //     if (!response.ok) {
-    //         alert(response.status);
-    //         //throw new Error('Network response was not ok');
-    //     }
-    //     //alert(response.status);
-    //     return response.text();
-    // })
-    // .then(data => {
-    //     // Handle the successful login response
-    //     //alert(data);
-    //     router.push("/login/choose")
-    // })
-    // .catch(error => {
-    //     // Handle errors
-    //     console.error('There was a problem with the fetch operation:', error);
-    // });
-
-    let a = axios.post(`${process.env.NEXT_PUBLIC_API_ROOT}/login`, {
-      "email": "user1@example.com",
-      "password": "pa$$word",
-  }, { withCredentials: true }
-  ).then((res) => {
-      alert(JSON.stringify(res, null, 2))
-      router.push("/login/choose")
-  }).catch((err) => {
-      alert(JSON.stringify(err, null, 2))
-  })
-    
-
+    axios.post(`${process.env.NEXT_PUBLIC_API_ROOT}/login`, data, { withCredentials: true }
+    )
+      .then(response => {
+        if (!response.ok) {
+          // alert('ok')
+          // alert(response.status);
+          //throw new Error('Network response was not ok');
+        }
+      })
+      .then(data => {
+        // Handle the successful login response
+        //alert(data);
+        router.push("/login/choose")
+      })
+      .catch(error => {
+        // Handle errors
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `${error.response.data.message}`,
+        });  
+        // console.error('There was a problem with the fetch operation:', error);
+      });
   }
 
   return (

@@ -4,13 +4,14 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AirlineSeatReclineNormalTwoToneIcon from '@mui/icons-material/AirlineSeatReclineNormalTwoTone';
 import ToysTwoToneIcon from '@mui/icons-material/ToysTwoTone';
 import { useState, useEffect } from "react"; 
+import axios from "axios";
 
 export default function Choose() {
 
   const [name, setName] = useState(null);
 
   useEffect(() => {
-      fetch('https://api-dev.cloudnative23.com/me')
+      axios.get(`${process.env.NEXT_PUBLIC_API_ROOT}/me`, { withCredentials: true })
       .then(response => {
           if (!response.ok) {
               throw new Error('Network response was not ok');
