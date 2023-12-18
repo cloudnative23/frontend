@@ -18,6 +18,9 @@ module.exports = {
       height: {
         mobile: "620px", // 手機版高度
       },
+      maxHeight: {
+        route_board: '400px',
+      },
       colors: {
         passenger:'#f8f3ed',  // orange
         passenger_dark:'#d9854e',
@@ -29,6 +32,8 @@ module.exports = {
         go2home_light:'#FFE2E2',
         gray_light:'#F4F4F4', // gray
         gray_dark:'#757575',
+        passenger:'#f8f3ed',
+        dark_o:'#d9854e',
       },
       maxHeight: {
         route_board: '400px',

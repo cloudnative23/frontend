@@ -7,7 +7,7 @@ function PassengerLayout({children}) {
       {/* <nav className="flex h-16 w-full pb-10"> */}
       <Navbar mode="passenger" />
       {/* </nav> */}
-      <div className="h-full w-full overflow-y-auto overflow-hidden">{children}</div>
+      <div className="h-full w-full  overflow-hidden">{children}</div>
     </main>
   );
 }
