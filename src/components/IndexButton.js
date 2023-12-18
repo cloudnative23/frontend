@@ -1,11 +1,14 @@
 "use client";
 
 import * as React from 'react';
-import AddCardIcon from '@mui/icons-material/AddCard';
+// import AddCardIcon from '@mui/icons-material/AddCard';
+// import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import AddLocationIcon from '@mui/icons-material/AddLocation';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import SearchIcon from '@mui/icons-material/Search';
+import MailIcon from '@mui/icons-material/Mail';
 
 function IndexButton({mode, name, icon}) {
   let showDriver = false;
@@ -22,9 +25,9 @@ function IndexButton({mode, name, icon}) {
       {showDriver &&
       <div className="h-[5rem] w-[4.5rem] bg-driver_dark rounded-2xl">
         {icon === 'AddSchedule' &&
-          <AddCardIcon className="text-white text-4xl mt-2 mb-2" /> }
-        {icon === 'FindPassenger' &&
-          <PersonAddAltIcon className="text-white text-4xl mt-2 mb-2" /> }
+          <AddLocationIcon className="text-white text-4xl mt-2 mb-2" /> }
+        {icon === 'CheckMail' &&
+          <MailIcon className="text-white text-4xl mt-2 mb-2" /> }
         {icon === 'CheckSchedule' &&
           <EditCalendarIcon className="text-white text-4xl mt-2 mb-2" /> }
         {icon === 'AllSchedule' &&
@@ -36,7 +39,8 @@ function IndexButton({mode, name, icon}) {
       <div className="h-[5rem] w-[4.5rem] bg-passenger_dark rounded-2xl">
         {icon === 'Search' &&
           <SearchIcon className="text-white text-4xl mt-2 mb-2" /> }
-
+        {icon === 'CheckMail' &&
+          <MailIcon className="text-white text-4xl mt-2 mb-2" /> }
         {icon === 'CheckSchedule' &&
           <EditCalendarIcon className="text-white text-4xl mt-2 mb-2" /> }
         {icon === 'AllSchedule' &&

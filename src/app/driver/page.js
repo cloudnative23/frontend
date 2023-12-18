@@ -1,5 +1,8 @@
 "use client";
 import Link from "next/link";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 import IndexButton from "@/components/IndexButton";
 import ShowWaiting from "@/components/ShowWaiting";
@@ -147,12 +150,14 @@ export default function Driver() {
   return (
     <>
       <div className="flex justify-center">
-        <div className="bg-white w-10/12 rounded-xl">
+        <div className="bg-white w-11/12 rounded-xl">
           <div className="flex justify-center space-x-2 my-2">
             <Link href={"driver/createRoute"}>
               <IndexButton mode="driver" name="新增行程" icon="AddSchedule" />
             </Link>
-            {/* <IndexButton mode="driver" name="尋找乘客" icon="FindPassenger" /> */}
+            <Link href={"driver/allRequest"}>
+              <IndexButton mode="driver" name="查看請求" icon="CheckMail" />
+            </Link>
             <Link href={"driver/futureRoute"}>
               <IndexButton mode="driver" name="查看行程" icon="CheckSchedule" />
             </Link>
@@ -163,19 +168,21 @@ export default function Driver() {
         </div>
       </div>
 
-      <div className="flex justify-center space-x-2 my-4">
+      {/* <div className="flex justify-center space-x-2 my-4">
         <Link href={"driver/allRequest"}>
           <ShowWaiting whoWait="driver" waitFor="driver"/>
         </Link>
-        {/* <ShowWaiting whoWait="driver" waitFor="passenger" /> */}
-      </div>
+        <ShowWaiting whoWait="driver" waitFor="passenger" />
+      </div> */}
+
+      <div className="my-4" />
 
       <div className="ml-6 mb-4">
         <p className="text-sm text-driver_dark">最近的行程</p>
       </div>
 
       <div className="flex justify-center">
-        <div className="bg-white w-10/12 rounded-xl pb-2">
+        <div className="bg-white w-11/12 rounded-xl pb-2">
 
           {/* No schedule */}
           {!hasSchedule &&
@@ -218,7 +225,6 @@ export default function Driver() {
           </div>
           }
 
-          {/* <p>This is Driver!</p> */}
         </div>
       </div>
     </>
