@@ -1,5 +1,5 @@
-import Link from "next/link";
 "use client";
+import Link from "next/link";
 
 import IndexButton from "@/components/IndexButton";
 import ShowWaiting from "@/components/ShowWaiting";
@@ -156,7 +156,7 @@ export default function Driver() {
             <Link href={"driver/futureRoute"}>
               <IndexButton mode="driver" name="查看行程" icon="CheckSchedule" />
             </Link>
-            <Link href={"driver/futureRoute"}>
+            <Link href={"driver/pastRoute"}>
               <IndexButton mode="driver" name="共乘紀錄" icon="AllSchedule" />
             </Link>
           </div>
