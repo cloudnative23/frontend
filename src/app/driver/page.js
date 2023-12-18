@@ -15,77 +15,107 @@ import IconButton from '@mui/material/IconButton';
 export default function Driver() {
 
   // some data
-  const hasSchedule = true;
+  const [hasSchedule, setHasSchedule] = useState(false);
+  const [route, setRoute] = useState([]);
+
   const tempDate = new Date();
   const go2work = false;
-  const stations = [
-    // {
-    //   "id": 14,
-    //   "name": "測試14",
-    //   "datetime": "2023-10-22T12:30",
-    //   "onPassengers": [  ],
-    //   "offPassengers": [ ],
-    // },
-    // {
-    //   "id": 13,
-    //   "name": "測試13",
-    //   "datetime": "2023-10-22T13:30",
-    //   "onPassengers": [  ],
-    //   "offPassengers": [ ],
-    // },
-    // {
-    //   "id": 12,
-    //   "name": "測試12",
-    //   "datetime": "2023-10-22T14:30",
-    //   "onPassengers": [  ],
-    //   "offPassengers": [ ],
-    // },
-    // {
-    //   "id": 11,
-    //   "name": "測試11",
-    //   "datetime": "2023-10-22T15:30",
-    //   "onPassengers": [  ],
-    //   "offPassengers": [ ],
-    // },
-    // {
-    //   "id": 10,
-    //   "name": "測試10",
-    //   "datetime": "2023-10-22T16:30",
-    //   "onPassengers": [  ],
-    //   "offPassengers": [ ],
-    // },
+  const fakedata = [
     {
-      "id": 3,
-      "name": "台積電新竹3廠東側門",
-      "datetime": "2023-10-22T17:30",
-      "onPassengers": [
-        2,
-        4
+      "id": 10,
+      "date": "2023-10-22",
+      "workStatus": false,
+      "n-passengers": 2,
+      "status": "available",
+      "stations": [
+        {
+          "id": 3,
+          "name": "台積電新竹3廠東側門",
+          "datetime": "2023-10-22T17:30",
+          "on-passengers": [
+            2,
+            4
+          ],
+          "off-passengers": []
+        },
+        {
+          "id": 1,
+          "name": "台北車站",
+          "datetime": "2023-10-22T17:50",
+          "on-passengers": [],
+          "off-passengers": [
+            4
+          ]
+        },
+        {
+          "id": 2,
+          "name": "台大校門口",
+          "datetime": "2023-10-22T18:10",
+          "on-passengers": [],
+          "off-passengers": [
+            4
+          ]
+        }
       ],
-      "offPassengers": [ ],
-    },
-    {
-      "id": 1,
-      "name": "台北車站",
-      "datetime": "2023-10-22T17:50",
-      "onPassengers": [ ],
-      "offPassengers": [
-        4
-      ]
-    },
-    {
-      "id": 2,
-      "name": "台大校門口",
-      "datetime": "2023-10-22T18:10",
-      "onPassengers": [ ],
-      "offPassengers": [
-        2
-      ]
+      "carInfo": {
+        "model": "Tesla Model 3",
+        "color": "紅色",
+        "capacity": 4,
+        "licensePlateNumber": "ABC-1234"
+      },
+      "passengers": [
+        {
+          "id": 2,
+          "name": "Bill Gates",
+          "phone": "0982104928",
+          "avatar": "https://example.com/avatar.png"
+        },
+        {
+          "id": 4,
+          "name": "Paul",
+          "phone": "0954201859",
+          "avatar": "https://example.com/avatar.png"
+        }
+      ],
+      "driver": {
+        "id": 3,
+        "name": "John James",
+        "avatar": "https://example.com/avatar.png",
+        "phone": "0928123456"
+      }
     }
   ];
 
+  // use fake data
+  if (route.length === 0) {
+    setHasSchedule(true);
+    setRoute(fakedata);
+  }
+  
+  // API
+
+  function fetchRoute() {
+    axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes?mode=driver-future&n=1`, {
+      method: 'get',
+      withCredentials: true,
+    }).then((res) => {
+      setHasSchedule(true);
+      setRoute(res.data);
+    }).catch((error) => {
+      setHasSchedule(false);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.response.data.message}`,
+      });
+    })
+  }
+
+  // useEffect(fetchRoute, []);
+
   // function
   function getDateInChinese (date) {
+    date = new Date(date);
     // const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
@@ -95,6 +125,8 @@ export default function Driver() {
   }
 
   function singleStationInfo (station) {
+    console.log(station);
+
     function getTime (datetime) {
       const date = new Date(datetime);
       const hour = date.getHours();
@@ -102,17 +134,21 @@ export default function Driver() {
       const formattedMinute = minute < 10 ? `0${minute}` : minute;
       return `${hour} : ${formattedMinute}`;
     }
-    function makeOnAvatar (passenger) {
+    function makeOnAvatar (passengerID) {
+      const passengerInfo = route[0].passengers.find((passenger) => passenger.id === passengerID);
       return (
-        <div className="flex justify-center items-center rounded-full bg-go2work_light h-6 w-6 border border-[#D3D3D3]">
-          <p className="text-xs">{passenger}</p>
+        <div className="flex justify-center items-center rounded-full bg-go2work_light h-6 p-2 border border-[#D3D3D3]">
+          <img src={passengerInfo.avatar} alt="" className="max-h-4 max-w-4 rounded-full mr-2" />
+          <p className="text-xs mr-2">{passengerInfo.name}</p>
         </div>
       )
     }
-    function makeOffAvatar (passenger) {
+    function makeOffAvatar (passengerID) {
+      const passengerInfo = route[0].passengers.find((passenger) => passenger.id === passengerID);
       return (
-        <div className="flex justify-center items-center rounded-full bg-go2home_light h-6 w-6 border border-[#D3D3D3]">
-          <p className="text-xs">{passenger}</p>
+        <div className="flex justify-center items-center rounded-full bg-go2home_light h-6 p-2 border border-[#D3D3D3]">
+          <img src={passengerInfo.avatar} alt="" className="max-h-4 max-w-4 rounded-full mr-2" />
+          <p className="text-xs mr-2">{passengerInfo.name}</p>
         </div>
       )
     }
@@ -120,23 +156,23 @@ export default function Driver() {
     return (
       <>
         <div className="flex justify-between items-center my-1">
-          <p className="ml-10">{getTime(station.datetime)}</p>
+          <p className="ml-16">{getTime(station.datetime)}</p>
           <p className="ml-4">{station.name}</p>
           <Box sx={{ flexGrow: 1 }} />
         </div>
 
-        {station.onPassengers.length > 0 &&
-        <div className="flex ml-28 mb-2">
-          {station.onPassengers.map((passenger) => (
+        {station['on-passengers'].length > 0 &&
+        <div className="flex ml-32 mb-2">
+          {station['on-passengers'].map((passenger) => (
             <div key={passenger} className="ml-2">
               {makeOnAvatar(passenger)}
             </div>
           ))}
         </div>
         }
-        {station.offPassengers.length > 0 &&
-        <div className="flex ml-28 mb-2">
-          {station.offPassengers.map((passenger) => (
+        {station['off-passengers'].length > 0 &&
+        <div className="flex ml-32 mb-2">
+          {station['off-passengers'].map((passenger) => (
             <div key={passenger} className="ml-2">
               {makeOffAvatar(passenger)}
             </div>
@@ -187,7 +223,7 @@ export default function Driver() {
           {/* No schedule */}
           {!hasSchedule &&
           <div className="flex justify-center items-center my-4">
-            <ErrorOutlineIcon className="text-xl mx-4" />
+            <ErrorOutlineIcon className="text-xl mx-2 my-4" />
             <p className="text-base">尚未規畫任何未來行程</p>
           </div>
           }
@@ -197,26 +233,26 @@ export default function Driver() {
           <div className="mx-2 my-4">
             <div className="flex justify-between items-center">
               {/* first row */}
-              <p className="ml-2">{getDateInChinese(tempDate)}</p>
-              {go2work &&
+              <p className="ml-2">{getDateInChinese(route[0].date)}</p>
+              {route[0].workStatus &&
               <div className="flex justify-center items-center rounded-xl bg-go2work h-6 w-12 ml-4">
                 <p className="font-bold text-white text-md">上班</p>
               </div>
               }
-              {!go2work &&
+              {!route[0].workStatus &&
               <div className="flex justify-center items-center rounded-xl bg-go2home h-6 w-12 ml-4">
                 <p className="font-bold text-white text-md">下班</p>
               </div>
               }
               <Box sx={{ flexGrow: 1 }} />
-              <IconButton size="small">
+              {/* <IconButton size="small">
                 <MoreVertIcon />
-              </IconButton>
+              </IconButton> */}
             </div>
             
             <div>
               {/* routes info */}
-              {stations.map((station) => (
+              {route[0].stations.map((station) => (
                 <div key={station.id}>
                   {singleStationInfo(station)}
                 </div>
