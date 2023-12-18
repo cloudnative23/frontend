@@ -11,16 +11,18 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
+import Badge from '@mui/material/Badge';
 
 export default function Driver() {
 
   // some data
   const [hasSchedule, setHasSchedule] = useState(false);
   const [route, setRoute] = useState([]);
+  const [allRequest, setAllReqeust] = useState([]);
 
   const tempDate = new Date();
   const go2work = false;
-  const fakedata = [
+  const fakeRoutes = [
     {
       "id": 10,
       "date": "2023-10-22",
@@ -85,11 +87,139 @@ export default function Driver() {
       }
     }
   ];
+  const fakeRequests = [
+    {
+      "id": 3,
+      "timestamp": "2023-10-22T18:10:20",
+      "read": true,
+      "valid": true,
+      "for": "passenger",
+      "category": "request",
+      "route": {
+        "id": 10,
+        "date": "2023-10-22",
+        "workStatus": false,
+        "status": "available",
+        "stations": [
+          {
+            "id": 3,
+            "name": "台積電新竹3廠東側門",
+            "datetime": "2023-10-22T17:30",
+            "on-passengers": [
+              2,
+              4
+            ],
+            "off-passengers": []
+          },
+          {
+            "id": 1,
+            "name": "台北車站",
+            "datetime": "2023-10-22T17:50",
+            "on-passengers": [],
+            "off-passengers": [
+              4
+            ]
+          },
+          {
+            "id": 2,
+            "name": "台大校門口",
+            "datetime": "2023-10-22T18:10",
+            "on-passengers": [],
+            "off-passengers": [
+              4
+            ]
+          }
+        ],
+        "carInfo": {
+          "model": "Tesla Model 3",
+          "color": "紅色",
+          "capacity": 4,
+          "licensePlateNumber": "ABC-1234"
+        },
+        "passengers": [
+          {
+            "id": 2,
+            "name": "Bill Gates",
+            "phone": "0982104928",
+            "avatar": "https://example.com/avatar.png"
+          },
+          {
+            "id": 4,
+            "name": "Paul",
+            "phone": "0954201859",
+            "avatar": "https://example.com/avatar.png"
+          }
+        ],
+        "driver": {
+          "id": 3,
+          "name": "John James",
+          "avatar": "https://example.com/avatar.png",
+          "phone": "0928123456"
+        }
+      },
+      "request": {
+        "id": 11,
+        "status": "new",
+        "date": "2023-10-20",
+        "timestamp": "2023-10-15T20:23:20",
+        "workStatus": true,
+        "passenger": {
+          "id": 10,
+          "name": "John James",
+          "avatar": "https://example.com/avatar.png"
+        },
+        "on-station": {
+          "id": 3,
+          "name": "台積電新竹3廠東側門",
+          "datetime": "2023-10-15T15:00"
+        },
+        "off-station": {
+          "id": 2,
+          "name": "台大校門口",
+          "datetime": "2023-10-15T17:00"
+        },
+        "route": {
+          "id": 10,
+          "date": "2023-10-22",
+          "status": "available",
+          "stations": [
+            {
+              "id": 3,
+              "name": "台積電新竹3廠東側門",
+              "datetime": "2023-10-22T17:30"
+            },
+            {
+              "id": 1,
+              "name": "台北車站",
+              "datetime": "2023-10-22T17:50"
+            },
+            {
+              "id": 2,
+              "name": "台大校門口",
+              "datetime": "2023-10-22T18:10"
+            }
+          ],
+          "carInfo": {
+            "color": "紅色",
+            "capacity": 4,
+            "licensePlateNumber": "ABC-1234"
+          },
+          "driver": {
+            "id": 3,
+            "name": "John James",
+            "avatar": "https://example.com/avatar.png",
+            "phone": "0928123456"
+          }
+        }
+      }
+    }
+  ];
 
   // use fake data
   if (route.length === 0) {
     setHasSchedule(true);
-    setRoute(fakedata);
+    setRoute(fakeRoutes);
+    setAllReqeust(fakeRequests);
   }
   
   // API
@@ -111,7 +241,23 @@ export default function Driver() {
     })
   }
 
+  function fetchAllRequest() {
+    axios(`${process.env.NEXT_PUBLIC_API_ROOT}/requests?mode=available`, {
+      method: 'get',
+      withCredentials: true,
+    }).then((res) => {
+      setAllReqeust(res.data);
+    }).catch((err) => {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${err.response.data.message}`,
+      });
+    })
+  }
+
   // useEffect(fetchRoute, []);
+  // useEffect(fetchAllRequest, []);
 
   // function
   function getDateInChinese (date) {
@@ -125,7 +271,7 @@ export default function Driver() {
   }
 
   function singleStationInfo (station) {
-    console.log(station);
+    // console.log(station);
 
     function getTime (datetime) {
       const date = new Date(datetime);
@@ -192,7 +338,7 @@ export default function Driver() {
               <IndexButton mode="driver" name="新增行程" icon="AddSchedule" />
             </Link>
             <Link href={"driver/allRequest"}>
-              <IndexButton mode="driver" name="查看請求" icon="CheckMail" />
+              <IndexButton mode="driver" name="查看請求" icon="CheckMail" alertNum={allRequest.length}/>
             </Link>
             <Link href={"driver/futureRoute"}>
               <IndexButton mode="driver" name="查看行程" icon="CheckSchedule" />
