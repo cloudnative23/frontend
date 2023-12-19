@@ -4,18 +4,20 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AirlineSeatReclineNormalTwoToneIcon from '@mui/icons-material/AirlineSeatReclineNormalTwoTone';
 import ToysTwoToneIcon from '@mui/icons-material/ToysTwoTone';
 import { useState, useEffect } from "react"; 
+import axios from "axios";
 
 export default function Choose() {
 
   const [name, setName] = useState(null);
 
   useEffect(() => {
-      fetch('https://api-dev.cloudnative23.com/me')
+      axios.get(`${process.env.NEXT_PUBLIC_API_ROOT}/me`, { withCredentials: true })
       .then(response => {
           if (!response.ok) {
-              throw new Error('Network response was not ok');
+              //throw new Error('Network response was not ok');
+              //console.log(response);
           }
-          return response.json();
+          return response.data;
       })
       .then(data => {
           // Handle the successful login response
@@ -44,12 +46,12 @@ export default function Choose() {
 
 
           <div className="w-6/12 flex self-center justify-between mt-24 text-white">
-            <Link href="/passenger" className="basis-14 bg-[#DC8352] text-center rounded-xl text-xl">
+            <Link href="/passenger" className="basis-16 bg-[#DC8352] text-center rounded-xl text-xl">
                 <div>
                     <AirlineSeatReclineNormalTwoToneIcon /> <br /> <div className="inline-block text-base">乘客</div>
                 </div>
             </Link>
-            <Link href="/driver" className="basis-14 bg-[#5184CF] text-center rounded-xl text-xl">
+            <Link href="/driver" className="basis-16 bg-[#5184CF] text-center rounded-xl text-xl">
                 <div>
                 <ToysTwoToneIcon /> <br /> <div className="inline-block text-base">司機</div>
                 </div>

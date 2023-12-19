@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Roboto } from 'next/font/google'
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const inter = Roboto({ subsets: ['latin'], weight: ["400", "700"]})
 
@@ -24,31 +26,29 @@ export default function Login() {
     };
 
     // Make a POST request using the Fetch API
-    fetch('https://api-dev.cloudnative23.com/login', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => {
+    axios.post(`${process.env.NEXT_PUBLIC_API_ROOT}/login`, data, { withCredentials: true }
+    )
+      .then(response => {
         if (!response.ok) {
-            alert(response.status);
-            //throw new Error('Network response was not ok');
+          // alert('ok')
+          //console.log(JSON.stringify(response));
+          //throw new Error('Network response was not ok');
         }
-        //alert(response.status);
-        return response.text();
-    })
-    .then(data => {
+      })
+      .then(data => {
         // Handle the successful login response
         //alert(data);
         router.push("/login/choose")
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         // Handle errors
-        console.error('There was a problem with the fetch operation:', error);
-    });
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `${error.response.data.message}`,
+        });  
+        // console.error('There was a problem with the fetch operation:', error);
+      });
   }
 
   return (

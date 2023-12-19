@@ -69,6 +69,7 @@ export default function SingleRide(props) {
     ]
 
     const [date, setDate] = useState(null);
+    const [id, setId] = useState(4);
 
     useEffect(() => {
         const now = new Date();
@@ -100,14 +101,7 @@ export default function SingleRide(props) {
 
     return (
       <div className="flex flex-col items-center bg-[#F9F3EF] items-stretch text-sm">
-        <nav className="flex flex-row justify-between p-2">
-          <div>TSMC COMMUTING</div>
-          <div>
-            <EmailIcon />
-            <SettingsIcon />
-          </div>
-        </nav>
-        <div className="w-11/12 self-center mt-8">
+        <div className="w-11/12 self-center ">
           <div className="bg-white text-center rounded-xl">檢視行程</div>
         </div>
 
@@ -118,13 +112,17 @@ export default function SingleRide(props) {
         
         <div className='text-orange-600 mt-8 mb-4 ml-3'> 路線資訊 </div>
         <div className="w-10/12 self-center flex flex-col rounded-xl bg-white " >
-                {fake[0].stations.map(station => (
-                    <div className='grid grid-cols-12 px-1 my-2'> 
-                      <div className='col-span-3 text-center'> {station.datetime.substring(station.datetime.indexOf("T")+1, station.datetime.length)} </div>
-                      <div className='col-span-9 text-center'> {station.name} </div>
-                    </div>
-                )
-                )}
+            {fake[0].stations.map(station => (
+                <div className='grid grid-cols-12 px-1 my-2'> 
+                  <div className='col-span-2'>
+                    {station.on.includes(id) ? <div className='bg-[#E4F8CC] text-sm m-auto w-9 text-center'> 上車 </div> : <div> </div>}
+                    {station.off.includes(id) ? <div className='bg-[#FFE2E3] text-sm m-auto w-9 text-center'> 下車 </div>: <div> </div>}
+                  </div>
+                  <div className='col-span-2 text-center'> {station.datetime.substring(station.datetime.indexOf("T")+1, station.datetime.length)} </div>
+                  <div className='col-span-8 text-center'> {station.name} </div>
+                </div>
+            )
+            )}
         </div>
 
 
