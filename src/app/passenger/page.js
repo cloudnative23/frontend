@@ -208,6 +208,8 @@ export default function Passenger() {
                 <p className="text-passenger_dark ml-4">司機</p>
                 <img src={route[0]["driver"].avatar} alt="" className="max-h-4 max-w-4 rounded-full ml-2 mr-2" />
                 <p className="mr-4">{route[0]["driver"].name}</p>
+                <p className="text-passenger_dark ml-4">車牌號碼</p>
+                <p className="ml-2 mr-4">{route[0]["carInfo"].licensePlateNumber}</p>
               </div>
               <div className="flex items-center my-4">
                 <p className="text-passenger_dark ml-4">車型</p>
