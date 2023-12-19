@@ -78,7 +78,7 @@ export default function Passenger() {
       <div className="m-2 flex flex-row space-x-1">
         <RadioComponent
           list={[
-            { id: "new", text: "等待回復" },
+            { id: "new", text: "等待回覆" },
             { id: "accepted", text: "被接受" },
             { id: "denied", text: "遭拒絕" },
             { id: "other", text: "其他" },

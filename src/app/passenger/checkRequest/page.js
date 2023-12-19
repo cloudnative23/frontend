@@ -20,7 +20,7 @@ export default function RouteRequest( ) {
    
     const [showStations,setShowStations] = useState(false)
 
-    const statusMap = {'new':'請求已送出，等待回復','accepted':'請求已被接受','denied':'請求已被拒絕','expired':'請求已過期','deleted':'請求已刪除','canceled':'請求已取消'}
+    const statusMap = {'new':'請求已送出，等待回覆','accepted':'請求已被接受','denied':'請求已被拒絕','expired':'請求已過期','deleted':'請求已刪除','canceled':'請求已取消'}
 
 
 

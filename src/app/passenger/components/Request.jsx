@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Request({props}) {
     const weekMap = ['一','二','三','四','五','六','日']
     
-    const statusMap = {'new':'等待回復','accepted':'被接受','denied':'被拒絕','expired':'已過期','deleted':'已刪除','canceled':'已取消'}
+    const statusMap = {'new':'等待回覆','accepted':'被接受','denied':'被拒絕','expired':'已過期','deleted':'已刪除','canceled':'已取消'}
     const statusColorMap = {'new':'text-dark_o','accepted':'text-lime-600','denied':'text-rose-500','expired':'text-slate-500','deleted':'text-slate-500','canceled':'text-slate-500'}
     // const encodedInfo = encodeURIComponent(JSON.stringify(info));
     
