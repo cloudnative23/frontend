@@ -229,8 +229,10 @@ export default function Driver() {
       method: 'get',
       withCredentials: true,
     }).then((res) => {
-      setHasSchedule(true);
-      setRoute(res.data);
+      if (res.data.length > 0) {
+        setHasSchedule(true);
+        setRoute(res.data);
+      }
     }).catch((error) => {
       setHasSchedule(false);
       Swal.fire({
@@ -308,7 +310,7 @@ export default function Driver() {
         </div>
 
         {station['on-passengers'].length > 0 &&
-        <div className="flex ml-32 mb-2">
+        <div className="flex ml-28 mb-2">
           {station['on-passengers'].map((passenger) => (
             <div key={passenger} className="ml-2">
               {makeOnAvatar(passenger)}
@@ -317,7 +319,7 @@ export default function Driver() {
         </div>
         }
         {station['off-passengers'].length > 0 &&
-        <div className="flex ml-32 mb-2">
+        <div className="flex ml-28 mb-2">
           {station['off-passengers'].map((passenger) => (
             <div key={passenger} className="ml-2">
               {makeOffAvatar(passenger)}
