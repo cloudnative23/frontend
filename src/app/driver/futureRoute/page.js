@@ -143,9 +143,11 @@ export default function App() {
                 return route.carInfo.capacity > route.passengers.length
             }
           })
-          .map((route) => (
-            <Route route={route} onDelete={() => handleDelete(route.id)} />
-          ))
+          .map((route) => (<>
+            <Link href={`singleRide?id=${route.id}`}>
+              <Route route={route} onDelete={() => handleDelete(route.id)} />
+            </Link>
+          </>))
         }
       </div>
     </>
