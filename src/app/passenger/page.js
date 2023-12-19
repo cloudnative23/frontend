@@ -69,10 +69,10 @@ export default function Passenger() {
   ];
 
   // use fake data
-  if (route.length === 0) {
-    setHasSchedule(true);
-    setRoute(fakedata);
-  }
+  // if (route.length === 0) {
+  //   setHasSchedule(true);
+  //   setRoute(fakedata);
+  // }
 
   // API
 
@@ -81,8 +81,10 @@ export default function Passenger() {
       method: 'get',
       withCredentials: true,
     }).then((res) => {
-      setHasSchedule(true);
-      setRoute(res.data);
+      if (res.data.length > 0) {
+        setHasSchedule(true);
+        setRoute(res.data);
+      }
     }).catch((error) => {
       setHasSchedule(false);
       Swal.fire({
@@ -93,7 +95,7 @@ export default function Passenger() {
     })
   }
 
-  // useEffect(fetchRoute, []);
+  useEffect(fetchRoute, []);
 
   // function
   function getDateInChinese (date) {
@@ -144,7 +146,7 @@ export default function Passenger() {
           {/* No schedule */}
           {!hasSchedule &&
           <div className="flex justify-center items-center my-4">
-            <ErrorOutlineIcon className="text-xl mx-4" />
+            <ErrorOutlineIcon className="text-xl mx-2 mx-4" />
             <p className="text-base">尚未規畫任何未來行程</p>
           </div>
           }
@@ -196,7 +198,7 @@ export default function Passenger() {
               </div>
               <div className="flex items-center my-4">
                 <p className="text-passenger_dark ml-4">司機</p>
-                <img src={route[0]["driver"].avatar} alt="" className="max-h-4 max-w-4 rounded-full mr-2" />
+                <img src={route[0]["driver"].avatar} alt="" className="max-h-4 max-w-4 rounded-full ml-2 mr-2" />
                 <p className="mr-4">{route[0]["driver"].name}</p>
               </div>
               <div className="flex items-center my-4">
