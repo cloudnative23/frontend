@@ -4,8 +4,12 @@ import Link from "next/link";
 import SettingsIcon from '@mui/icons-material/Settings';
 import EmailIcon from '@mui/icons-material/Email';
 import axios from "axios";
+import { useSearchParams } from 'next/navigation'
 
 export default function SingleRide(props) {
+
+  const searchParams = useSearchParams();
+  const rid = parseInt(searchParams.get('id'));
 
     const fake = [
       {
@@ -70,7 +74,7 @@ export default function SingleRide(props) {
     ]
 
     const [id, setID] = useState(null);
-    const [routeid, setrid] = useState(60);
+    const [routeid, setrid] = useState(61);
     const [route, setRoute] = useState(fake[0]);
 
     useEffect(() => {
@@ -89,9 +93,11 @@ export default function SingleRide(props) {
     );
        
     useEffect(() => {
+        //setrid(rid);
+        //console.log("rid = ", rid)
         //let data = {mode: 'search'}
         //axios(`${process.env.NEXT_PUBLIC_API_ROOT}/route?mode=passenger-future&n=1`, {method: 'get', withCredentials: true })
-        axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes/${routeid}`, {method: 'get', withCredentials: true })
+        axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes/${rid}`, {method: 'get', withCredentials: true })
         .then(response => {
             if (!response.ok) {
                 //throw new Error('Network response was not ok');
@@ -113,7 +119,7 @@ export default function SingleRide(props) {
     )
 
     return (
-      <div className="flex flex-col items-center bg-[#F9F3EF] items-stretch text-sm">
+      <div className="flex flex-col items-center bg-[#F9F3EF] items-stretch text-sm overflow-y-scroll h-full">
         <div className="w-11/12 self-center ">
           <div className="bg-white text-center rounded-xl">檢視行程</div>
         </div>

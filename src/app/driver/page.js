@@ -376,35 +376,37 @@ export default function Driver() {
 
           {/* Has schedule */}
           {hasSchedule &&
-          <div className="mx-2 my-4">
-            <div className="flex justify-between items-center">
-              {/* first row */}
-              <p className="ml-2">{getDateInChinese(route[0].date)}</p>
-              {route[0].workStatus &&
-              <div className="flex justify-center items-center rounded-xl bg-go2work h-6 w-12 ml-4">
-                <p className="font-bold text-white text-md">上班</p>
-              </div>
-              }
-              {!route[0].workStatus &&
-              <div className="flex justify-center items-center rounded-xl bg-go2home h-6 w-12 ml-4">
-                <p className="font-bold text-white text-md">下班</p>
-              </div>
-              }
-              <Box sx={{ flexGrow: 1 }} />
-              {/* <IconButton size="small">
-                <MoreVertIcon />
-              </IconButton> */}
-            </div>
-            
-            <div>
-              {/* routes info */}
-              {route[0].stations.map((station) => (
-                <div key={station.id}>
-                  {singleStationInfo(station)}
+          <Link href={`/driver/singleRide?id=${route[0].id}`}>
+            <div className="mx-2 my-4">
+              <div className="flex justify-between items-center">
+                {/* first row */}
+                <p className="ml-2">{getDateInChinese(route[0].date)}</p>
+                {route[0].workStatus &&
+                <div className="flex justify-center items-center rounded-xl bg-go2work h-6 w-12 ml-4">
+                  <p className="font-bold text-white text-md">上班</p>
                 </div>
-              ))}
+                }
+                {!route[0].workStatus &&
+                <div className="flex justify-center items-center rounded-xl bg-go2home h-6 w-12 ml-4">
+                  <p className="font-bold text-white text-md">下班</p>
+                </div>
+                }
+                <Box sx={{ flexGrow: 1 }} />
+                {/* <IconButton size="small">
+                  <MoreVertIcon />
+                </IconButton> */}
+              </div>
+              
+              <div>
+                {/* routes info */}
+                {route[0].stations.map((station) => (
+                  <div key={station.id}>
+                    {singleStationInfo(station)}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          </Link>
           }
 
         </div>
