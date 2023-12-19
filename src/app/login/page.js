@@ -13,6 +13,10 @@ export default function Login() {
 
   const router = useRouter()
 
+  function registration(event) {
+    router.push("/login/register")
+  }
+
   function login(event) {
     // Get values from the form
     event.preventDefault();
@@ -68,15 +72,17 @@ export default function Login() {
       <form onSubmit={login} className="mt-16 flex flex-col">
         <div className="flex justify-between items-stretch mb-2">
           <label for="email" className="px-2">Email:</label>
-          <input type="text" id="email" name="email" required className="rounded-xl px-1 mx-1"/>
+          <input type="text" id="email" name="email" required size="23" className="rounded-xl px-1 mx-1"/>
         </div>
         <div className="flex justify-between items-stretch mt-2">
           <label for="password" className="px-2">Password:</label>
-          <input type="password" id="password" name="password" required className="rounded-xl px-1 mx-1" />
+          <input type="password" id="password" name="password" required size="23" className="rounded-xl px-1 mx-1" />
         </div>
         
         <button type="submit" className="self-center text-center w-3/12 mt-16 pt-0.5 pb-0.5 rounded-xl bg-[#757575] text-white">登入</button>
       </form>
+
+      <button type="button" onClick={registration} className="self-center text-center w-3/12 mt-4 pt-0.5 pb-0.5 rounded-xl bg-red-400 text-white">註冊</button>
     </div>
   );
 }
