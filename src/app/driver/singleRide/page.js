@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import Link from "next/link";
 import SettingsIcon from '@mui/icons-material/Settings';
 import EmailIcon from '@mui/icons-material/Email';
+import axios from "axios";
 
 export default function SingleRide(props) {
 
@@ -68,29 +69,29 @@ export default function SingleRide(props) {
       }
     ]
 
-    const [date, setDate] = useState(null);
-    const [id, setId] = useState(4);
+    const [routeid, setrid] = useState(60);
+    const [route, setRoute] = useState(fake[0]);
 
     useEffect(() => {
         const now = new Date();
         const currentDateTime = now.toLocaleString();
-        setDate(currentDateTime);
+        //setDate(currentDateTime);
       }, []
     )
 
     useEffect(() => {
-        fetch('https://api-dev.cloudnative23.com/me')
+      axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes/${routeid}`, {method: 'get', withCredentials: true })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.json();
+            return response.data
         })
         .then(data => {
             // Handle the successful login response
             console.log(data);
-            setId(data.id)
-            setDate(data.date)
+            //setId(data.id)
+            setRoute(data);
         })
         .catch(error => {
             // Handle errors
@@ -106,17 +107,17 @@ export default function SingleRide(props) {
         </div>
 
         <div className='flex justify-between'>
-          <div className="pt-6 mb-0 ml-3 text-center text-orange-600"> {date} </div>
+          <div className="pt-6 mb-0 ml-3 text-center text-orange-600"> {route.date} </div>
           <div className="pt-6 mt-0 mr-3 text-center text-orange-600"> 上班 </div>
         </div>
         
         <div className='text-orange-600 mt-8 mb-4 ml-3'> 路線資訊 </div>
         <div className="w-10/12 self-center flex flex-col rounded-md bg-white " >  
-            {fake[0].stations.map(station => (
+            {route.stations.map(station => (
                 <div className='grid grid-cols-12 px-1 my-2'> 
                   <div className='col-span-2'>
-                    {station.on.includes(id) ? <div className='bg-[#E4F8CC] text-sm m-auto w-9 text-center'> 上車 </div> : <div> </div>}
-                    {station.off.includes(id) ? <div className='bg-[#FFE2E3] text-sm m-auto w-9 text-center'> 下車 </div>: <div> </div>}
+                    {/* {station.on.includes(id) ? <div className='bg-[#E4F8CC] text-sm m-auto w-9 text-center'> 上車 </div> : <div> </div>}
+                    {station.off.includes(id) ? <div className='bg-[#FFE2E3] text-sm m-auto w-9 text-center'> 下車 </div>: <div> </div>} */}
                   </div>
                   <div className='col-span-2'> {station.datetime.substring(station.datetime.indexOf("T")+1, station.datetime.length)} </div>
                   <div className='col-span-8 text-center'> {station.name} </div>
