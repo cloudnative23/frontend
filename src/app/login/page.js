@@ -31,7 +31,7 @@ export default function Login() {
       .then(response => {
         if (!response.ok) {
           // alert('ok')
-          // alert(response.status);
+          //console.log(JSON.stringify(response));
           //throw new Error('Network response was not ok');
         }
       })
