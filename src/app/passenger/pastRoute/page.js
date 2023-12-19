@@ -102,8 +102,7 @@ export default function App() {
           className="flex justify-between rounded-xl bg-white px-3 text-sm text-gray_dark peer-checked:bg-passenger_dark peer-checked:text-white"
         />
       </div>
-
-      <div className="grid h-3/4 w-full grid-cols-2 overflow-y-scroll">
+      <div className="grid max-h-[85%] w-full grid-cols-2 overflow-y-auto">
         {allRoute
           .filter((route) => {
             switch (filter) {
