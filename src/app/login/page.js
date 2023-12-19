@@ -82,7 +82,7 @@ export default function Login() {
         <button type="submit" className="self-center text-center w-3/12 mt-16 pt-0.5 pb-0.5 rounded-xl bg-[#757575] text-white">登入</button>
       </form>
 
-      <button type="button" onClick={registration} className="self-center text-center w-3/12 mt-4 pt-0.5 pb-0.5 rounded-xl bg-red-400 text-white">註冊</button>
+      <button type="button" onClick={registration} className="self-center text-center w-3/12 mt-4 pt-0.5 pb-0.5 rounded-xl bg-white text-[#757575]">註冊</button>
     </div>
   );
 }

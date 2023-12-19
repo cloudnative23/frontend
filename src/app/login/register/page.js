@@ -112,7 +112,7 @@ export default function Login() {
           <input type="text" id="phone" name="phone" required size="23" className="rounded-xl px-1" />
         </div>
 
-        <button type="submit" className="self-center text-center w-3/12 mt-16 pt-0.5 pb-0.5 rounded-xl bg-[#757575] text-white">登入</button>
+        <button type="submit" className="self-center text-center w-3/12 mt-16 pt-0.5 pb-0.5 rounded-xl bg-[#757575] text-white">註冊</button>
       </form>
     </div>
   );
