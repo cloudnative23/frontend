@@ -33,6 +33,7 @@ function Navbar({mode}) {
               component="a"
               href={`/driver`}
               sx={{
+                marginLeft: -1,
                 mr: 2,
                 display: 'flex',
                 // fontFamily: 'monospace',
@@ -79,6 +80,7 @@ function Navbar({mode}) {
               component="a"
               href={`/passenger`}
               sx={{
+                marginLeft: -1,
                 mr: 2,
                 display: 'flex',
                 // fontFamily: 'monospace',

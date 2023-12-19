@@ -361,7 +361,7 @@ export default function Driver() {
 
       <div className="my-4" />
 
-      <div className="ml-6 mb-4">
+      <div className="ml-4 mb-4">
         <p className="text-sm text-driver_dark">最近的行程</p>
       </div>
 
