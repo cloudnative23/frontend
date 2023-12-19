@@ -31,12 +31,12 @@ export default function Route({props,startStation,endStation,myRequest}) {
         <div className="bg-white mx-5 my-1 w-full h-40">
             <div className="ml-2.5 mt-2 flex">{date.getFullYear()} / {date.getMonth() + 1} / {date.getDate()} ({weekMap[date.getDay()]})</div>
             <div className="flex mt-2">
-                <p className="bg-lime-400 text-black w-9 ml-4">上車</p>
+                <p className="bg-go2work_light text-black w-9 ml-4 text-sm text-center py-0.5">上車</p> 
                 <p className='w-24 ml-1'> {on.datetime.slice(-8,-3)} </p>
                 <p className='w-auto ml-4'> {on.name} </p>
             </div>
             <div className="flex mt-2">
-                <p className="bg-red-400 text-black w-9 ml-4">下車</p>
+                <p className="bg-go2home_light text-black w-9 ml-4 text-sm text-center py-0.5">下車</p>
                 <p className='w-24 ml-1'> {off.datetime.slice(-8,-3)} </p> 
                 <p className='w-auto ml-4'> {off.name}</p>
             </div>
