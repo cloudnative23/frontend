@@ -126,7 +126,7 @@ export default function App() {
         />
       </div>
 
-      <div className="grid h-3/4 w-full grid-cols-2 overflow-y-scroll">
+      <div className="grid max-h-[85%] w-full grid-cols-2 overflow-y-auto">
         {allRoute
           .filter((route) => {
             switch (filter) {
