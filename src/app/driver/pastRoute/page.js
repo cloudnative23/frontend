@@ -118,9 +118,11 @@ export default function App() {
                 return route.carInfo.capacity > route.passengers.length
             }
           })
-          .map((route) => (
-            <Route route={route} />
-          ))
+          .map((route) => (<>
+            <Link href={`singleRide?id=${route.id}`}>
+              <Route route={route} />
+            </Link>
+          </>))
         }
       </div>
     </>
