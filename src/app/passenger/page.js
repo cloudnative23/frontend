@@ -121,10 +121,18 @@ export default function Passenger() {
       <div className="flex justify-center">
         <div className="bg-white w-11/12 rounded-xl">
           <div className="flex justify-center space-x-2 my-2">
-            <IndexButton mode="passenger" name="尋找行程" icon="Search" />
-            <IndexButton mode="passenger" name="查看請求" icon="CheckMail" />
-            <IndexButton mode="passenger" name="查看行程" icon="CheckSchedule" />
-            <IndexButton mode="passenger" name="共乘紀錄" icon="AllSchedule" />
+            <Link href={"passenger/search"}>
+              <IndexButton mode="passenger" name="尋找行程" icon="Search" />
+            </Link>
+            <Link href={"passenger/allRequest"}>
+              <IndexButton mode="passenger" name="查看請求" icon="CheckMail" />
+            </Link>
+            <Link href={"passenger/futureRoute"}>
+              <IndexButton mode="passenger" name="查看行程" icon="CheckSchedule" />
+            </Link>
+            <Link href={"passenger/pastRoute"}>
+              <IndexButton mode="passenger" name="共乘紀錄" icon="AllSchedule" />
+            </Link>
           </div>
         </div>
       </div>
