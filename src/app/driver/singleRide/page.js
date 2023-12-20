@@ -5,6 +5,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import EmailIcon from '@mui/icons-material/Email';
 import axios from "axios";
 import { useSearchParams } from 'next/navigation'
+import { getTime } from '../_components/utils';
 
 export default function SingleRide(props) {
 
@@ -14,56 +15,16 @@ export default function SingleRide(props) {
     const fake = [
       {
         "id": 10,
-        "date": "2023-10-22",
+        "date": "",
         "workStatus": false,
         "status": "available",
-        "stations": [
-          {
-            "id": 3,
-            "name": "台積電新竹3廠東側門",
-            "datetime": "2023-10-22T17:30",
-            "on-passengers": [
-              2,
-              4
-            ],
-            "off-passengers": []
-          },
-          {
-            "id": 1,
-            "name": "台北車站",
-            "datetime": "2023-10-22T17:50",
-            "on-passengers": [],
-            "off-passengers": [
-              4
-            ]
-          },
-          {
-            "id": 2,
-            "name": "台大校門口",
-            "datetime": "2023-10-22T18:10",
-            "on-passengers": [],
-            "off-passengers": [
-              4
-            ]
-          }
-        ],
+        "stations": [],
         "carInfo": {
           "color": "紅色",
           "capacity": 4,
           "licensePlateNumber": "ABC-1234"
         },
-        "passengers": [
-          {
-            "id": 2,
-            "name": "Bill Gates",
-            "phone": "0982104928"
-          },
-          {
-            "id": 4,
-            "name": "Paul",
-            "phone": "0954201859"
-          }
-        ],
+        "passengers": [],
         "driver": {
           "id": 3,
           "name": "John James",
@@ -121,11 +82,11 @@ export default function SingleRide(props) {
         </div>
 
         <div className='flex justify-between'>
-          <div className="pt-6 mb-0 ml-3 text-center text-orange-600"> {route.date} </div>
-          <div className="pt-6 mt-0 mr-3 text-center text-orange-600"> 上班 </div>
+          <div className="pt-6 mb-0 ml-3 text-center text-driver_dark"> {route.date} </div>
+          <div className="pt-6 mt-0 mr-3 text-center text-driver_dark"> {route.workStatus ? "上班" : "下班"} </div>
         </div>
         
-        <div className='text-orange-600 mt-8 mb-4 ml-3'> 路線資訊 </div>
+        <div className='text-driver_dark mt-8 mb-4 ml-3'> 路線資訊 </div>
         <div className="w-10/12 self-center flex flex-col rounded-md bg-white " >  
             {route.stations.map(station => (
                 <div className='grid grid-cols-12 px-1 my-2' key={station.id}> 
@@ -133,7 +94,7 @@ export default function SingleRide(props) {
                     {/* {station.on.includes(id) ? <div className='bg-[#E4F8CC] text-sm m-auto w-9 text-center'> 上車 </div> : <div> </div>}
                     {station.off.includes(id) ? <div className='bg-[#FFE2E3] text-sm m-auto w-9 text-center'> 下車 </div>: <div> </div>} */}
                   </div>
-                  <div className='col-span-2'> {station.datetime.substring(station.datetime.indexOf("T")+1, station.datetime.length)} </div>
+                  <div className='col-span-2'> {getTime(station.datetime)} </div>
                   <div className='col-span-8 text-center'> {station.name} </div>
                 </div>
             )
@@ -142,7 +103,7 @@ export default function SingleRide(props) {
 
 
 
-        <div className='text-orange-600 mt-8 mb-4 ml-3'> 司機與車輛資訊 </div>
+        <div className='text-driver_dark mt-8 mb-4 ml-3'> 乘客資訊 </div>
         <div className="w-10/12 self-center flex flex-col " >
             {route.passengers.map( passenger => (
               <div className='px-2 py-2 my-2 rounded-md bg-white' key={passenger.id}>
