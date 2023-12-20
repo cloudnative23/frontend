@@ -74,19 +74,7 @@ export default function SingleRide(props) {
           });
           console.error('There was a problem with the fetch operation:', error);
         });
-    }
-  }, [])
-
-  function WorkComponent(route, station) {
-    switch (station.id) {
-    // case route["on-station"].id:
-    //   return (<div className='bg-go2work_light text-center px-2 w-fit'>上車</div>)
-    // case route["off-station"].id:
-    //   return (<div className='bg-go2home_light text-center px-2 w-fit'>下車</div>)
-    default:
-      return <div></div>
-    }
-  }
+    }, [])
 
     return (
       <div className="flex flex-col items-center bg-[#EFF6F9] items-stretch text-sm overflow-y-scroll h-full">
@@ -150,7 +138,6 @@ export default function SingleRide(props) {
                 </div>
             </div> */}
         </div>
-      </>)}
     </div>
   );
 }
