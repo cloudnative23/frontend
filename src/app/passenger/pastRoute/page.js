@@ -117,8 +117,8 @@ export default function App() {
             }
           })
           .map((route) => (
-            <Link href={`/passenger/singleRide?id=${route.id}`}>
-              <Route key={route.id} route={route} />
+            <Link key={route.id} href={`/passenger/singleRide?id=${route.id}`}>
+              <Route route={route} />
             </Link>
           ))}
       </div>

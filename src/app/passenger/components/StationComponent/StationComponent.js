@@ -185,6 +185,6 @@ const StationsComponent = forwardRef(
   },
 );
 
-StationsComponent.displayName = "StationsComponent"
+StationsComponent.displayName = "StationsComponent";
 
 export default memo(StationsComponent);

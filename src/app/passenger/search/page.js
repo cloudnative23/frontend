@@ -288,7 +288,11 @@ export default function Passenger() {
               請選擇起點
             </option>
             {stations.map((e, idx) => {
-              return <option key={e.id} value={e.id}>{e.name}</option>;
+              return (
+                <option key={e.id} value={e.id}>
+                  {e.name}
+                </option>
+              );
             })}
           </select>
           <input ref={StartTimeRef} type="time" className="rounded-xl" />
@@ -303,7 +307,11 @@ export default function Passenger() {
               請選擇終點
             </option>
             {stations.map((e, idx) => {
-              return <option key={e.id} value={e.id}>{e.name}</option>;
+              return (
+                <option key={e.id} value={e.id}>
+                  {e.name}
+                </option>
+              );
             })}
           </select>
           <input ref={EndTimeRef} type="time" className="rounded-xl" />

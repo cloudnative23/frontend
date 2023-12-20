@@ -385,35 +385,35 @@ export default function Driver() {
 
           {/* Has schedule */}
           {hasSchedule && (
-          <Link href={`/driver/singleRide?id=${route[0].id}`}>
-            <div className="mx-2 my-4">
-              <div className="flex items-center justify-between">
-                {/* first row */}
-                <p className="ml-2">{getDateInChinese(route[0].date)}</p>
-                {route[0].workStatus && (
-                  <div className="ml-4 flex h-6 w-12 items-center justify-center rounded-xl bg-go2work">
-                    <p className="text-md font-bold text-white">上班</p>
-                  </div>
-                )}
-                {!route[0].workStatus && (
-                  <div className="ml-4 flex h-6 w-12 items-center justify-center rounded-xl bg-go2home">
-                    <p className="text-md font-bold text-white">下班</p>
-                  </div>
-                )}
-                <Box sx={{ flexGrow: 1 }} />
-                {/* <IconButton size="small">
+            <Link href={`/driver/singleRide?id=${route[0].id}`}>
+              <div className="mx-2 my-4">
+                <div className="flex items-center justify-between">
+                  {/* first row */}
+                  <p className="ml-2">{getDateInChinese(route[0].date)}</p>
+                  {route[0].workStatus && (
+                    <div className="ml-4 flex h-6 w-12 items-center justify-center rounded-xl bg-go2work">
+                      <p className="text-md font-bold text-white">上班</p>
+                    </div>
+                  )}
+                  {!route[0].workStatus && (
+                    <div className="ml-4 flex h-6 w-12 items-center justify-center rounded-xl bg-go2home">
+                      <p className="text-md font-bold text-white">下班</p>
+                    </div>
+                  )}
+                  <Box sx={{ flexGrow: 1 }} />
+                  {/* <IconButton size="small">
                 <MoreVertIcon />
               </IconButton> */}
-              </div>
+                </div>
 
-              <div>
-                {/* routes info */}
-                {route[0].stations.map((station) => (
-                  <div key={station.id}>{singleStationInfo(station)}</div>
-                ))}
+                <div>
+                  {/* routes info */}
+                  {route[0].stations.map((station) => (
+                    <div key={station.id}>{singleStationInfo(station)}</div>
+                  ))}
+                </div>
               </div>
-            </div>
-          </Link>
+            </Link>
           )}
         </div>
       </div>
