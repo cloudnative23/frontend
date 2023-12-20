@@ -141,7 +141,9 @@ export default function App() {
             }
           })
           .map((route) => (
-            <Route key={route.id} route={route} onDelete={() => handleDelete(route.id)} />
+            <Link href={`/passenger/singleRide?id=${route.id}`}>
+              <Route key={route.id} route={route} onDelete={() => handleDelete(route.id)} />
+            </Link>
           ))}
       </div>
     </>

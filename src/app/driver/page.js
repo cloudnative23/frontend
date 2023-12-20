@@ -385,6 +385,7 @@ export default function Driver() {
 
           {/* Has schedule */}
           {hasSchedule && (
+          <Link href={`/driver/singleRide?id=${route[0].id}`}>
             <div className="mx-2 my-4">
               <div className="flex items-center justify-between">
                 {/* first row */}
@@ -412,6 +413,7 @@ export default function Driver() {
                 ))}
               </div>
             </div>
+          </Link>
           )}
         </div>
       </div>
