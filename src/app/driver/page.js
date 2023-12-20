@@ -229,8 +229,10 @@ export default function Driver() {
       method: 'get',
       withCredentials: true,
     }).then((res) => {
-      setHasSchedule(true);
-      setRoute(res.data);
+      if (res.data.length > 0) {
+        setHasSchedule(true);
+        setRoute(res.data);
+      }
     }).catch((error) => {
       setHasSchedule(false);
       Swal.fire({
@@ -308,7 +310,7 @@ export default function Driver() {
         </div>
 
         {station['on-passengers'].length > 0 &&
-        <div className="flex ml-32 mb-2">
+        <div className="flex ml-28 mb-2">
           {station['on-passengers'].map((passenger) => (
             <div key={passenger} className="ml-2">
               {makeOnAvatar(passenger)}
@@ -317,7 +319,7 @@ export default function Driver() {
         </div>
         }
         {station['off-passengers'].length > 0 &&
-        <div className="flex ml-32 mb-2">
+        <div className="flex ml-28 mb-2">
           {station['off-passengers'].map((passenger) => (
             <div key={passenger} className="ml-2">
               {makeOffAvatar(passenger)}
@@ -359,7 +361,7 @@ export default function Driver() {
 
       <div className="my-4" />
 
-      <div className="ml-6 mb-4">
+      <div className="ml-4 mb-4">
         <p className="text-sm text-driver_dark">最近的行程</p>
       </div>
 
@@ -376,37 +378,35 @@ export default function Driver() {
 
           {/* Has schedule */}
           {hasSchedule &&
-          <Link href={`/driver/singleRide?id=${route[0].id}`}>
-            <div className="mx-2 my-4">
-              <div className="flex justify-between items-center">
-                {/* first row */}
-                <p className="ml-2">{getDateInChinese(route[0].date)}</p>
-                {route[0].workStatus &&
-                <div className="flex justify-center items-center rounded-xl bg-go2work h-6 w-12 ml-4">
-                  <p className="font-bold text-white text-md">上班</p>
-                </div>
-                }
-                {!route[0].workStatus &&
-                <div className="flex justify-center items-center rounded-xl bg-go2home h-6 w-12 ml-4">
-                  <p className="font-bold text-white text-md">下班</p>
-                </div>
-                }
-                <Box sx={{ flexGrow: 1 }} />
-                {/* <IconButton size="small">
-                  <MoreVertIcon />
-                </IconButton> */}
+          <div className="mx-2 my-4">
+            <div className="flex justify-between items-center">
+              {/* first row */}
+              <p className="ml-2">{getDateInChinese(route[0].date)}</p>
+              {route[0].workStatus &&
+              <div className="flex justify-center items-center rounded-xl bg-go2work h-6 w-12 ml-4">
+                <p className="font-bold text-white text-md">上班</p>
               </div>
-              
-              <div>
-                {/* routes info */}
-                {route[0].stations.map((station) => (
-                  <div key={station.id}>
-                    {singleStationInfo(station)}
-                  </div>
-                ))}
+              }
+              {!route[0].workStatus &&
+              <div className="flex justify-center items-center rounded-xl bg-go2home h-6 w-12 ml-4">
+                <p className="font-bold text-white text-md">下班</p>
               </div>
+              }
+              <Box sx={{ flexGrow: 1 }} />
+              {/* <IconButton size="small">
+                <MoreVertIcon />
+              </IconButton> */}
             </div>
-          </Link>
+            
+            <div>
+              {/* routes info */}
+              {route[0].stations.map((station) => (
+                <div key={station.id}>
+                  {singleStationInfo(station)}
+                </div>
+              ))}
+            </div>
+          </div>
           }
 
         </div>
