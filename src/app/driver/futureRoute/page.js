@@ -35,24 +35,26 @@ function Route({ route, onDelete }) {
             </div>
           </div>
         </div>
-        <div className="justify-begin my-2 flex space-x-1">
-          {workStatus ? (
-            <div className="rounded-xl bg-go2work px-2 text-white">上班</div>
-          ) : (
-            <div className="rounded-xl bg-go2home px-2 text-white">下班</div>
-          )}
-          <div className="w-fit rounded-3xl bg-driver_dark px-2 text-white">
-            {route.passengers.length} / {route.carInfo.capacity}人
+        <Link href={`singleRide?id=${route.id}`}>
+          <div className="justify-begin my-2 flex space-x-1">
+            {workStatus ? (
+              <div className="rounded-xl bg-go2work px-2 text-white">上班</div>
+            ) : (
+              <div className="rounded-xl bg-go2home px-2 text-white">下班</div>
+            )}
+            <div className="w-fit rounded-3xl bg-driver_dark px-2 text-white">
+              {route.passengers.length} / {route.carInfo.capacity}人
+            </div>
           </div>
-        </div>
-        <div className="grid grid-cols-[27%_73%]">
-          {route.stations.map((station) => (
-            <>
-              <div>{getTime(station.datetime)}</div>
-              <div>{station.name}</div>
-            </>
-          ))}
-        </div>
+          <div className="grid grid-cols-[27%_73%]">
+            {route.stations.map((station) => (
+              <>
+                <div>{getTime(station.datetime)}</div>
+                <div>{station.name}</div>
+              </>
+            ))}
+          </div>
+        </Link>
       </div>
     </>
   );
@@ -144,9 +146,7 @@ export default function App() {
             }
           })
           .map((route) => (<>
-            <Link href={`singleRide?id=${route.id}`}>
-              <Route route={route} onDelete={() => handleDelete(route.id)} />
-            </Link>
+            <Route route={route} onDelete={() => handleDelete(route.id)} />
           </>))
         }
       </div>
