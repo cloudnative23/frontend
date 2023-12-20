@@ -4,6 +4,6 @@ WORKDIR /frontend
 
 COPY . .
 
-RUN yarn
+RUN yarn && yarn build
 
-CMD ["yarn", "next", "dev", "-p", "80"]
+CMD ["yarn", "next", "start", "-p", "80"]
