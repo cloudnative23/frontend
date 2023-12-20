@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Request({props}) {
     const weekMap = ['一','二','三','四','五','六','日']
     
-    const statusMap = {'new':'等待回復','accepted':'被接受','denied':'被拒絕','expired':'已過期','deleted':'已刪除','canceled':'已取消'}
+    const statusMap = {'new':'等待回覆','accepted':'被接受','denied':'被拒絕','expired':'已過期','deleted':'已刪除','canceled':'已取消'}
     const statusColorMap = {'new':'text-dark_o','accepted':'text-lime-600','denied':'text-rose-500','expired':'text-slate-500','deleted':'text-slate-500','canceled':'text-slate-500'}
     // const encodedInfo = encodeURIComponent(JSON.stringify(info));
     
@@ -12,17 +12,17 @@ export default function Request({props}) {
     const encodedInfo = encodeURIComponent(JSON.stringify(props));
 
     return (
-        <Link href="/passenger/checkRequest" as={`/passenger/checkRequest?info=${encodedInfo}`} className="bg-white mx-5 my-1 w-full h-36">
+        <Link href="/passenger/checkRequest" as={`/passenger/checkRequest?info=${encodedInfo}`} className="bg-white  my-1 w-full h-36 mx-4">
             <div className="ml-2.5 mt-2 flex">{date.getFullYear()} / {date.getMonth() + 1} / {date.getDate()} ({weekMap[date.getDay()]})</div>
             <div className="flex mt-2">
-                <p className="bg-lime-400 text-black w-9 ml-4">上車</p>
-                <p className='w-24 ml-1'> {props['on-station'].datetime.slice(-8,-3)} </p>
-                <p className='w-auto ml-4'> {props['on-station'].name} </p>
+                <p className="bg-go2work_light text-black w-9 ml-4 text-sm text-center py-0.5">上車</p>           
+                <p className='w-20 ml-1'> {props['on-station'].datetime.slice(-8,-3)} </p>
+                <p className='w-auto'> {props['on-station'].name} </p>
             </div>
             <div className="flex mt-2">
-                <p className="bg-red-400 text-black w-9 ml-4">下車</p>
-                <p className='w-24 ml-1'> {props['off-station'].datetime.slice(-8,-3)} </p> 
-                <p className='w-auto ml-4'> {props['off-station'].name}</p>
+                <p className="bg-go2home_light text-black w-9 ml-4 text-sm text-center py-0.5">下車</p>
+                <p className='w-20 ml-1 '> {props['off-station'].datetime.slice(-8,-3)} </p> 
+                <p className='w-auto'> {props['off-station'].name}</p>
             </div>
             <div className="flex text-dark_o ml-4 mt-2.5">
                 <p>司機</p>

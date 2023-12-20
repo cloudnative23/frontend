@@ -9,11 +9,11 @@ import Link from "next/link";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-import { getTime, getDate } from "../_components/utils";
-import HeaderBar from "../_components/HeaderComponent/HeaderComponnet";
-import RadioComponent from "../_components/RadioComponent/RadioComponent";
+import { getTime, getDate } from "../components/utils";
+import HeaderBar from "../components/HeaderComponent/HeaderComponnet";
+import RadioComponent from "../components/RadioComponent/RadioComponent";
 
-function Route({ route }) {
+function Route({ route, onDelete }) {
 
   let workStatus = route.workStatus
 
@@ -27,6 +27,11 @@ function Route({ route }) {
       >
         <div className="flex justify-between">
           <div>{getDate(route.date)}</div>
+          <div className="flex">
+            {/* <div onClick={onDelete}>
+              <DeleteIcon sx={{ fontSize: '1rem' }} />
+            </div> */}
+          </div>
         </div>
         <div className="justify-begin my-2 flex space-x-1">
           {workStatus ? (
@@ -57,7 +62,7 @@ export default function App() {
   const [allRoute, setAllRoute] = useState([]);
 
   function fetchAllRoute() {
-    axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes?mode=driver-history`, {
+    axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes?mode=passenger-future`, {
       method: 'get',
       withCredentials: true,
     }).then((res) => {
@@ -87,23 +92,39 @@ export default function App() {
 
   useEffect(fetchAllRoute, [])
 
+  function handleDelete(id) {
+    axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes/${id}`, {
+      method: 'delete',
+      withCredentials: true,
+    }).then((res) => {
+      Swal.fire({
+        icon: "success",
+        title: "刪除成功",
+      })
+    }).catch((error) => {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.response.data.message}`,
+      })
+    }).finally(fetchAllRoute)
+  }
+
   return (
     <>
-      <HeaderBar text={"共 乘 紀 錄"} />
+      <HeaderBar text={"所 有 行 程"} />
       <div className="m-2 flex flex-row space-x-1">
         <RadioComponent
           list={[
             { id: "all", text: "全部" },
             { id: "to-work", text: "上班" },
             { id: "to-home", text: "下班" },
-            { id: "pass-avalible", text: "乘客未滿" },
           ]}
           defaultValue={"all"}
           onChange={(id) => handleFilterChange(id)}
-          className="flex justify-between rounded-xl bg-white px-3 text-sm text-gray_dark peer-checked:bg-driver_dark peer-checked:text-white"
+          className="flex justify-between rounded-xl bg-white px-3 text-sm text-gray_dark peer-checked:bg-passenger_dark peer-checked:text-white"
         />
       </div>
-
       <div className="grid max-h-[85%] w-full grid-cols-2 overflow-y-auto">
         {allRoute
           .filter((route) => {
@@ -114,15 +135,11 @@ export default function App() {
                 return route.workStatus;
               case "to-home":
                 return !route.workStatus;
-              case "pass-avalible":
-                return route.carInfo.capacity > route.passengers.length
             }
           })
-          .map((route) => (<>
-            <Link href={`singleRide?id=${route.id}`}>
-              <Route route={route} />
-            </Link>
-          </>))
+          .map((route) => (
+            <Route route={route} onDelete={() => handleDelete(route.id)} />
+          ))
         }
       </div>
     </>

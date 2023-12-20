@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -130,7 +129,7 @@ export default function App() {
         />
       </div>
 
-      <div className="grid h-3/4 w-full grid-cols-2 overflow-y-scroll">
+      <div className="grid max-h-[85%] w-full grid-cols-2 overflow-y-auto">
         {allRoute
           .filter((route) => {
             switch (filter) {
@@ -144,9 +143,11 @@ export default function App() {
                 return route.carInfo.capacity > route.passengers.length
             }
           })
-          .map((route) => (
-            <Route route={route} onDelete={() => handleDelete(route.id)} />
-          ))
+          .map((route) => (<>
+            <Link href={`singleRide?id=${route.id}`}>
+              <Route route={route} onDelete={() => handleDelete(route.id)} />
+            </Link>
+          </>))
         }
       </div>
     </>

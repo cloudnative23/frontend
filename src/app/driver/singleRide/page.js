@@ -1,8 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react'
-import Link from "next/link";
-import SettingsIcon from '@mui/icons-material/Settings';
-import EmailIcon from '@mui/icons-material/Email';
+import { useState, useEffect } from 'react'
 import axios from "axios";
 import { useSearchParams } from 'next/navigation'
 import { getTime } from '../_components/utils';
@@ -69,11 +66,27 @@ export default function SingleRide(props) {
             setRoute(curRoute);
         })
         .catch(error => {
-            // Handle errors
-            console.error('There was a problem with the fetch operation:', error);
+          // Handle errors
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: `${error.response.data.message}`,
+          });
+          console.error('There was a problem with the fetch operation:', error);
         });
-      }, []
-    )
+    }
+  }, [])
+
+  function WorkComponent(route, station) {
+    switch (station.id) {
+    // case route["on-station"].id:
+    //   return (<div className='bg-go2work_light text-center px-2 w-fit'>上車</div>)
+    // case route["off-station"].id:
+    //   return (<div className='bg-go2home_light text-center px-2 w-fit'>下車</div>)
+    default:
+      return <div></div>
+    }
+  }
 
     return (
       <div className="flex flex-col items-center bg-[#EFF6F9] items-stretch text-sm overflow-y-scroll h-full">
@@ -137,6 +150,7 @@ export default function SingleRide(props) {
                 </div>
             </div> */}
         </div>
-      </div>
-    );
-  }
+      </>)}
+    </div>
+  );
+}

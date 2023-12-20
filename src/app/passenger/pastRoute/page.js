@@ -9,9 +9,9 @@ import Link from "next/link";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-import { getTime, getDate } from "../_components/utils";
-import HeaderBar from "../_components/HeaderComponent/HeaderComponnet";
-import RadioComponent from "../_components/RadioComponent/RadioComponent";
+import { getTime, getDate } from "../components/utils";
+import HeaderBar from "../components/HeaderComponent/HeaderComponnet";
+import RadioComponent from "../components/RadioComponent/RadioComponent";
 
 function Route({ route }) {
 
@@ -34,7 +34,7 @@ function Route({ route }) {
           ) : (
             <div className="rounded-xl bg-go2home px-2 text-white">下班</div>
           )}
-          <div className="w-fit rounded-3xl bg-driver_dark px-2 text-white">
+          <div className="w-fit rounded-3xl bg-passenger_dark px-2 text-white">
             {route.passengers.length} / {route.carInfo.capacity}人
           </div>
         </div>
@@ -57,7 +57,7 @@ export default function App() {
   const [allRoute, setAllRoute] = useState([]);
 
   function fetchAllRoute() {
-    axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes?mode=driver-history`, {
+    axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes?mode=passenger-history`, {
       method: 'get',
       withCredentials: true,
     }).then((res) => {
@@ -96,14 +96,12 @@ export default function App() {
             { id: "all", text: "全部" },
             { id: "to-work", text: "上班" },
             { id: "to-home", text: "下班" },
-            { id: "pass-avalible", text: "乘客未滿" },
           ]}
           defaultValue={"all"}
           onChange={(id) => handleFilterChange(id)}
-          className="flex justify-between rounded-xl bg-white px-3 text-sm text-gray_dark peer-checked:bg-driver_dark peer-checked:text-white"
+          className="flex justify-between rounded-xl bg-white px-3 text-sm text-gray_dark peer-checked:bg-passenger_dark peer-checked:text-white"
         />
       </div>
-
       <div className="grid max-h-[85%] w-full grid-cols-2 overflow-y-auto">
         {allRoute
           .filter((route) => {
@@ -118,11 +116,9 @@ export default function App() {
                 return route.carInfo.capacity > route.passengers.length
             }
           })
-          .map((route) => (<>
-            <Link href={`singleRide?id=${route.id}`}>
-              <Route route={route} />
-            </Link>
-          </>))
+          .map((route) => (
+            <Route route={route} />
+          ))
         }
       </div>
     </>

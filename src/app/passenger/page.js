@@ -69,10 +69,10 @@ export default function Passenger() {
   ];
 
   // use fake data
-  if (route.length === 0) {
-    setHasSchedule(true);
-    setRoute(fakedata);
-  }
+  // if (route.length === 0) {
+  //   setHasSchedule(true);
+  //   setRoute(fakedata);
+  // }
 
   // API
 
@@ -81,8 +81,10 @@ export default function Passenger() {
       method: 'get',
       withCredentials: true,
     }).then((res) => {
-      setHasSchedule(true);
-      setRoute(res.data);
+      if (res.data.length > 0) {
+        setHasSchedule(true);
+        setRoute(res.data);
+      }
     }).catch((error) => {
       setHasSchedule(false);
       Swal.fire({
@@ -93,7 +95,7 @@ export default function Passenger() {
     })
   }
 
-  // useEffect(fetchRoute, []);
+  useEffect(fetchRoute, []);
 
   // function
   function getDateInChinese (date) {
@@ -119,10 +121,18 @@ export default function Passenger() {
       <div className="flex justify-center">
         <div className="bg-white w-11/12 rounded-xl">
           <div className="flex justify-center space-x-2 my-2">
-            <IndexButton mode="passenger" name="尋找行程" icon="Search" />
-            <IndexButton mode="passenger" name="查看請求" icon="CheckMail" />
-            <IndexButton mode="passenger" name="查看行程" icon="CheckSchedule" />
-            <IndexButton mode="passenger" name="共乘紀錄" icon="AllSchedule" />
+            <Link href={"passenger/search"}>
+              <IndexButton mode="passenger" name="尋找行程" icon="Search" />
+            </Link>
+            <Link href={"passenger/allRequest"}>
+              <IndexButton mode="passenger" name="查看請求" icon="CheckMail" />
+            </Link>
+            <Link href={"passenger/futureRoute"}>
+              <IndexButton mode="passenger" name="查看行程" icon="CheckSchedule" />
+            </Link>
+            <Link href={"passenger/pastRoute"}>
+              <IndexButton mode="passenger" name="共乘紀錄" icon="AllSchedule" />
+            </Link>
           </div>
         </div>
       </div>
@@ -134,7 +144,7 @@ export default function Passenger() {
 
       <div className="my-4" />
 
-      <div className="ml-6 mb-4">
+      <div className="ml-4 mb-4">
         <p className="text-sm text-passenger_dark">最近的行程</p>
       </div>
 
@@ -144,7 +154,7 @@ export default function Passenger() {
           {/* No schedule */}
           {!hasSchedule &&
           <div className="flex justify-center items-center my-4">
-            <ErrorOutlineIcon className="text-xl mx-4" />
+            <ErrorOutlineIcon className="text-xl mx-2 mx-4" />
             <p className="text-base">尚未規畫任何未來行程</p>
           </div>
           }
@@ -197,8 +207,10 @@ export default function Passenger() {
                 </div>
                 <div className="flex items-center my-4">
                   <p className="text-passenger_dark ml-4">司機</p>
-                  <img src={route[0]["driver"].avatar} alt="" className="max-h-4 max-w-4 rounded-full mr-2" />
+                  <img src={route[0]["driver"].avatar} alt="" className="max-h-4 max-w-4 rounded-full ml-2 mr-2" />
                   <p className="mr-4">{route[0]["driver"].name}</p>
+                  <p className="text-passenger_dark ml-4">車牌號碼</p>
+                  <p className="ml-2 mr-4">{route[0]["carInfo"].licensePlateNumber}</p>
                 </div>
                 <div className="flex items-center my-4">
                   <p className="text-passenger_dark ml-4">車型</p>
@@ -207,14 +219,14 @@ export default function Passenger() {
                   <p className="ml-2 mr-4">{route[0]["carInfo"].color}</p>
                 </div>
 
-                {/* {route[0].stations.map((station) => (
-                  <div key={station.id}>
-                    {singleStationInfo(station)}
-                  </div>
-                ))} */}
-              </div>
+                  {/* {route[0].stations.map((station) => (
+                    <div key={station.id}>
+                      {singleStationInfo(station)}
+                    </div>
+                  ))} */}
+                </div>
 
-            </div>
+              </div>
           </Link>
           }
 
