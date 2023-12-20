@@ -4,49 +4,25 @@ import Link from "next/link";
 import SettingsIcon from '@mui/icons-material/Settings';
 import EmailIcon from '@mui/icons-material/Email';
 import axios from "axios";
+import { useSearchParams } from 'next/navigation'
+import { getTime } from '@/app/driver/_components/utils';
 
 export default function SingleRide(props) {
+
+  const searchParams = useSearchParams();
+  const rid = parseInt(searchParams.get('id'));
 
     const fake = [
       {
         "id": 10,
-        "date": "2023-10-22",
+        "date": "",
         "workStatus": false,
         "status": "available",
-        "stations": [
-          {
-            "id": 3,
-            "name": "台積電新竹3廠東側門",
-            "datetime": "2023-10-22T17:30",
-            "on-passengers": [
-              2,
-              4
-            ],
-            "off-passengers": []
-          },
-          {
-            "id": 1,
-            "name": "台北車站",
-            "datetime": "2023-10-22T17:50",
-            "on-passengers": [],
-            "off-passengers": [
-              4
-            ]
-          },
-          {
-            "id": 2,
-            "name": "台大校門口",
-            "datetime": "2023-10-22T18:10",
-            "on-passengers": [],
-            "off-passengers": [
-              4
-            ]
-          }
-        ],
+        "stations": [],
         "carInfo": {
-          "color": "紅色",
-          "capacity": 4,
-          "licensePlateNumber": "ABC-1234"
+          "color": "",
+          "capacity": "",
+          "licensePlateNumber": ""
         },
         "passengers": [
           {
@@ -62,15 +38,15 @@ export default function SingleRide(props) {
         ],
         "driver": {
           "id": 3,
-          "name": "John James",
+          "name": "",
           "avatar": "https://example.com/avatar.png",
-          "phone": "0928123456"
+          "phone": ""
         }
       }
     ]
 
     const [id, setID] = useState(null);
-    const [routeid, setrid] = useState(60);
+    const [routeid, setrid] = useState(61);
     const [route, setRoute] = useState(fake[0]);
 
     useEffect(() => {
@@ -89,9 +65,11 @@ export default function SingleRide(props) {
     );
        
     useEffect(() => {
+        //setrid(rid);
+        //console.log("rid = ", rid)
         //let data = {mode: 'search'}
         //axios(`${process.env.NEXT_PUBLIC_API_ROOT}/route?mode=passenger-future&n=1`, {method: 'get', withCredentials: true })
-        axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes/${routeid}`, {method: 'get', withCredentials: true })
+        axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes/${rid}`, {method: 'get', withCredentials: true })
         .then(response => {
             if (!response.ok) {
                 //throw new Error('Network response was not ok');
@@ -113,14 +91,14 @@ export default function SingleRide(props) {
     )
 
     return (
-      <div className="flex flex-col items-center bg-[#F9F3EF] items-stretch text-sm">
+      <div className="flex flex-col items-center bg-[#F9F3EF] items-stretch text-sm overflow-y-scroll h-full">
         <div className="w-11/12 self-center ">
           <div className="bg-white text-center rounded-xl">檢視行程</div>
         </div>
 
         <div className='flex justify-between'>
           <div className="pt-6 mb-0 ml-3 text-center text-orange-600"> {route.date} </div>
-          <div className="pt-6 mt-0 mr-3 text-center text-orange-600"> 上班 </div>
+          <div className="pt-6 mt-0 mr-3 text-center text-orange-600"> {route.workStatus ? "上班" : "下班"} </div>
         </div>
         
         <div className='text-orange-600 mt-8 mb-4 ml-3'> 路線資訊 </div>
@@ -132,7 +110,7 @@ export default function SingleRide(props) {
                     {station["on-passengers"].includes(id) ? <div className='bg-[#E4F8CC] text-sm m-auto w-9 text-center'> 上車 </div> : <div> </div>}
                     {station["off-passengers"].includes(id) ? <div className='bg-[#FFE2E3] text-sm m-auto w-9 text-center'> 下車 </div>: <div> </div>}
                   </div>
-                  <div className='col-span-2 text-center'> {station.datetime.substring(station.datetime.indexOf("T")+1, station.datetime.length)} </div>
+                  <div className='col-span-2 text-center'> { getTime(station.datetime) } </div>
                   <div className='col-span-8 text-center'> {station.name} </div>
                 </div>
             )

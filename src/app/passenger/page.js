@@ -161,71 +161,73 @@ export default function Passenger() {
 
           {/* Has schedule */}
           {hasSchedule &&
-          <div className="mx-2 my-4">
-            <div className="flex justify-between items-center">
-              {/* first row */}
-              <p className="ml-2">{getDateInChinese(route[0].date)}</p>
-              {route[0].workStatus &&
-              <div className="flex justify-center items-center rounded-xl bg-go2work h-6 w-12 ml-4">
-                <p className="font-bold text-white text-md">上班</p>
-              </div>
-              }
-              {!route[0].workStatus &&
-              <div className="flex justify-center items-center rounded-xl bg-go2home h-6 w-12 ml-4">
-                <p className="font-bold text-white text-md">下班</p>
-              </div>
-              }
-              <Box sx={{ flexGrow: 1 }} />
-              {/* <IconButton size="small">
-                <MoreVertIcon />
-              </IconButton> */}
-            </div>
-            
-            <div>
-              <div className="flex items-center my-4">
-                <div className="flex justify-center items-center bg-go2work_light h-6 w-10 ml-4">
-                  <p>上車</p>
+          <Link href={`/passenger/singleRide?id=${route[0].id}`}>
+            <div className="mx-2 my-4">
+              <div className="flex justify-between items-center">
+                {/* first row */}
+                <p className="ml-2">{getDateInChinese(route[0].date)}</p>
+                {route[0].workStatus &&
+                <div className="flex justify-center items-center rounded-xl bg-go2work h-6 w-12 ml-4">
+                  <p className="font-bold text-white text-md">上班</p>
                 </div>
-                <div className="ml-4">
-                  <p>{getTime(route[0]["on-station"].datetime)}</p>
+                }
+                {!route[0].workStatus &&
+                <div className="flex justify-center items-center rounded-xl bg-go2home h-6 w-12 ml-4">
+                  <p className="font-bold text-white text-md">下班</p>
                 </div>
-                <div className="ml-4">
-                  <p>{route[0]["on-station"].name}</p>
-                </div>
+                }
+                <Box sx={{ flexGrow: 1 }} />
+                {/* <IconButton size="small">
+                  <MoreVertIcon />
+                </IconButton> */}
               </div>
-              <div className="flex items-center my-4">
-                <div className="flex justify-center items-center bg-go2home_light h-6 w-10 ml-4">
-                  <p>下車</p>
+              
+              <div>
+                <div className="flex items-center my-4">
+                  <div className="flex justify-center items-center bg-go2work_light h-6 w-10 ml-4">
+                    <p>上車</p>
+                  </div>
+                  <div className="ml-4">
+                    <p>{getTime(route[0]["on-station"].datetime)}</p>
+                  </div>
+                  <div className="ml-4">
+                    <p>{route[0]["on-station"].name}</p>
+                  </div>
                 </div>
-                <div className="ml-4">
-                  <p>{getTime(route[0]["off-station"].datetime)}</p>
+                <div className="flex items-center my-4">
+                  <div className="flex justify-center items-center bg-go2home_light h-6 w-10 ml-4">
+                    <p>下車</p>
+                  </div>
+                  <div className="ml-4">
+                    <p>{getTime(route[0]["off-station"].datetime)}</p>
+                  </div>
+                  <div className="ml-4">
+                    <p>{route[0]["off-station"].name}</p>
+                  </div>
                 </div>
-                <div className="ml-4">
-                  <p>{route[0]["off-station"].name}</p>
+                <div className="flex items-center my-4">
+                  <p className="text-passenger_dark ml-4">司機</p>
+                  <img src={route[0]["driver"].avatar} alt="" className="max-h-4 max-w-4 rounded-full ml-2 mr-2" />
+                  <p className="mr-4">{route[0]["driver"].name}</p>
+                  <p className="text-passenger_dark ml-4">車牌號碼</p>
+                  <p className="ml-2 mr-4">{route[0]["carInfo"].licensePlateNumber}</p>
                 </div>
-              </div>
-              <div className="flex items-center my-4">
-                <p className="text-passenger_dark ml-4">司機</p>
-                <img src={route[0]["driver"].avatar} alt="" className="max-h-4 max-w-4 rounded-full ml-2 mr-2" />
-                <p className="mr-4">{route[0]["driver"].name}</p>
-                <p className="text-passenger_dark ml-4">車牌號碼</p>
-                <p className="ml-2 mr-4">{route[0]["carInfo"].licensePlateNumber}</p>
-              </div>
-              <div className="flex items-center my-4">
-                <p className="text-passenger_dark ml-4">車型</p>
-                <p className="ml-2 mr-4">{route[0]["carInfo"].model}</p>
-                <p className="text-passenger_dark ml-4">車色</p>
-                <p className="ml-2 mr-4">{route[0]["carInfo"].color}</p>
-              </div>
+                <div className="flex items-center my-4">
+                  <p className="text-passenger_dark ml-4">車型</p>
+                  <p className="ml-2 mr-4">{route[0]["carInfo"].model}</p>
+                  <p className="text-passenger_dark ml-4">車色</p>
+                  <p className="ml-2 mr-4">{route[0]["carInfo"].color}</p>
+                </div>
 
-              {/* {route[0].stations.map((station) => (
-                <div key={station.id}>
-                  {singleStationInfo(station)}
+                  {/* {route[0].stations.map((station) => (
+                    <div key={station.id}>
+                      {singleStationInfo(station)}
+                    </div>
+                  ))} */}
                 </div>
-              ))} */}
-            </div>
 
-          </div>
+              </div>
+          </Link>
           }
 
         </div>
