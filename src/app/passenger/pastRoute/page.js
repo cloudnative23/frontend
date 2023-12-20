@@ -1,27 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import axios from "axios";
-import { redirect } from "next/navigation";
+
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-
-import { getTime, getDate } from "../components/utils";
 import HeaderBar from "../components/HeaderComponent/HeaderComponnet";
 import RadioComponent from "../components/RadioComponent/RadioComponent";
+import { getTime, getDate } from "../components/utils";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 function Route({ route }) {
-
-  let workStatus = route.workStatus
+  let workStatus = route.workStatus;
 
   return (
     <>
       <div
         className={
-          "m-2 rounded-lg p-3 text-xs h-fit " +
+          "m-2 h-fit rounded-lg p-3 text-xs " +
           (workStatus ? "bg-[#FAFFFB]" : "bg-[#FFFBFB]")
         }
       >
@@ -52,23 +51,24 @@ function Route({ route }) {
 }
 
 export default function App() {
-
   const [filter, setFilter] = useState("all");
   const [allRoute, setAllRoute] = useState([]);
 
   function fetchAllRoute() {
     axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes?mode=passenger-history`, {
-      method: 'get',
+      method: "get",
       withCredentials: true,
-    }).then((res) => {
-      setAllRoute(res.data)
-    }).catch((error) => {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.response.data.message}`,
-      });
     })
+      .then((res) => {
+        setAllRoute(res.data);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `${error.response.data.message}`,
+        });
+      });
   }
 
   function handleFilterChange(id) {
@@ -85,7 +85,7 @@ export default function App() {
     }
   }
 
-  useEffect(fetchAllRoute, [])
+  useEffect(fetchAllRoute, []);
 
   return (
     <>
@@ -113,13 +113,12 @@ export default function App() {
               case "to-home":
                 return !route.workStatus;
               case "pass-avalible":
-                return route.carInfo.capacity > route.passengers.length
+                return route.carInfo.capacity > route.passengers.length;
             }
           })
           .map((route) => (
-            <Route route={route} />
-          ))
-        }
+            <Route key={route.id} route={route} />
+          ))}
       </div>
     </>
   );

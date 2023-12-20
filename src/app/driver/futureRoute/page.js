@@ -1,26 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import axios from "axios";
+
 import Link from "next/link";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-
-import { getTime, getDate } from "../_components/utils";
 import HeaderBar from "../_components/HeaderComponent/HeaderComponnet";
 import RadioComponent from "../_components/RadioComponent/RadioComponent";
+import { getTime, getDate } from "../_components/utils";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 function Route({ route, onDelete }) {
-
-  let workStatus = route.workStatus
+  let workStatus = route.workStatus;
 
   return (
     <>
       <div
         className={
-          "m-2 rounded-lg p-3 text-xs h-fit " +
+          "m-2 h-fit rounded-lg p-3 text-xs " +
           (workStatus ? "bg-[#FAFFFB]" : "bg-[#FFFBFB]")
         }
       >
@@ -28,10 +27,10 @@ function Route({ route, onDelete }) {
           <div>{getDate(route.date)}</div>
           <div className="flex">
             <Link href={`/driver/editRoute?id=${route.id}`}>
-              <EditIcon sx={{ fontSize: '1rem' }} />
+              <EditIcon sx={{ fontSize: "1rem" }} />
             </Link>
             <div onClick={onDelete}>
-              <DeleteIcon sx={{ fontSize: '1rem' }} />
+              <DeleteIcon sx={{ fontSize: "1rem" }} />
             </div>
           </div>
         </div>
@@ -59,23 +58,24 @@ function Route({ route, onDelete }) {
 }
 
 export default function App() {
-
   const [filter, setFilter] = useState("all");
   const [allRoute, setAllRoute] = useState([]);
 
   function fetchAllRoute() {
     axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes?mode=driver-future`, {
-      method: 'get',
+      method: "get",
       withCredentials: true,
-    }).then((res) => {
-      setAllRoute(res.data)
-    }).catch((error) => {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.response.data.message}`,
-      });
     })
+      .then((res) => {
+        setAllRoute(res.data);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `${error.response.data.message}`,
+        });
+      });
   }
 
   function handleFilterChange(id) {
@@ -92,24 +92,27 @@ export default function App() {
     }
   }
 
-  useEffect(fetchAllRoute, [])
+  useEffect(fetchAllRoute, []);
 
   function handleDelete(id) {
     axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes/${id}`, {
-      method: 'delete',
+      method: "delete",
       withCredentials: true,
-    }).then((res) => {
-      Swal.fire({
-        icon: "success",
-        title: "刪除成功",
+    })
+      .then((res) => {
+        Swal.fire({
+          icon: "success",
+          title: "刪除成功",
+        });
       })
-    }).catch((error) => {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.response.data.message}`,
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `${error.response.data.message}`,
+        });
       })
-    }).finally(fetchAllRoute)
+      .finally(fetchAllRoute);
   }
 
   return (
@@ -140,15 +143,16 @@ export default function App() {
               case "to-home":
                 return !route.workStatus;
               case "pass-avalible":
-                return route.carInfo.capacity > route.passengers.length
+                return route.carInfo.capacity > route.passengers.length;
             }
           })
-          .map((route) => (<>
-            <Link href={`singleRide?id=${route.id}`}>
-              <Route route={route} onDelete={() => handleDelete(route.id)} />
-            </Link>
-          </>))
-        }
+          .map((route) => (
+            <>
+              <Link href={`singleRide?id=${route.id}`}>
+                <Route route={route} onDelete={() => handleDelete(route.id)} />
+              </Link>
+            </>
+          ))}
       </div>
     </>
   );

@@ -1,6 +1,13 @@
 "use client";
 
-import { useRef, useState, forwardRef, useImperativeHandle, memo, useEffect } from "react";
+import {
+  useRef,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  memo,
+  useEffect,
+} from "react";
 
 import Outlined from "@mui/icons-material/Delete";
 
@@ -86,17 +93,17 @@ const StationsComponent = forwardRef(
     const keyCount = useRef(0);
 
     function initialize(stations) {
-      let keyBase = keyCount.current
+      let keyBase = keyCount.current;
       stations = stations.map((station, key) => ({
         key: key + keyBase,
         ...station,
-      }))
-      setStations(stations)
-      keyCount.current += stations.length
+      }));
+      setStations(stations);
+      keyCount.current += stations.length;
       // alert("In initialize: "+ keyCount.current)
     }
 
-    useEffect(() => initialize(initialStations), [])
+    useEffect(() => initialize(initialStations), []);
 
     function cmpStations(lhs, rhs) {
       if (lhs.hasOwnProperty("time")) {
@@ -113,11 +120,9 @@ const StationsComponent = forwardRef(
     }
 
     function handleCreate() {
-      let key = keyCount.current
+      let key = keyCount.current;
       setStations((prevStations) =>
-        [...prevStations, { key: key, passengers: [] }].sort(
-          cmpStations,
-        ),
+        [...prevStations, { key: key, passengers: [] }].sort(cmpStations),
       );
       keyCount.current++;
     }
@@ -144,7 +149,7 @@ const StationsComponent = forwardRef(
 
     useImperativeHandle(ref, () => ({
       stations: () => stations,
-      setStations: (stations) => initialize(stations)
+      setStations: (stations) => initialize(stations),
     }));
 
     return (
@@ -179,5 +184,7 @@ const StationsComponent = forwardRef(
     );
   },
 );
+
+StationsComponent.displayName = "StationsComponent"
 
 export default memo(StationsComponent);

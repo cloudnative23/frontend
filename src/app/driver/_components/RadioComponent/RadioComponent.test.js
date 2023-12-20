@@ -1,26 +1,25 @@
 import { createRef } from "react";
 
-import RadioComponent from "./RadioComponent";
 import { cleanup, fireEvent, render } from "@testing-library/react";
 
-describe("RadioComponent testing", () => {
-  
-  test("test 1", () => {
+import RadioComponent from "./RadioComponent";
 
+describe("RadioComponent testing", () => {
+  test("test 1", () => {
     const workStatusRef = createRef(null);
 
     const { container } = render(
       <RadioComponent
         list={[
-            { id: "on", text: "上班" },
-            { id: "off", text: "下班" },
+          { id: "on", text: "上班" },
+          { id: "off", text: "下班" },
         ]}
         defaultValue={"on"}
         onChange={(id) => (workStatusRef.current = id)}
-    />);
+      />,
+    );
 
-    fireEvent.click(container.querySelector("input[id='off']"))
-    expect(workStatusRef.current).toBe('off')
-    });
-
+    fireEvent.click(container.querySelector("input[id='off']"));
+    expect(workStatusRef.current).toBe("off");
+  });
 });
