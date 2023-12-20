@@ -1,14 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Swal from "sweetalert2";
-import axios from 'axios'
 
 import HeaderBar from "../_components/HeaderComponent/HeaderComponnet";
 import RadioComponent from "../_components/RadioComponent/RadioComponent";
 import StationsComponent from "../_components/StationComponent/StationComponent";
-
-import { getStationList, validateRouteStations, validateNotNull, validateIsNumber } from "../_components/utils";
+import {
+  getStationList,
+  validateRouteStations,
+  validateNotNull,
+  validateIsNumber,
+} from "../_components/utils";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function App(props) {
   const dateRef = useRef(null);
@@ -21,20 +25,22 @@ export default function App(props) {
 
   const stationRef = useRef(null);
 
-  const [stationList, setStationList] = useState([])
+  const [stationList, setStationList] = useState([]);
   // stataionList = [{ id: -1, name: "--- 請選擇 ---" }, ...stataionList];
 
   useEffect(() => {
-    getStationList().then((sl) => {
-      setStationList([{ id: -1, name: "--- 請選擇 ---" }, ...sl])
-    }).catch(err => {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "無法取得站點名稱",
+    getStationList()
+      .then((sl) => {
+        setStationList([{ id: -1, name: "--- 請選擇 ---" }, ...sl]);
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "無法取得站點名稱",
+        });
       });
-    })
-  }, [])
+  }, []);
 
   function handleSend() {
     let stations = stationRef.current.stations();
@@ -49,14 +55,14 @@ export default function App(props) {
     ];
 
     for (let [value, name, validateFn] of entry) {
-      let res = validateFn(value)
+      let res = validateFn(value);
       if (!res.validated) {
         Swal.fire({
           icon: "error",
           title: `${name}欄位有誤`,
           text: res.message,
-        })
-        return
+        });
+        return;
       }
     }
 
@@ -103,21 +109,25 @@ export default function App(props) {
     // alert(JSON.stringify(data, null, 2));
 
     axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes`, {
-      method: 'post', 'withCredentials': true, data: data,
-      'content-type': 'application/json'
-    }).then(res => {
-      Swal.fire({
-        icon: "success",
-        title: "上傳成功",
-      })
-      // redirect('driver')
-    }).catch(err => {
-      Swal.fire({
-        icon: "error",
-        title: "上傳失敗",
-        text: err.response.data.message,
-      })
+      method: "post",
+      withCredentials: true,
+      data: data,
+      "content-type": "application/json",
     })
+      .then((res) => {
+        Swal.fire({
+          icon: "success",
+          title: "上傳成功",
+        });
+        // redirect('driver')
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "上傳失敗",
+          text: err.response.data.message,
+        });
+      });
 
     // alert(JSON.stringify(data));
   }

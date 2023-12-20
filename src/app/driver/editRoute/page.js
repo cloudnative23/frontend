@@ -1,82 +1,86 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import Swal from "sweetalert2";
 
 import { useSearchParams } from "next/navigation";
 
 import HeaderBar from "../_components/HeaderComponent/HeaderComponnet";
 import RadioComponent from "../_components/RadioComponent/RadioComponent";
 import StationsComponent from "../_components/StationComponent/StationComponent";
-import { getStationList, transformBackendRouteData, validateRouteStations } from "../_components/utils";
+import {
+  getStationList,
+  transformBackendRouteData,
+  validateRouteStations,
+} from "../_components/utils";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function App(props) {
-
   const searchParams = useSearchParams({});
 
   const [route, setRoute] = useState(null);
-  const [stationList, setStationList] = useState([])
+  const [stationList, setStationList] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const stationRef = useRef(null);
 
-  let routeId = searchParams.get("id")
+  let routeId = searchParams.get("id");
 
   useEffect(() => {
     if (routeId !== null) {
-      let routePromise = axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes/${routeId}`, {
-        method: 'get',
-        withCredentials: true,
-      }).then((res) => {
-        setRoute(transformBackendRouteData(res.data))
-      }).catch((err) => {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: err.response.data.message,
+      let routePromise = axios(
+        `${process.env.NEXT_PUBLIC_API_ROOT}/routes/${routeId}`,
+        {
+          method: "get",
+          withCredentials: true,
+        },
+      )
+        .then((res) => {
+          setRoute(transformBackendRouteData(res.data));
+        })
+        .catch((err) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: err.response.data.message,
+          });
         });
-      });
-      let statPromise = getStationList().then((sl) => {
-        setStationList([{ id: -1, name: "--- 請選擇 ---" }, ...sl])
-      }).catch(err => {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "無法取得站點名稱",
+      let statPromise = getStationList()
+        .then((sl) => {
+          setStationList([{ id: -1, name: "--- 請選擇 ---" }, ...sl]);
+        })
+        .catch((err) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "無法取得站點名稱",
+          });
         });
-      })
-      Promise.all([routePromise, statPromise])
-        .then(() => setIsLoaded(true))
+      Promise.all([routePromise, statPromise]).then(() => setIsLoaded(true));
     }
   }, []);
 
   function handleSend() {
-
     let stations = stationRef.current.stations();
     let prevStations = route.stations;
 
-    let entry = [
-      [stations, "路線", validateRouteStations],
-    ];
+    let entry = [[stations, "路線", validateRouteStations]];
 
     for (let [value, name, validateFn] of entry) {
-      let res = validateFn(value)
+      let res = validateFn(value);
       if (!res.validated) {
         Swal.fire({
           icon: "error",
           title: `${name}欄位有誤`,
           text: res.message,
-        })
-        return
+        });
+        return;
       }
     }
 
     let intersec = stations.filter((station) => {
       let match_id = prevStations.findIndex((s) => s.id == station.id);
-      let match_time = prevStations.findIndex(
-        (s) => s.time == station.time,
-      );
+      let match_time = prevStations.findIndex((s) => s.time == station.time);
       return match_id >= 0 && match_id === match_time;
     });
 
@@ -93,53 +97,74 @@ export default function App(props) {
 
     Promise.all(
       deleted.map((station) =>
-        axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes/${routeId}/stations/${station.id}`, {
-          method: 'delete',
-          withCredentials: true
-        }))
-    ).then(() => (
-      Promise.all(
-        added.map((station) =>
-          axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes/${routeId}/stations/${station.id}`, {
-            method: 'put',
+        axios(
+          `${process.env.NEXT_PUBLIC_API_ROOT}/routes/${routeId}/stations/${station.id}`,
+          {
+            method: "delete",
             withCredentials: true,
-            data: { datetime: `${route.date}T${station.time}` },
-            headers: { 'content-type': 'application/json' }
-          }))
-      ).catch((err) => {
+          },
+        ),
+      ),
+    )
+      .then(() =>
+        Promise.all(
+          added.map((station) =>
+            axios(
+              `${process.env.NEXT_PUBLIC_API_ROOT}/routes/${routeId}/stations/${station.id}`,
+              {
+                method: "put",
+                withCredentials: true,
+                data: { datetime: `${route.date}T${station.time}` },
+                headers: { "content-type": "application/json" },
+              },
+            ),
+          ),
+        )
+          .catch((err) => {
+            Swal.fire({
+              icon: "error",
+              title: "新增站點時發生錯誤",
+              text: err.response.data.message,
+            });
+          })
+          .then(() => {
+            Swal.fire({
+              icon: "success",
+              title: "路線修改成功",
+            });
+          }),
+      )
+      .catch((err) => {
         Swal.fire({
           icon: "error",
-          title: "新增站點時發生錯誤",
+          title: "刪除站點時發生錯誤",
           text: err.response.data.message,
-        })
-      })).then(() => {
-        Swal.fire({
-          icon: "success",
-          title: "路線修改成功",
-        })
+        });
       })
-    ).catch((err) => {
-      Swal.fire({
-        icon: "error",
-        title: "刪除站點時發生錯誤",
-        text: err.response.data.message,
-      })
-    }).finally(() => {
-      axios(`${process.env.NEXT_PUBLIC_API_ROOT}/routes/${routeId}/stations`, {
-        method: 'get',
-        withCredentials: true,
-      }).then((res) => {
-        let newRoute = transformBackendRouteData({...route, stations: res.data })
-        setRoute(newRoute)
-        stationRef.current.setStations(newRoute.stations)
-      }).catch((err) => {
-        Swal.fire({
-          icon: "error",
-          title: "更新站點資訊時發生錯誤",
-          text: err.response.data.message,
-        })
-      })
-    })
+      .finally(() => {
+        axios(
+          `${process.env.NEXT_PUBLIC_API_ROOT}/routes/${routeId}/stations`,
+          {
+            method: "get",
+            withCredentials: true,
+          },
+        )
+          .then((res) => {
+            let newRoute = transformBackendRouteData({
+              ...route,
+              stations: res.data,
+            });
+            setRoute(newRoute);
+            stationRef.current.setStations(newRoute.stations);
+          })
+          .catch((err) => {
+            Swal.fire({
+              icon: "error",
+              title: "更新站點資訊時發生錯誤",
+              text: err.response.data.message,
+            });
+          });
+      });
   }
 
   return (

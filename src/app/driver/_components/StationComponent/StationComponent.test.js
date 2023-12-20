@@ -1,7 +1,8 @@
 import { createRef } from "react";
 
-import StationComponent from "./StationComponent";
 import { cleanup, fireEvent, render } from "@testing-library/react";
+
+import StationComponent from "./StationComponent";
 
 const mockStationList = [
   {

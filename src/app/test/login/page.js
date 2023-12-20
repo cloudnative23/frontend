@@ -3,11 +3,13 @@
 import axios from "axios";
 
 export default function App() {
+  // alert(process.env.NEXT_PUBLIC_API_ROOT)
+
   let a = axios
     .post(
       `${process.env.NEXT_PUBLIC_API_ROOT}/login`,
       {
-        email: "user1@example.com",
+        email: "user3@example.com",
         password: "pa$$word",
       },
       { withCredentials: true },

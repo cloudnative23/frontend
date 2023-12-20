@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
-import Swal from "sweetalert2";
 
 import HeaderBar from "../_components/HeaderComponent/HeaderComponnet";
 import { getDate, getTime, dateToString } from "../_components/utils";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 function RequestComponent({ request, onAccept, onDeny }) {
-
   return (
     <>
       {/* <p>{JSON.stringify(request)}</p> */}
@@ -105,22 +104,23 @@ function RequestComponent({ request, onAccept, onDeny }) {
 }
 
 export default function App(props) {
-
   const [allRequest, setAllReqeust] = useState([]);
 
   function fetchAllRequest() {
     axios(`${process.env.NEXT_PUBLIC_API_ROOT}/requests?mode=available`, {
-      method: 'get',
+      method: "get",
       withCredentials: true,
-    }).then((res) => {
-      setAllReqeust(res.data);
-    }).catch((err) => {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${err.response.data.message}`,
-      });
     })
+      .then((res) => {
+        setAllReqeust(res.data);
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `${err.response.data.message}`,
+        });
+      });
   }
 
   useEffect(fetchAllRequest, []);
@@ -129,36 +129,42 @@ export default function App(props) {
     axios(`${process.env.NEXT_PUBLIC_API_ROOT}/requests/${id}/accept`, {
       method: "put",
       withCredentials: true,
-    }).then((res) => {
-      Swal.fire({
-        icon: "success",
-        title: "已接受請求",
+    })
+      .then((res) => {
+        Swal.fire({
+          icon: "success",
+          title: "已接受請求",
+        });
       })
-    }).catch((err) => {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${err.response.data.message}`,
-      });
-    }).finally(fetchAllRequest)
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `${err.response.data.message}`,
+        });
+      })
+      .finally(fetchAllRequest);
   }
 
   function handleDeny(id) {
     axios(`${process.env.NEXT_PUBLIC_API_ROOT}/requests/${id}/deny`, {
       method: "put",
       withCredentials: true,
-    }).then((res) => {
-      Swal.fire({
-        icon: "success",
-        title: "已拒絕請求",
+    })
+      .then((res) => {
+        Swal.fire({
+          icon: "success",
+          title: "已拒絕請求",
+        });
       })
-    }).catch((err) => {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${err.response.data.message}`,
-      });
-    }).finally(fetchAllRequest)
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `${err.response.data.message}`,
+        });
+      })
+      .finally(fetchAllRequest);
   }
 
   return (
